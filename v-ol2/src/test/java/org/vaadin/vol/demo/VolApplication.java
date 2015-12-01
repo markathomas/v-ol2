@@ -135,7 +135,7 @@ public class VolApplication extends Application {
                 }
             }
         }
-        
+
         // sorting - start
         indexedContainer.setItemSorter(new DefaultItemSorter(new Comparator<Object>() {
             public int compare(Object o1, Object o2) {
@@ -147,7 +147,7 @@ public class VolApplication extends Application {
 
             }
         }));
-        
+
         String[] propertyIds={"name"};
         boolean[] ascending={true};
         indexedContainer.sort(propertyIds, ascending);

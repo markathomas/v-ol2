@@ -31,11 +31,11 @@ public class Issue90AttachReattach extends AbstractVOLTest {
         GoogleStreetMapLayer googleStreets = new GoogleStreetMapLayer();
         map.addLayer(osm);
         map.addLayer(googleStreets);
-        
+
         VectorLayer vectorLayer = new VectorLayer();
         vectorLayer.addVector(new PointVector(22.30083, 60.452541));
         map.addLayer(vectorLayer);
-        
+
         map.setCenter(22.30083, 60.452541);
 
         final HorizontalLayout layout1 = new HorizontalLayout();

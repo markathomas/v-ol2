@@ -30,7 +30,7 @@ public class PopupsWithVaadinComponents extends AbstractVOLTest {
         popup.setPopupStyle(PopupStyle.FRAMED_CLOUD);
         popup.setClosable(false);
         map.addPopup(popup);
-        
+
         Popup popup2 = new Popup();
         CssLayout cssLayout = new CssLayout();
         popup2.setLon(30);
@@ -43,13 +43,13 @@ public class PopupsWithVaadinComponents extends AbstractVOLTest {
                 getWindow().showNotification("Use any vaadin stuff here like in a window");
             }
         });
-        
+
         cssLayout.addComponent(c);
         map.addPopup(popup2);
- 
+
         popup2 = new Popup();
         popup2.setLat(30);
-        
+
         Table table = new Table();
         table.setWidth("200px");
         table.setHeight("100px");
@@ -59,9 +59,9 @@ public class PopupsWithVaadinComponents extends AbstractVOLTest {
             table.addItem();
         }
         popup2.setContent(table);
-        
+
         map.addPopup(popup2);
- 
+
 
         return map;
     }

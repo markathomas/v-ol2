@@ -13,7 +13,7 @@ import com.vaadin.terminal.PaintTarget;
  * with unique style names (aka render intent). The actual style that is used to
  * render a vector depends on the state (e.g. 'selected', 'temporary') and
  * possibly overridden style name in the vector.
- * 
+ *
  */
 public class StyleMap implements Serializable {
 
@@ -55,7 +55,7 @@ public class StyleMap implements Serializable {
      * <p>
      * Avoid passing null for one of the styles. If just want to use 2 style,
      * pass the same style for selectStyle and tempraryStyle parameters.
-     * 
+     *
      * @param defaultStyle
      *            the default style to render the feature
      * @param selectStyle
@@ -151,7 +151,7 @@ public class StyleMap implements Serializable {
      * @param context
      *            optional object to check the property against. If no context
      *            is passed in, feature attributes are used by default
-     * 
+     *
      */
     public void addUniqueValueRules(RenderIntent intent, String property,
             Symbolizer lookup, Object context) {
@@ -175,7 +175,7 @@ public class StyleMap implements Serializable {
 /**
  * UniqueValueRule class is a wrapper class used to store the the parameter of
  * addUniqueValueRules
- * 
+ *
  */
 class UniqueValueRule {
     RenderIntent intent;

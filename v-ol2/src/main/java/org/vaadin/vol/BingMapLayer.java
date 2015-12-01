@@ -10,7 +10,7 @@ import com.vaadin.ui.ClientWidget;
 /**
  * BingMap layer that can be added to {@link OpenLayersMap}. Require API key
  * from bingmapportal.com
- * 
+ *
  * <p>
  * Note that no settings can be changed after the layer has been drawn for the
  * first time.

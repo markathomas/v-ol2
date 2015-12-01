@@ -16,26 +16,26 @@ public class OpenStreetMapLayer extends Layer {
         if(projection) {
                 options.projection = projection;
         }
-        
+
         if(!displayName) displayName = "OpenStreetMap";
         if (url)
                 return new $wnd.OpenLayers.Layer.OSM(displayName,[url],options)
         else
                 return new $wnd.OpenLayers.Layer.OSM(displayName,null,options);
-        
+
     }-*/;
 
     public native final static OpenStreetMapLayer create(String displayName,
             String projection)
     /*-{
-    	var options = {transitionEffect: 'resize'};
-    	if(projection) {
-    		options.projection = projection;
-    	}
-    	
-    	if(!displayName) displayName = "OpenStreetMap";
-    	return new $wnd.OpenLayers.Layer.OSM(displayName,null,options);
-    	
+        var options = {transitionEffect: 'resize'};
+        if(projection) {
+            options.projection = projection;
+        }
+
+        if(!displayName) displayName = "OpenStreetMap";
+        return new $wnd.OpenLayers.Layer.OSM(displayName,null,options);
+
     }-*/;
 
     public native final static OpenStreetMapLayer createCycleMap(
@@ -45,7 +45,7 @@ public class OpenStreetMapLayer extends Layer {
         if(projection) {
                 options.projection = projection;
         }
-        
+
         if(!displayName) displayName = "OpenStreetMap";
         return new $wnd.OpenLayers.Layer.OSM.CycleMap(displayName,null,options);
     }-*/;

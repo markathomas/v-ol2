@@ -8,15 +8,15 @@ public class BingMapLayer extends Layer {
     public native final static BingMapLayer create(String displayName,
             String apikey, String type)
     /*-{
-     	if(!displayName) {
-     	    displayName = "Bing map";
-     	}
-     	var c ={};
-     	c.name = displayName;
-     	c.type = type;
-     	c.key = apikey;
-     	
-    	return new $wnd.OpenLayers.Layer.Bing(c);
+        if(!displayName) {
+            displayName = "Bing map";
+        }
+        var c ={};
+        c.name = displayName;
+        c.type = type;
+        c.key = apikey;
+
+        return new $wnd.OpenLayers.Layer.Bing(c);
     }-*/;
 
 }

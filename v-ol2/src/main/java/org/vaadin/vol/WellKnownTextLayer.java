@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.vaadin.vol;
 
@@ -17,17 +17,17 @@ public class WellKnownTextLayer extends AbstractAutoPopulatedVectorLayer impleme
     public WellKnownTextLayer() {
         setDisplayName("WKT");
     }
-    
+
     public WellKnownTextLayer(String wkt) {
         this();
         setWellKnownText(wkt);
     }
-    
+
     public void paintContent(PaintTarget target) throws PaintException {
         super.paintContent(target);
         target.addAttribute("wkt", wkt);
     }
-    
+
     public void setWellKnownText(String wkt) {
         this.wkt = wkt;
         requestRepaint();

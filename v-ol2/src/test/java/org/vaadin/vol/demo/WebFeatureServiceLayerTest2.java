@@ -20,7 +20,7 @@ import com.vaadin.ui.Component;
 public class WebFeatureServiceLayerTest2 extends AbstractVOLTest {
 
     @Override
-    public String getDescription() {    	
+    public String getDescription() {
         return "Just another WFS example. Shows reclickable feature, and btw you can click on all layers :-D";
     }
 
@@ -100,13 +100,13 @@ public class WebFeatureServiceLayerTest2 extends AbstractVOLTest {
                 return false;
             }
         });
-        
+
         openLayersMap.addLayer(osmLayer);
         openLayersMap.addLayer(wfsCities);
         openLayersMap.addLayer(wfsRoads);
         openLayersMap.addLayer(wfsWater);
         openLayersMap.addLayer(wfsBoundaries);
-        
+
         // add a comment
         VectorLayer vectorLayer = new VectorLayer();
         vectorLayer.setDisplayName("Comments");
@@ -115,8 +115,8 @@ public class WebFeatureServiceLayerTest2 extends AbstractVOLTest {
         labelVector.setPoints(new Point(147, -44.5429));
         vectorLayer.addVector(labelVector);
         openLayersMap.addLayer(vectorLayer);
-        
-        
+
+
         openLayersMap.setSizeFull();
 
         openLayersMap.setCenter(146.9417, -42.0429);

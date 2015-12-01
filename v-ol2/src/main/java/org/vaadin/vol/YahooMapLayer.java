@@ -13,23 +13,23 @@ import com.vaadin.ui.ClientWidget;
   */
 @ClientWidget(VYahooMapLayer.class)
 public class YahooMapLayer extends AbstractComponent implements Layer {
-	private String displayName;
-	
-	@Override
-	public void paintContent(PaintTarget target) throws PaintException {
-		super.paintContent(target);
+    private String displayName;
 
-		if(displayName != null) {
-			target.addAttribute("displayName", displayName);
-		}
-	}
+    @Override
+    public void paintContent(PaintTarget target) throws PaintException {
+        super.paintContent(target);
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
+        if(displayName != null) {
+            target.addAttribute("displayName", displayName);
+        }
+    }
 
-	public String getDisplayName() {
-		return displayName;
-	}
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 
 }

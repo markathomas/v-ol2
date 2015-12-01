@@ -17,7 +17,7 @@ public class DrawFeature extends Control {
     public native static DrawFeature create(VectorLayer targetLayer,
             Handler drawHandler, JavaScriptObject options)
     /*-{
-    	return new $wnd.OpenLayers.Control.DrawFeature(targetLayer, drawHandler, options);
+        return new $wnd.OpenLayers.Control.DrawFeature(targetLayer, drawHandler, options);
     }-*/;
 
 }

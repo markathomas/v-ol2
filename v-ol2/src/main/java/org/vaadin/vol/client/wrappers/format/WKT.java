@@ -7,15 +7,15 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
 public class WKT extends JavaScriptObject {
-	
-	protected WKT() {}
-    
+
+    protected WKT() {}
+
     public static native WKT create(Projection internalProjection, Projection externalProjection)
     /*-{
         return new $wnd.OpenLayers.Format.WKT({'internalProjection' : internalProjection, 'externalProjection' : externalProjection});
     }-*/;
 
-    public native final JsArray<Vector> read(String wkt) 
+    public native final JsArray<Vector> read(String wkt)
     /*-{
         var result = this.read(wkt);
         // ensure array
@@ -25,9 +25,9 @@ public class WKT extends JavaScriptObject {
         return result;
     }-*/;
 
-	public native final String write(Vector vector) 
-	/*-{
-		return this.write(vector);
-	}-*/;
+    public native final String write(Vector vector)
+    /*-{
+        return this.write(vector);
+    }-*/;
 
 }

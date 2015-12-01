@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.vaadin.vol;
 
@@ -20,14 +20,14 @@ public class WebFeatureServiceLayer extends AbstractAutoPopulatedVectorLayer imp
     public WebFeatureServiceLayer() {
 
     }
-    
+
     public void paintContent(PaintTarget target) throws PaintException {
         super.paintContent(target);
         target.addAttribute("uri", uri);
         target.addAttribute("featureType", featureType);
         target.addAttribute("featureNS", featureNS);
     }
-    
+
     public void setUri(String uri) {
         this.uri = uri;
         requestRepaint();
@@ -52,5 +52,5 @@ public class WebFeatureServiceLayer extends AbstractAutoPopulatedVectorLayer imp
 
     public String getFeatureNS() {
         return featureNS;
-    }    
+    }
 }

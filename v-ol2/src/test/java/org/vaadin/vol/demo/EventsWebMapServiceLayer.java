@@ -25,17 +25,17 @@ import com.vaadin.ui.HorizontalLayout;
  * http://openlayers.org/dev/examples/wfs-states.js
  */
 public class EventsWebMapServiceLayer extends AbstractVOLTest {
-	
-	long loadTime;
-	private LoadStartListener loadStartListener=new LoadStartListenerImpl();
-	private LoadEndListener loadEndListener=new LoadEndListenerImpl();
-	
+
+    long loadTime;
+    private LoadStartListener loadStartListener=new LoadStartListenerImpl();
+    private LoadEndListener loadEndListener=new LoadEndListenerImpl();
+
     @Override
     public String getDescription() {
         return "Layer events for WebMapServiceLayer";
     }
-    
-    
+
+
 
     @Override
     Component getMap() {
@@ -91,16 +91,16 @@ public class EventsWebMapServiceLayer extends AbstractVOLTest {
     }
 
     class LoadStartListenerImpl implements LoadStartListener {
-    	public void loadStart(LoadStartEvent event) {
-    		loadTime=new Date().getTime();
-    	};
+        public void loadStart(LoadStartEvent event) {
+            loadTime=new Date().getTime();
+        };
     }
     class LoadEndListenerImpl implements LoadEndListener {
-    	public void loadEnd(LoadEndEvent event) {
-    		long endTime=new Date().getTime();
-    		long timeToLoad=endTime-loadTime;
-    		showNotification("Time to load [ms]: "+timeToLoad);
-    	};
+        public void loadEnd(LoadEndEvent event) {
+            long endTime=new Date().getTime();
+            long timeToLoad=endTime-loadTime;
+            showNotification("Time to load [ms]: "+timeToLoad);
+        };
     }
-    
+
 }

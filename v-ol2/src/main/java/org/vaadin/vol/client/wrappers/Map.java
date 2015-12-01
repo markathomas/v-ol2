@@ -138,7 +138,7 @@ public class Map extends Widget {
     public void setBaseLayer(Layer layer) {
         getMap().setBaseLayer(layer);
     }
-    
+
     public JsArray<Control> getControls() {
         return getMap().getControls();
     }

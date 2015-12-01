@@ -45,7 +45,7 @@ public class VPopup extends Widget implements Paintable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.vaadin.terminal.gwt.client.Paintable#updateFromUIDL(com.vaadin.terminal
      * .gwt.client.UIDL, com.vaadin.terminal.gwt.client.ApplicationConnection)

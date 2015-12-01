@@ -45,9 +45,9 @@ public abstract class VAbstractAutopopulatedVectorLayer<T> extends
     }
 
     protected void updateSelectionControl(final ApplicationConnection client) {
-    	boolean hasSelListener=client.hasEventListeners(this, "vsel");
-    	boolean hasUnselListener=client.hasEventListeners(this, "vunsel");
-    	boolean hasBefSelListener=client.hasEventListeners(this, "vbefsel");
+        boolean hasSelListener=client.hasEventListeners(this, "vsel");
+        boolean hasUnselListener=client.hasEventListeners(this, "vunsel");
+        boolean hasBefSelListener=client.hasEventListeners(this, "vbefsel");
         if (hasSelListener || hasBefSelListener || hasUnselListener) {
             if (control == null) {
                 if (hasSelListener && selectedhandler == null) {
@@ -80,7 +80,7 @@ public abstract class VAbstractAutopopulatedVectorLayer<T> extends
                             String wkt = wktFormatter.write(vector);
                             client.updateVariable(paintableId, "wkt", wkt,
                                     false);
-                            // todo - maybe there is some more important object than fid 
+                            // todo - maybe there is some more important object than fid
                             client.updateVariable(paintableId, "vsel", fid,
                                     false);
                             client.sendPendingVariableChanges();
@@ -118,7 +118,7 @@ public abstract class VAbstractAutopopulatedVectorLayer<T> extends
                             String wkt = wktFormatter.write(vector);
                             client.updateVariable(paintableId, "wkt", wkt,
                                     false);
-                            // todo - maybe there is some more important object than fid 
+                            // todo - maybe there is some more important object than fid
                             client.updateVariable(paintableId, "vunsel", fid,
                                     false);
                             client.sendPendingVariableChanges();
@@ -156,25 +156,25 @@ public abstract class VAbstractAutopopulatedVectorLayer<T> extends
                             String wkt = wktFormatter.write(vector);
                             client.updateVariable(paintableId, "wkt", wkt,
                                     false);
-                            // todo - maybe there is some more important object than fid 
+                            // todo - maybe there is some more important object than fid
                             client.updateVariable(paintableId, "vbefsel", fid,
                                     false);
                             client.sendPendingVariableChanges();
                         }
                     };
-                    layer.registerReturnFalseHandler("beforefeatureselected", 
-                    		beforeSelectedhandler);
+                    layer.registerReturnFalseHandler("beforefeatureselected",
+                            beforeSelectedhandler);
                 }
                 /*
                  * In openLayers the constructor for OpenLayers.Control.SelectFeature
                  * takes a array of layers. IMO all Instances of VAbstractAutopopulatedVectorLayer
                  * should share only one map owned select control.
-                 */                
+                 */
                 control = SelectFeatureFactory.getInst().getOrCreate(selectionCtrlId,getMap(),layer);
             }
             control.activate();
         } else if (control != null) {
-        	SelectFeatureFactory.getInst().removeLayer(control,selectionCtrlId,getMap(),layer);
+            SelectFeatureFactory.getInst().removeLayer(control,selectionCtrlId,getMap(),layer);
             control = null;
         }
     }

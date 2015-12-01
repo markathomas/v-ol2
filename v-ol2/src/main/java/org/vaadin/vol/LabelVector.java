@@ -1,8 +1,8 @@
 package org.vaadin.vol;
 
 public class LabelVector extends PointVector {
-    
-    
+
+
     @Override
     public void setCaption(String caption) {
         super.setCaption(caption);
@@ -27,14 +27,14 @@ public class LabelVector extends PointVector {
             setCustomStyle(null);
         }
     }
-    
+
     public LabelVector() {
     }
-    
+
     public LabelVector(String label) {
         setCaption(label);
     }
-    
+
     @Override
     public void setStyleName(String style) {
         boolean wasEmpty = getStyleName().isEmpty();
@@ -43,6 +43,6 @@ public class LabelVector extends PointVector {
             setTextToSymbolizerOrAsLabelAttribute(getCaption());
         }
     }
-    
-    
+
+
 }

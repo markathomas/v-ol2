@@ -7,8 +7,8 @@ import com.vaadin.terminal.PaintTarget;
 
 /**
  * Attibutes class wraps a JavaScript Object
- * 
- * 
+ *
+ *
  */
 public class Attributes extends JsObject {
 

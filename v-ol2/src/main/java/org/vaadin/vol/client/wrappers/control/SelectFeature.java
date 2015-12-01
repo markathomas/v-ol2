@@ -10,14 +10,14 @@ public class SelectFeature extends Control {
     }
 
     public native static SelectFeature create(
-    		Layer targetLayer,
-            boolean multiple, 
-            boolean boxselection, 
+            Layer targetLayer,
+            boolean multiple,
+            boolean boxselection,
             boolean clickout,
             boolean toggle,
             boolean hover)
     /*-{
-    	var o = {
+        var o = {
            toggleKey: "ctrlKey",
            multipleKey: "shiftKey",
            multiple: multiple,
@@ -25,13 +25,13 @@ public class SelectFeature extends Control {
            clickout: clickout,
            toggle: toggle,
            hover: hover
-    	}
+        }
 
         var h = new $wnd.OpenLayers.Control.SelectFeature(targetLayer, o);
         // TODO make this configurable, may disturb if there are multiple layers of vectors
         // Currently it is to enable panning while selection is on
         h.handlers.feature.stopDown = false;
-    	return h;
+        return h;
     }-*/;
 
     public static SelectFeature create(Layer targetLayer) {
@@ -47,7 +47,7 @@ public class SelectFeature extends Control {
     /*-{
         this.unselect(vector);
     }-*/;
-    
+
     public final native void select(Vector vector)
     /*-{
         this.select(vector);
@@ -57,12 +57,12 @@ public class SelectFeature extends Control {
     /*-{
         this.unhighlight(vector);
     }-*/;
-    
+
     public final native void highlight(Vector vector)
     /*-{
         this.highlight(vector);
     }-*/;
-    
+
     public final native void clickFeature(Vector vector)
     /*-{
         this.clickFeature(vector);

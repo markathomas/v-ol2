@@ -265,11 +265,11 @@ public class VVectorLayer extends FlowPanel implements VLayer, Container {
 
         updateStyleMap(layer);
         setDrawingMode(layer.getStringAttribute("dmode"));
-        
+
         // Identifier for SelectFeature control to use ... layers specifying the
         // the same identifier can all listen for their own Select events on the map.
         selectionCtrlId = layer.getStringAttribute("selectionCtrlId");
-        
+
         setSelectionMode(layer);
 
         HashSet<Widget> orphaned = new HashSet<Widget>();
@@ -321,28 +321,28 @@ public class VVectorLayer extends FlowPanel implements VLayer, Container {
         }
         if (currentSelectionMode != "NONE" || drawingMode == "MODIFY") {
             if (layer.hasAttribute("svector")) {
-            	Scheduler.get().scheduleFinally(new ScheduledCommand() {
-					
-					public void execute() {
-						VAbstractVector selectedVector = (VAbstractVector) layer
-								.getPaintableAttribute("svector", client);
-						if (selectedVector != null) {
-							updating = true;
-							// ensure selection
-							if (drawingMode == "MODIFY") {
-								ModifyFeature mf = (ModifyFeature) df.cast();
-								if (mf.getModifiedFeature() != null) {
-									mf.unselect(mf.getModifiedFeature());
-								}
-								mf.select(selectedVector.getVector());
-							} else {
-								selectFeature.select(selectedVector.getVector());
-							}
-							updating = false;
-						}
-						
-					}
-				});
+                Scheduler.get().scheduleFinally(new ScheduledCommand() {
+
+                    public void execute() {
+                        VAbstractVector selectedVector = (VAbstractVector) layer
+                                .getPaintableAttribute("svector", client);
+                        if (selectedVector != null) {
+                            updating = true;
+                            // ensure selection
+                            if (drawingMode == "MODIFY") {
+                                ModifyFeature mf = (ModifyFeature) df.cast();
+                                if (mf.getModifiedFeature() != null) {
+                                    mf.unselect(mf.getModifiedFeature());
+                                }
+                                mf.select(selectedVector.getVector());
+                            } else {
+                                selectFeature.select(selectedVector.getVector());
+                            }
+                            updating = false;
+                        }
+
+                    }
+                });
             } else {
                 // remove selection
                 if (drawingMode == "MODIFY") {
@@ -354,7 +354,7 @@ public class VVectorLayer extends FlowPanel implements VLayer, Container {
                 } else {
                     try {
                         selectFeature.unselectAll();
-                        
+
                     } catch (Exception e) {
                         // NOP, may throw exception if selected vector gets
                         // deleted

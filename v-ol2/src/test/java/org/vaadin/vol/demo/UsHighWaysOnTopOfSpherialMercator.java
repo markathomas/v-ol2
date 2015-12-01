@@ -10,12 +10,12 @@ import com.vaadin.ui.Component;
 /**
  * Google projection, spherial mercator, web mercator, 900913, 1002113. All the
  * same practically.
- * 
+ *
  * <p>
  * Use js map settings and override base layer projection to 102113
  * (~90091~...). Then works with arcgis server that don't know abot google
  * mercator.
- * 
+ *
  */
 public class UsHighWaysOnTopOfSpherialMercator extends AbstractVOLTest {
 

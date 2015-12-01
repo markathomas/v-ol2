@@ -16,12 +16,12 @@ public class PopupFramedCloud extends Popup {
             boolean closable, GwtOlHandler onclosehandler)
     /*-{
 
-    	if(onclosehandler) {
-    		var f = function(evt) {
-    			onclosehandler.@org.vaadin.vol.client.wrappers.GwtOlHandler::onEvent(Lcom/google/gwt/core/client/JsArray;)(arguments);
-    		};
-    	}
-    	return new $wnd.OpenLayers.Popup.FramedCloud(id, lonlat, size, contenHtml, anchor ? (anchor.size ? anchor : anchor.icon) : null, closable, f);
+        if(onclosehandler) {
+            var f = function(evt) {
+                onclosehandler.@org.vaadin.vol.client.wrappers.GwtOlHandler::onEvent(Lcom/google/gwt/core/client/JsArray;)(arguments);
+            };
+        }
+        return new $wnd.OpenLayers.Popup.FramedCloud(id, lonlat, size, contenHtml, anchor ? (anchor.size ? anchor : anchor.icon) : null, closable, f);
     }-*/;
 
 }

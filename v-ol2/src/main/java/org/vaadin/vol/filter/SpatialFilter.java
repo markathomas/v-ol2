@@ -6,7 +6,7 @@ public class SpatialFilter extends Filter {
 
     /**
      * @return the property {String} Name of the context property to compare.
-     * 
+     *
      */
     public String getProperty() {
         return filter.getPropertyAsString("property");
@@ -16,7 +16,7 @@ public class SpatialFilter extends Filter {
      * @param property
      *            the property to set {String} Name of the context property to
      *            compare.
-     * 
+     *
      */
     public void setProperty(String property) {
         filter.setProperty("property", property);

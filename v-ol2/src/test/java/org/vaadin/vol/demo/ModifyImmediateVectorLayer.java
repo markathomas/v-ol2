@@ -213,7 +213,7 @@ public class ModifyImmediateVectorLayer extends AbstractVOLTest implements
 
     /**
      * An example how to zoom the map so that it covers given points.
-     * 
+     *
      * @param map
      * @param points
      */

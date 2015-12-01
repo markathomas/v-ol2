@@ -8,7 +8,7 @@ public class Size extends JavaScriptObject {
 
     public static native Size create(int width, int height)
     /*-{
-    	return new $wnd.OpenLayers.Size(width, height);
+        return new $wnd.OpenLayers.Size(width, height);
     }-*/;
 
     public final native int getWidth()

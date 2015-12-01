@@ -9,9 +9,9 @@ import com.vaadin.tools.ReflectTools;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 
-/*	
+/*
  * Layer base class to handle the basic layer events
- * 
+ *
  *  The move events currently not handled. They should handled in map.
  *  I don't implement listeners for add or remove layer because I found no
  *  practicle use case :-D
@@ -78,7 +78,7 @@ abstract public class AbstractLayerBase extends AbstractComponent {
             fireEvent(event);
         }
     }
-    
+
     @Override
     public void paintContent(PaintTarget target) throws PaintException {
         super.paintContent(target);
@@ -93,7 +93,7 @@ abstract public class AbstractLayerBase extends AbstractComponent {
 
     /**
      * Sets the attribution text for layer. Feature is not functional in all layers.
-     * 
+     *
      * @param attribution
      */
     public void setAttribution(String attribution) {

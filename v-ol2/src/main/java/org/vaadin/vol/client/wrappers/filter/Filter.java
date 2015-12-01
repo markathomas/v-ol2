@@ -9,6 +9,6 @@ public class Filter extends JavaScriptObject {
 
     public native static Filter create()
     /*-{
-    	return new $wnd.OpenLayers.Filter();
+        return new $wnd.OpenLayers.Filter();
     }-*/;
 }

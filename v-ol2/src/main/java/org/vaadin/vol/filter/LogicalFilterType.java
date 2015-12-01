@@ -8,7 +8,7 @@ public enum LogicalFilterType {
 
     /**
      * Constructor
-     * 
+     *
      * @param value
      *            The value to attribute to this enum constant.
      * */

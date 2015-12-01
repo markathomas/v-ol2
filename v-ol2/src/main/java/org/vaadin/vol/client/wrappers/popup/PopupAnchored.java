@@ -16,13 +16,13 @@ public class PopupAnchored extends Popup {
             boolean closable, GwtOlHandler onclosehandler)
     /*-{
 
-    	if(onclosehandler) {
-    		var f = function(evt) {
-    			// TODO add event ??
-    			onclosehandler.@org.vaadin.vol.client.wrappers.GwtOlHandler::onEvent(Lcom/google/gwt/core/client/JsArray;)(arguments);
-    		};
-    	}
-    	return new $wnd.OpenLayers.Popup.Anchored(id, lonlat, size, contenHtml, anchor.size ? anchor : anchor.icon, closable, f);
+        if(onclosehandler) {
+            var f = function(evt) {
+                // TODO add event ??
+                onclosehandler.@org.vaadin.vol.client.wrappers.GwtOlHandler::onEvent(Lcom/google/gwt/core/client/JsArray;)(arguments);
+            };
+        }
+        return new $wnd.OpenLayers.Popup.Anchored(id, lonlat, size, contenHtml, anchor.size ? anchor : anchor.icon, closable, f);
     }-*/;
 
 }

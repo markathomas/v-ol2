@@ -15,7 +15,7 @@ public class RenderIntent implements Serializable {
 
     /**
      * Constructor
-     * 
+     *
      * @param value
      *            The value to attribute to this enum constant.
      * */

@@ -48,7 +48,7 @@ public class RelativeSizedVectorStyling extends AbstractVOLTest {
              * as "pixel value" for the current resolution. The size of the
              * circle should stay the same (relative to real world) although the
              * zoom level changes.
-             * 
+             *
              * Note that although epsg 900913 unit is m, 1px is one exactly
              * meter only at equator. So the circle is more closer to having 100
              * meter diameter than radius here at north. Some more complex
@@ -60,7 +60,7 @@ public class RelativeSizedVectorStyling extends AbstractVOLTest {
             style.setContextJs("{ get100MetersInPx: function(feature) {"
                     + "return 100000 / feature.layer.map.getResolution();"
                     + "}" + "}");
-            
+
             // now use context functions value as radius
             style.setPointRadiusByAttribute("get100MetersInPx");
 

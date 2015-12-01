@@ -6,5 +6,5 @@ import com.vaadin.ui.ClientWidget;
 
 @ClientWidget(VArea.class)
 public class Area extends Vector {
-		
+
 }

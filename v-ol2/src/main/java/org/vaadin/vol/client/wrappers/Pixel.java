@@ -9,17 +9,17 @@ public class Pixel extends JavaScriptObject {
 
     public native static Pixel create(double x, double y)
     /*-{
-    	return new $wnd.OpenLayers.Pixel(x, y);
+        return new $wnd.OpenLayers.Pixel(x, y);
     }-*/;
 
     public native final int getX()
     /*-{
-    	return this.x | 0;  // guarantee we return an integer by truncating any decimal digits
+        return this.x | 0;  // guarantee we return an integer by truncating any decimal digits
     }-*/;
 
     public native final int getY()
     /*-{
-    	return this.y | 0;	// guarantee we return an integer by truncating any decimal digits
+        return this.y | 0;  // guarantee we return an integer by truncating any decimal digits
     }-*/;
 
     /**
@@ -29,7 +29,7 @@ public class Pixel extends JavaScriptObject {
      */
     public final native LonLat getLonLatFromPixel()
     /*-{
-     	return $wnd.OpenLayers.Map.getLonLatFromPixel(this); 
+        return $wnd.OpenLayers.Map.getLonLatFromPixel(this);
     }-*/;
 
 }

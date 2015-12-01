@@ -26,7 +26,7 @@ public class RotatedVectorWithImage extends AbstractVOLTest {
         map.addLayer(osm);
 
         final VectorLayer vectorLayer = new VectorLayer();
-        
+
         PointVector pointVector2 = new PointVector(22.29, 60.45);
 
         Style s = new Style();
@@ -37,9 +37,9 @@ public class RotatedVectorWithImage extends AbstractVOLTest {
         pointVector2.setCustomStyle(s);
 
         vectorLayer.addVector(pointVector2);
-        
+
         map.addLayer(vectorLayer);
-        
+
         map.setCenter(22.29, 60.45);
 
 

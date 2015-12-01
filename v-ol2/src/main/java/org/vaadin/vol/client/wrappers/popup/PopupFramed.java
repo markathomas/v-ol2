@@ -16,12 +16,12 @@ public class PopupFramed extends Popup {
             boolean closable, GwtOlHandler onclosehandler)
     /*-{
 
-    	if(onclosehandler) {
-    		var f = function(evt) {
-    			onclosehandler.@org.vaadin.vol.client.wrappers.GwtOlHandler::onEvent(Lcom/google/gwt/core/client/JsArray;)(arguments);
-    		};
-    	}
-    	return new $wnd.OpenLayers.Popup.Framed(id, lonlat, size, contenHtml,  null, closable, f);
+        if(onclosehandler) {
+            var f = function(evt) {
+                onclosehandler.@org.vaadin.vol.client.wrappers.GwtOlHandler::onEvent(Lcom/google/gwt/core/client/JsArray;)(arguments);
+            };
+        }
+        return new $wnd.OpenLayers.Popup.Framed(id, lonlat, size, contenHtml,  null, closable, f);
     }-*/;
 
 }

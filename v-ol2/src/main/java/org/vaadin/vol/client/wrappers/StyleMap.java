@@ -36,6 +36,6 @@ public class StyleMap extends JsObject {
     public native final void addUniqueValueRules(String intent,
             String property, JavaScriptObject lookup, Object object)
     /*-{
-    	this.addUniqueValueRules(intent, property, lookup);
+        this.addUniqueValueRules(intent, property, lookup);
     }-*/;
 }

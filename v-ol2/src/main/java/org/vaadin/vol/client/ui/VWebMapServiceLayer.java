@@ -19,12 +19,12 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
     private String projection;
     private String styles;
     private String viewparams;
-    
+
     @Override
     WebMapServiceLayer createLayer() {
-	return WebMapServiceLayer.create(display, uri, layers, format,
-		cqlFilter, styles, isBaseLayer, transparent, opacity, isSingleTile,
-		projection, viewparams);
+    return WebMapServiceLayer.create(display, uri, layers, format,
+        cqlFilter, styles, isBaseLayer, transparent, opacity, isSingleTile,
+        projection, viewparams);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
             isBaseLayer = uidl.getBooleanAttribute("isBaseLayer");
             transparent = uidl.getBooleanAttribute("transparent");
             opacity = uidl.getDoubleAttribute("opacity");
-	        isSingleTile = uidl.getBooleanAttribute("isSingleTile");
+            isSingleTile = uidl.getBooleanAttribute("isSingleTile");
             format = uidl.getStringAttribute("format");
             cqlFilter = uidl.hasAttribute("cqlFilter") ? uidl
                     .getStringAttribute("cqlFilter") : null;
@@ -45,7 +45,7 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
             styles = uidl.hasAttribute("styles") ? uidl
                     .getStringAttribute("styles") : null;
             viewparams = uidl.hasAttribute("viewparams") ? uidl
-        	    .getStringAttribute("viewparams") : null;
+                .getStringAttribute("viewparams") : null;
         }
         super.updateFromUIDL(uidl, client);
     }
@@ -79,16 +79,16 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
     }
 
     public Boolean isSingleTile() {
-	return isSingleTile;
+    return isSingleTile;
     }
 
-	public String getStyles() {
-		return styles;
-	}
-    
+    public String getStyles() {
+        return styles;
+    }
+
     public String getViewparams()
     {
-	return viewparams;
+    return viewparams;
     }
-    
+
 }

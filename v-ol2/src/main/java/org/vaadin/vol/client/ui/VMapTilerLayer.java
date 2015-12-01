@@ -30,7 +30,7 @@ public class VMapTilerLayer extends VAbstracMapLayer<TileMapServiceLayer> {
     private native JavaScriptObject getGetUrlMethod(Bounds mapBounds,
             int minZoomLevel, int maxZoomLevel)
     /*-{
-    	function func(bounds) {
+        function func(bounds) {
             var res = this.map.getResolution();
             var x = Math.round((bounds.left - -20037508) / (res * this.tileSize.w));
             var y = Math.round((bounds.bottom - -20037508) / (res * this.tileSize.h));
@@ -41,8 +41,8 @@ public class VMapTilerLayer extends VAbstracMapLayer<TileMapServiceLayer> {
                console.log("not in area??");
                return "http://www.maptiler.org/img/none.png";
             }
-    	};
-    	return func;
+        };
+        return func;
      }-*/;
 
     @Override

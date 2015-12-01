@@ -4,9 +4,9 @@ import org.vaadin.vol.client.wrappers.layer.GoogleHybridLayer;
 
 public class VGoogleHybridMapLayer extends VAbstracMapLayer<GoogleHybridLayer> {
 
-	@Override
-	GoogleHybridLayer createLayer() {
-		return GoogleHybridLayer.create(getDisplayName(), getProjection());
-	}
+    @Override
+    GoogleHybridLayer createLayer() {
+        return GoogleHybridLayer.create(getDisplayName(), getProjection());
+    }
 
 }

@@ -18,7 +18,7 @@ public abstract class Vector extends AbstractComponent {
         setPointsWithoutRepaint(points);
         requestRepaint();
     }
-    
+
     protected void setPointsWithoutRepaint(Point... points) {
         this.points = points;
     }
@@ -45,7 +45,7 @@ public abstract class Vector extends AbstractComponent {
     public Style getCustomStyle() {
         return style;
     }
-    
+
     /**
      * @param style
      *            the custom style declaration to be used for rendering this
@@ -70,19 +70,19 @@ public abstract class Vector extends AbstractComponent {
             vectAttributes.paint("olVectAttributes", target);
         }
     }
-    
+
     public void select() {
         if(getParent() != null) {
             ((VectorLayer) getParent()).setSelectedVector(this);
         }
     }
-    
+
     /**
      * Vectors styleName does not modify CSS style name as the method does for
      * standard Components. Instead the style name defines rendered intent that
      * will be used by OpenLayers to style the Vector. Rendered intents can be
      * configured with {@link StyleMap}s.
-     * 
+     *
      * @see com.vaadin.ui.AbstractComponent#setStyleName(java.lang.String)
      */
     @Override
@@ -93,10 +93,10 @@ public abstract class Vector extends AbstractComponent {
     /**
      * Sets a custom renderer intent that OpenLayers should use to render the
      * vector. The default is 'default'.
-     * 
-     * 
+     *
+     *
      * @see StyleMap
-     * 
+     *
      * @param style
      *            the name of renderer intent.
      */

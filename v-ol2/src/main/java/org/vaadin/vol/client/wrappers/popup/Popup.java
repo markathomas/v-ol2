@@ -14,21 +14,21 @@ public class Popup extends AbstractOpenLayersWrapper {
             String contenHtml, boolean closable, GwtOlHandler onclosehandler)
     /*-{
 
-    	if(onclosehandler) {
-    		var f = function(evt) {
-    			// TODO add event ??
-    			onclosehandler.@org.vaadin.vol.client.wrappers.GwtOlHandler::onEvent(Lcom/google/gwt/core/client/JsArray;)(arguments);
-    		};
-    	}
-    	return new $wnd.OpenLayers.Popup(id, lonlat, size, contenHtml, closable, f);
+        if(onclosehandler) {
+            var f = function(evt) {
+                // TODO add event ??
+                onclosehandler.@org.vaadin.vol.client.wrappers.GwtOlHandler::onEvent(Lcom/google/gwt/core/client/JsArray;)(arguments);
+            };
+        }
+        return new $wnd.OpenLayers.Popup(id, lonlat, size, contenHtml, closable, f);
     }-*/;
 
     public final native void hide()
     /*-{
-    	this.hide();
+        this.hide();
     }-*/;
 
-    public final native void setSize(Size size) 
+    public final native void setSize(Size size)
     /*-{
         this.setSize(size);
     }-*/;

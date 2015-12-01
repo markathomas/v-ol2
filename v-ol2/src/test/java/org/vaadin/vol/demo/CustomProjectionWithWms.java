@@ -10,9 +10,9 @@ import com.vaadin.ui.Component;
 
 /**
  * Coordinate system is KKJ / Finland Uniform Coordinate System as is base map.
- * 
+ *
  * TODO Is there a free public WMS service we could use for this test?
- * 
+ *
  */
 public class CustomProjectionWithWms extends AbstractVOLTest {
 

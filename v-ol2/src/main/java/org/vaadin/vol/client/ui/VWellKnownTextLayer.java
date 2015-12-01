@@ -13,7 +13,7 @@ public class VWellKnownTextLayer extends
         VAbstractAutopopulatedVectorLayer<VectorLayer> {
 
     private String wkt;
-    
+
     @Override
     VectorLayer createLayer() {
         if (layer == null) {
@@ -28,19 +28,19 @@ public class VWellKnownTextLayer extends
             wkt = uidl.getStringAttribute("wkt");
         }
         updateGenericVectorLayersAttributes(uidl);
-        
+
         super.updateFromUIDL(uidl, client);
-        
+
         getLayer().removeAllFeatures();
-        
+
         Projection targetProjection = getMap().getProjection();
         String projection = getProjection();
         Projection sourceProjection;
         if(projection != null) {
-        	sourceProjection = Projection.get(projection);
+            sourceProjection = Projection.get(projection);
         } else {
-        	// if not explicitly defined, use the API projection from the map
-        	sourceProjection = ((VOpenLayersMap) getParent().getParent()).getProjection();
+            // if not explicitly defined, use the API projection from the map
+            sourceProjection = ((VOpenLayersMap) getParent().getParent()).getProjection();
         }
         WKT wktFormatter = WKT.create(targetProjection, sourceProjection);
         JsArray<Vector> read = wktFormatter.read(wkt);
@@ -48,7 +48,7 @@ public class VWellKnownTextLayer extends
             Vector vector = read.get(i);
             getLayer().addFeature(vector);
         }
-        
+
         updateSelectionControl(client);
 
     }

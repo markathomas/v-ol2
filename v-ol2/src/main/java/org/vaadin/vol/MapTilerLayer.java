@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.vaadin.vol;
 
@@ -24,126 +24,126 @@ import com.vaadin.ui.ClientWidget;
  */
 @ClientWidget(VMapTilerLayer.class)
 public class MapTilerLayer extends AbstractComponent implements Layer {
-	private static final double MARGIN = 0.0001;
-	private String uri = "";
-	private String layers = "basic";
-	private String display_name = "";
-	private Boolean isBaseLayer = true;
-	private Double opacity = 1.0;
-	private Boolean transparent = true;
-	private Double[] bounds;
-	private int minZoom;
-	private int maxZoom = -1;
+    private static final double MARGIN = 0.0001;
+    private String uri = "";
+    private String layers = "basic";
+    private String display_name = "";
+    private Boolean isBaseLayer = true;
+    private Double opacity = 1.0;
+    private Boolean transparent = true;
+    private Double[] bounds;
+    private int minZoom;
+    private int maxZoom = -1;
 
-	public MapTilerLayer(Double[] bounds, int maxZoom, int minZoom) {
-		this.setMaxZoom(maxZoom);
-		this.setMinZoom(minZoom);
-		this.setBounds(bounds);
-	}
+    public MapTilerLayer(Double[] bounds, int maxZoom, int minZoom) {
+        this.setMaxZoom(maxZoom);
+        this.setMinZoom(minZoom);
+        this.setBounds(bounds);
+    }
 
-	public MapTilerLayer(String url) throws SAXException, IOException,
-			ParserConfigurationException {
-		setUri(url);
-		URL url2 = new URL(url + "tilemapresource.xml");
-		Document doc = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder().parse(url2.openStream());
-		Node bbox = doc.getElementsByTagName("BoundingBox").item(0);
-		
-		// yes, these a fucked up, probably in maptiler xml file
-		double bottom = Double.parseDouble(bbox.getAttributes()
-				.getNamedItem("minx").getNodeValue());
-		double left = Double.parseDouble(bbox.getAttributes()
-				.getNamedItem("miny").getNodeValue());
-		double top = Double.parseDouble(bbox.getAttributes()
-				.getNamedItem("maxx").getNodeValue());
-		double right = Double.parseDouble(bbox.getAttributes()
-				.getNamedItem("maxy").getNodeValue());
-		setBounds(new Double[] {left-MARGIN,bottom-MARGIN,right+MARGIN,top+MARGIN });
+    public MapTilerLayer(String url) throws SAXException, IOException,
+            ParserConfigurationException {
+        setUri(url);
+        URL url2 = new URL(url + "tilemapresource.xml");
+        Document doc = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder().parse(url2.openStream());
+        Node bbox = doc.getElementsByTagName("BoundingBox").item(0);
 
-		Node tilesets = doc.getElementsByTagName("TileSets").item(0);
+        // yes, these a fucked up, probably in maptiler xml file
+        double bottom = Double.parseDouble(bbox.getAttributes()
+                .getNamedItem("minx").getNodeValue());
+        double left = Double.parseDouble(bbox.getAttributes()
+                .getNamedItem("miny").getNodeValue());
+        double top = Double.parseDouble(bbox.getAttributes()
+                .getNamedItem("maxx").getNodeValue());
+        double right = Double.parseDouble(bbox.getAttributes()
+                .getNamedItem("maxy").getNodeValue());
+        setBounds(new Double[] {left-MARGIN,bottom-MARGIN,right+MARGIN,top+MARGIN });
 
-		for (int i = 0; i < tilesets.getChildNodes().getLength(); i++) {
-			Node item = tilesets.getChildNodes().item(i);
-			if(!item.getNodeName().equals("TileSet")) {
-				continue;
-			}
-			int z = Integer.parseInt(item.getAttributes().getNamedItem("order")
-					.getNodeValue());
-			if (getMaxZoom() == -1) {
-				setMaxZoom(setMinZoom(z));
-			} else if (z > getMaxZoom()) {
-				setMaxZoom(z);
-			} else if (z < getMinZoom()) {
-				setMinZoom(z);
-			}
-		}
-	}
+        Node tilesets = doc.getElementsByTagName("TileSets").item(0);
 
-	public void paintContent(PaintTarget target) throws PaintException {
-		target.addAttribute("uri", uri);
-		target.addAttribute("layers", layers);
-		target.addAttribute("display", display_name);
-		target.addAttribute("isBaseLayer", isBaseLayer);
-		target.addAttribute("opacity", opacity);
-		target.addAttribute("transparent", transparent);
-		target.addAttribute("zoomMax", getMaxZoom());
-		target.addAttribute("zoomMin", getMinZoom());
-		target.addAttribute("bounds", getBounds());
-	}
+        for (int i = 0; i < tilesets.getChildNodes().getLength(); i++) {
+            Node item = tilesets.getChildNodes().item(i);
+            if(!item.getNodeName().equals("TileSet")) {
+                continue;
+            }
+            int z = Integer.parseInt(item.getAttributes().getNamedItem("order")
+                    .getNodeValue());
+            if (getMaxZoom() == -1) {
+                setMaxZoom(setMinZoom(z));
+            } else if (z > getMaxZoom()) {
+                setMaxZoom(z);
+            } else if (z < getMinZoom()) {
+                setMinZoom(z);
+            }
+        }
+    }
 
-	public void setUri(String uri) {
-		this.uri = uri;
-		requestRepaint();
-	}
+    public void paintContent(PaintTarget target) throws PaintException {
+        target.addAttribute("uri", uri);
+        target.addAttribute("layers", layers);
+        target.addAttribute("display", display_name);
+        target.addAttribute("isBaseLayer", isBaseLayer);
+        target.addAttribute("opacity", opacity);
+        target.addAttribute("transparent", transparent);
+        target.addAttribute("zoomMax", getMaxZoom());
+        target.addAttribute("zoomMin", getMinZoom());
+        target.addAttribute("bounds", getBounds());
+    }
 
-	public void setBaseLayer(boolean isBaseLayer) {
-		this.isBaseLayer = isBaseLayer;
-		requestRepaint();
-	}
+    public void setUri(String uri) {
+        this.uri = uri;
+        requestRepaint();
+    }
 
-	public boolean isBaseLayer() {
-		return isBaseLayer;
-	}
+    public void setBaseLayer(boolean isBaseLayer) {
+        this.isBaseLayer = isBaseLayer;
+        requestRepaint();
+    }
 
-	public void setOpacity(Double opacity) {
-		this.opacity = opacity;
-		requestRepaint();
-	}
+    public boolean isBaseLayer() {
+        return isBaseLayer;
+    }
 
-	public Double getOpacity() {
-		return opacity;
-	}
+    public void setOpacity(Double opacity) {
+        this.opacity = opacity;
+        requestRepaint();
+    }
 
-	public String getDisplayName() {
-		return display_name;
-	}
+    public Double getOpacity() {
+        return opacity;
+    }
 
-	public void setDisplayName(String displayName) {
-		this.display_name = displayName;
-		requestRepaint();
+    public String getDisplayName() {
+        return display_name;
+    }
 
-	}
+    public void setDisplayName(String displayName) {
+        this.display_name = displayName;
+        requestRepaint();
 
-	public String getUri() {
-		return uri;
-	}
+    }
 
-	public void setLayers(String layers) {
-		this.layers = layers;
-		requestRepaint();
-	}
+    public String getUri() {
+        return uri;
+    }
 
-	public String getLayer() {
-		return layers;
-	}
+    public void setLayers(String layers) {
+        this.layers = layers;
+        requestRepaint();
+    }
 
-	public void setTransparent(Boolean transparent) {
-		this.transparent = transparent;
-	}
+    public String getLayer() {
+        return layers;
+    }
 
-	public Boolean getTransparent() {
-		return transparent;
-	}
+    public void setTransparent(Boolean transparent) {
+        this.transparent = transparent;
+    }
+
+    public Boolean getTransparent() {
+        return transparent;
+    }
 
     public void setBounds(Double[] bounds) {
         this.bounds = bounds;

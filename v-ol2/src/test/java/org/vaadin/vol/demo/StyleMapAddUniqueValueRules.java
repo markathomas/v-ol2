@@ -194,7 +194,7 @@ public class StyleMapAddUniqueValueRules extends AbstractVOLTest {
 
     /**
      * An example how to zoom the map so that it covers given points.
-     * 
+     *
      * @param map
      * @param points
      */

@@ -10,19 +10,19 @@ public class WebMapServiceLayer extends Layer {
             boolean isBaseLayer, boolean transparent, double opacity,
             boolean singleTile, String projection, String viewparams)
     /*-{
-    	var params = {};
-    	if(layers) params.layers = layers;
-    	if(format) params.format = format;
-    	if(cqlFilter) params.CQL_FILTER = cqlFilter;
+        var params = {};
+        if(layers) params.layers = layers;
+        if(format) params.format = format;
+        if(cqlFilter) params.CQL_FILTER = cqlFilter;
         if(projection) params.projection = projection;
         if(styles) params.styles = styles;
-    	params.transparent = transparent;
-    	var options = {};
-    	options.isBaseLayer = isBaseLayer;
-    	options.opacity = opacity;
-    	options.singleTile = singleTile;
-	if(viewparams) params.viewparams = viewparams;
-	
-    	return new $wnd.OpenLayers.Layer.WMS(display, url, params, options);
+        params.transparent = transparent;
+        var options = {};
+        options.isBaseLayer = isBaseLayer;
+        options.opacity = opacity;
+        options.singleTile = singleTile;
+    if(viewparams) params.viewparams = viewparams;
+
+        return new $wnd.OpenLayers.Layer.WMS(display, url, params, options);
     }-*/;
 }

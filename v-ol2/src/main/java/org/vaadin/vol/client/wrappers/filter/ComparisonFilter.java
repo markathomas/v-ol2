@@ -9,11 +9,11 @@ public class ComparisonFilter extends JavaScriptObject {
 
     public native static ComparisonFilter create()
     /*-{
-    	return new $wnd.OpenLayers.Filter.Comparison();
+        return new $wnd.OpenLayers.Filter.Comparison();
     }-*/;
 
     public native static ComparisonFilter create(JavaScriptObject comp)
     /*-{
-    	return new $wnd.OpenLayers.Filter.Comparison(comp);
+        return new $wnd.OpenLayers.Filter.Comparison(comp);
     }-*/;
 }

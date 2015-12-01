@@ -12,8 +12,8 @@ public class ImageLayer extends Layer {
             Bounds b, Size s, boolean isBaseLayer)
     /*-{
        var options = {};
-    	options.isBaseLayer = isBaseLayer;
-    	return new $wnd.OpenLayers.Layer.Image(display, url, b, s, options);
+        options.isBaseLayer = isBaseLayer;
+        return new $wnd.OpenLayers.Layer.Image(display, url, b, s, options);
     }-*/;
 
 }

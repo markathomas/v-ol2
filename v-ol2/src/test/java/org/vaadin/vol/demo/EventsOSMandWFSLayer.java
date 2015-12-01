@@ -24,24 +24,24 @@ import com.vaadin.ui.VerticalLayout;
  * in mouse click handling
  */
 public class EventsOSMandWFSLayer extends AbstractVOLTest {
-	private LoadStartListener loadStartListener=new LoadStartListenerImpl();
-	private LoadEndListener loadEndListener=new LoadEndListenerImpl();
-	private VisibilityChangedListener visChangedListener=new VisChangedListenerImpl();
-	
-	int start=0,end=0;
-	
-	private HorizontalLayout controls;
-	private com.vaadin.ui.TextArea editor;
-	
+    private LoadStartListener loadStartListener=new LoadStartListenerImpl();
+    private LoadEndListener loadEndListener=new LoadEndListenerImpl();
+    private VisibilityChangedListener visChangedListener=new VisChangedListenerImpl();
+
+    int start=0,end=0;
+
+    private HorizontalLayout controls;
+    private com.vaadin.ui.TextArea editor;
+
     @Override
     protected void setup() {
         super.setup();
         ((VerticalLayout) getContent()).addComponentAsFirst(controls);
     }
-	
-	
+
+
     @Override
-    public String getDescription() {    	
+    public String getDescription() {
         return "Demonstrates the use of basic layer events";
     }
 
@@ -77,13 +77,13 @@ public class EventsOSMandWFSLayer extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {    	
+    Component getMap() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         OpenStreetMapLayer osmLayer = new OpenStreetMapLayer();
 
         osmLayer.addListener(loadStartListener);
         osmLayer.addListener(loadEndListener);
-        
+
         osmLayer.setUrl("http://b.tile.openstreetmap.org/${z}/${x}/${y}.png");
         osmLayer.setDisplayName("OSM");
 
@@ -108,44 +108,44 @@ public class EventsOSMandWFSLayer extends AbstractVOLTest {
         openLayersMap.addLayer(wfsCities);
         openLayersMap.addLayer(wfsRoads);
         openLayersMap.addLayer(wfsWater);
-        openLayersMap.addLayer(wfsBoundaries);               
+        openLayersMap.addLayer(wfsBoundaries);
         openLayersMap.setSizeFull();
 
         openLayersMap.setCenter(146.9417, -42.0429);
         openLayersMap.setZoom(7);
-        
+
         controls = new HorizontalLayout();
 
         editor = new com.vaadin.ui.TextArea();
         editor.setRows(20);
         editor.setColumns(20);
         editor.setImmediate(true);
-        addComponent(editor);        
+        addComponent(editor);
         controls.addComponent(editor);
-                
+
         return openLayersMap;
     }
-    
+
     private String getLogTxt(String msg,String value) {
-		String newTxt="start="+start+", end="+end;
-    	return newTxt;
+        String newTxt="start="+start+", end="+end;
+        return newTxt;
     }
 
     class LoadStartListenerImpl implements LoadStartListener {
-    	public void loadStart(LoadStartEvent event) {
-    		start++;
-    		editor.setValue(getLogTxt("loadStart",(String)editor.getValue()));
-    	};
+        public void loadStart(LoadStartEvent event) {
+            start++;
+            editor.setValue(getLogTxt("loadStart",(String)editor.getValue()));
+        };
     }
     class LoadEndListenerImpl implements LoadEndListener {
-    	public void loadEnd(LoadEndEvent event) {
-    		end++;
-    		editor.setValue(getLogTxt("loadEnd",(String)editor.getValue()));
-    	};
+        public void loadEnd(LoadEndEvent event) {
+            end++;
+            editor.setValue(getLogTxt("loadEnd",(String)editor.getValue()));
+        };
     }
     class VisChangedListenerImpl implements VisibilityChangedListener {
-    	public void visibilityChanged(VisibilityChangedEvent event) {
-    		editor.setValue(getLogTxt("visChanged vis="+event.isVisible(),(String)editor.getValue()));
-    	}
+        public void visibilityChanged(VisibilityChangedEvent event) {
+            editor.setValue(getLogTxt("visChanged vis="+event.isVisible(),(String)editor.getValue()));
+        }
     }
 }

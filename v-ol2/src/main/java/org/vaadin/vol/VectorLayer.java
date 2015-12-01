@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.vaadin.vol;
 
@@ -40,7 +40,7 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
     }
 
     private DrawingMode drawingMode = DrawingMode.NONE;
-    
+
     private String selectionCtrlId;             // Common SelectFeature control identifier
 
     public void addVector(Vector m) {
@@ -52,11 +52,11 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
         target.addAttribute("name", displayName);
         target.addAttribute("dmode", drawingMode.toString());
         target.addAttribute("smode", selectionMode.toString());
-        
+
         if (selectionCtrlId != null) {
             target.addAttribute("selectionCtrlId", selectionCtrlId);
         }
-        
+
         if (selectedVector != null) {
             target.addAttribute("svector", selectedVector);
         }
@@ -127,9 +127,9 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
                 PolyLine polyline = new PolyLine();
                 polyline.setPoints(points);
                 newVectorPainted(polyline);
-            } else if (drawingMode == DrawingMode.AREA 
-            		|| drawingMode == DrawingMode.RECTANGLE 
-            		|| drawingMode == DrawingMode.CIRCLE) {
+            } else if (drawingMode == DrawingMode.AREA
+                    || drawingMode == DrawingMode.RECTANGLE
+                    || drawingMode == DrawingMode.CIRCLE) {
                 Area area = new Area();
                 area.setPoints(points);
                 newVectorPainted(area);

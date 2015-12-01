@@ -8,7 +8,7 @@ public class RegularPolygonHandler extends Handler {
 
     public final native static RegularPolygonHandler get()
     /*-{
-    	return $wnd.OpenLayers.Handler.RegularPolygon;
+        return $wnd.OpenLayers.Handler.RegularPolygon;
      }-*/;
 
     public static final native JavaScriptObject getRectangleOptions()
@@ -16,8 +16,8 @@ public class RegularPolygonHandler extends Handler {
         return { handlerOptions: { sides: 4, irregular: true}};
     }-*/;
 
-	public static final native JavaScriptObject getCircleOptions()
-	/*-{
+    public static final native JavaScriptObject getCircleOptions()
+    /*-{
         return { handlerOptions: { sides: 36, irregular: false}};
     }-*/;
 

@@ -101,9 +101,9 @@ public class VMarker extends Widget implements VMarkable {
             int height = childUIDL.hasAttribute("icon_h") ? childUIDL
                     .getIntAttribute("icon_h") : 32;
             if(childUIDL.hasAttribute("icon_ox") && childUIDL.hasAttribute("icon_oy")) {
-            	return Icon.create(url, Size.create(width, height), 
-            			Pixel.create(childUIDL.getIntAttribute("icon_ox"),
-            					childUIDL.getIntAttribute("icon_oy")));
+                return Icon.create(url, Size.create(width, height),
+                        Pixel.create(childUIDL.getIntAttribute("icon_ox"),
+                                childUIDL.getIntAttribute("icon_oy")));
             }
             return Icon.create(url, Size.create(width, height));
         }

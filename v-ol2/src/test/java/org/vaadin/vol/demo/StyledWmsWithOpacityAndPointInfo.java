@@ -15,9 +15,9 @@ import com.vaadin.ui.Slider;
 import com.vaadin.ui.Slider.ValueOutOfBoundsException;
 
 public class StyledWmsWithOpacityAndPointInfo extends AbstractVOLTest {
-    
-	WebMapServiceLayerStyled wms;
-	
+
+    WebMapServiceLayerStyled wms;
+
     @Override
     public String getDescription() {
         return "Demonstrates using SLD to style WMS layer and how to change opacity of an overlay. Bonus : Shows point info for the clicked point on map. Functional, any known public WMS server that could be used for this demo.";
@@ -59,10 +59,10 @@ public class StyledWmsWithOpacityAndPointInfo extends AbstractVOLTest {
         // String sld =
         // "<StyledLayerDescriptor version=\"1.0.0\"><NamedLayer><Name>topp:states</Name><UserStyle><FeatureTypeStyle><Rule><LineSymbolizer><Stroke/></LineSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>";
         //String sld = "<StyledLayerDescriptor version=\"1.0.0\"><NamedLayer><Name>massgis:states</Name><UserStyle><FeatureTypeStyle><Rule><LineSymbolizer><Stroke><CssParameter name=\"stroke\">#FF0000</CssParameter></Stroke></LineSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>";
-        
+
         //Line Symbolizer
         //String sld = "<StyledLayerDescriptor version=\"1.0.0\"><NamedLayer><Name>topp:states</Name><UserStyle><FeatureTypeStyle><Rule><LineSymbolizer><Stroke><CssParameter name=\"stroke\">#FF0000</CssParameter></Stroke></LineSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>";
-        
+
         //Polygon Symbolizer
         String sld = "<StyledLayerDescriptor version=\"1.0.0\"><NamedLayer><Name>topp:states</Name><UserStyle><FeatureTypeStyle><Rule><PolygonSymbolizer>" +
         "<Fill><CssParameter name=\"fill\">#000080</CssParameter></Fill>" +
@@ -72,34 +72,34 @@ public class StyledWmsWithOpacityAndPointInfo extends AbstractVOLTest {
         map.addLayer(wms);
 
         map.setSizeFull();
-        
+
         final Slider opacitySlider = new Slider(0.1, 1D, 1);
         try {
-			opacitySlider.setValue(1D);
-		} catch (ValueOutOfBoundsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            opacitySlider.setValue(1D);
+        } catch (ValueOutOfBoundsException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         opacitySlider.setCaption("Change Opacity of Styled WMS Overlay");
         opacitySlider.addListener(new ValueChangeListener() {
-			
-			public void valueChange(ValueChangeEvent event) {
-				
-					Double newValue = (Double) opacitySlider.getValue();
-					wms.setOpacity(newValue);
-			}
-		});
+
+            public void valueChange(ValueChangeEvent event) {
+
+                    Double newValue = (Double) opacitySlider.getValue();
+                    wms.setOpacity(newValue);
+            }
+        });
         opacitySlider.setSizeUndefined();
         content.addComponent(opacitySlider);
-        
+
         map.addListener(new MapClickListener() {
-			
-			public void mapClicked(MapClickEvent event) {
-				PointInformation info = event.getPointInfo();
-				 showNotification("Point Information", info.toString(),
-			                Notification.TYPE_WARNING_MESSAGE, true);
-			}
-		});
+
+            public void mapClicked(MapClickEvent event) {
+                PointInformation info = event.getPointInfo();
+                 showNotification("Point Information", info.toString(),
+                            Notification.TYPE_WARNING_MESSAGE, true);
+            }
+        });
         map.setImmediate(true);
         opacitySlider.setImmediate(true);
         return map;

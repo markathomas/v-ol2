@@ -94,7 +94,7 @@ public class RemovingSelectedVector extends AbstractVOLTest implements Handler, 
 
     @Override
     OpenLayersMap getMap() {
-        
+
         getContent().addComponent(removeSelected);
         getContent().addComponent(removeAll);
         OpenLayersMap openLayersMap = new OpenLayersMap();
@@ -114,7 +114,7 @@ public class RemovingSelectedVector extends AbstractVOLTest implements Handler, 
         } else if (event.getButton() == removeSelected) {
             vectorLayer.removeComponent(selected);
         }
-        
+
     }
 
 }

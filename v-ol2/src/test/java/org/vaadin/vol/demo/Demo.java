@@ -277,8 +277,8 @@ public class Demo extends AbstractVOLTest {
                 if (mode == DrawingMode.MODIFY || mode == DrawingMode.AREA
                         || mode == DrawingMode.LINE
                         || mode == DrawingMode.POINT
-                       	|| mode == DrawingMode.RECTANGLE
-                       	|| mode == DrawingMode.CIRCLE
+                        || mode == DrawingMode.RECTANGLE
+                        || mode == DrawingMode.CIRCLE
                         || mode == DrawingMode.NONE) {
                     vectorLayer.setDrawingMode(mode);
                 } else {
@@ -365,7 +365,7 @@ public class Demo extends AbstractVOLTest {
 
     /**
      * An example how to zoom the map so that it covers given points.
-     * 
+     *
      * @param map
      * @param points
      */
@@ -377,7 +377,7 @@ public class Demo extends AbstractVOLTest {
     /**
      * An example how to restrict the displayed map so that it covers minimal
      * rectangular area that contains given points.
-     * 
+     *
      * @param map
      * @param points
      */

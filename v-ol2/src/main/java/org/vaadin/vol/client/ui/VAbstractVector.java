@@ -25,7 +25,7 @@ public abstract class VAbstractVector extends Widget implements Paintable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.vaadin.terminal.gwt.client.Paintable#updateFromUIDL(com.vaadin.terminal
      * .gwt.client.UIDL, com.vaadin.terminal.gwt.client.ApplicationConnection)
@@ -44,10 +44,10 @@ public abstract class VAbstractVector extends Widget implements Paintable {
 
         boolean update = vector != null;
         if(update) {
-            // temporary remove erase the vector 
+            // temporary remove erase the vector
             getLayer().eraseFeature(vector);
         }
-        
+
         updateAttributes(childUIDL, client);
 
         createOrUpdateVector(childUIDL, client);
@@ -62,7 +62,7 @@ public abstract class VAbstractVector extends Widget implements Paintable {
         } else {
             getLayer().addFeature(vector);
         }
-        
+
     }
 
     private void updateAttributes(UIDL childUIDL, ApplicationConnection client) {

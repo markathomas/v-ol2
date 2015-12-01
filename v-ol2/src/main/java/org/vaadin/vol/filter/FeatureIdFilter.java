@@ -18,7 +18,7 @@ public class FeatureIdFilter extends Filter {
     }
 
     /**
-     * 
+     *
      * @see java.util.ArrayList#trimToSize()
      */
     public void trimToSize() {
@@ -221,7 +221,7 @@ public class FeatureIdFilter extends Filter {
     }
 
     /**
-     * 
+     *
      * @see java.util.ArrayList#clear()
      */
     public void clear() {

@@ -22,13 +22,13 @@ public abstract class VAbstracMapLayer<T extends Layer> extends Widget
     private String displayName;
     private String projection;
     protected String paintableId;
-    
-    
+
+
     private GwtOlHandler loadStartHandler;
     private GwtOlHandler loadEndHandler;
     private GwtOlHandler visChangedHandler;
     private String attribution;
-    
+
 
     public T getLayer() {
         if (layer == null) {
@@ -47,7 +47,7 @@ public abstract class VAbstracMapLayer<T extends Layer> extends Widget
         if (!uidl.hasAttribute("cached")) {
             this.paintableId = uidl.getId();
         }
-        
+
         attribution = uidl.hasAttribute("attribution") ? uidl
                 .getStringAttribute("attribution") : null;
         displayName = uidl.hasAttribute("name") ? uidl
@@ -62,41 +62,41 @@ public abstract class VAbstracMapLayer<T extends Layer> extends Widget
             layerAttached = true;
         }
 
-    	if (loadStartHandler==null && client.hasEventListeners(this, "llstart")) {
+        if (loadStartHandler==null && client.hasEventListeners(this, "llstart")) {
             loadStartHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
-                	String layerName=displayName!=null?displayName:paintableId;
+                    String layerName=displayName!=null?displayName:paintableId;
                     client.updateVariable(paintableId, "llstart",layerName,false);
                     client.sendPendingVariableChanges();
                 }
             };
             layer.registerHandler("loadstart", loadStartHandler);
-    		
-    	}
-    	if (loadEndHandler==null && client.hasEventListeners(this, "llend")) {
+
+        }
+        if (loadEndHandler==null && client.hasEventListeners(this, "llend")) {
             loadEndHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
-                	String layerName=displayName!=null?displayName:paintableId;
+                    String layerName=displayName!=null?displayName:paintableId;
                     client.updateVariable(paintableId, "llend",layerName,false);
                     client.sendPendingVariableChanges();
                 }
             };
-            layer.registerHandler("loadend", loadEndHandler);    		
-    	}
-    	if (visChangedHandler==null && client.hasEventListeners(this, "lvis")) {
+            layer.registerHandler("loadend", loadEndHandler);
+        }
+        if (visChangedHandler==null && client.hasEventListeners(this, "lvis")) {
             visChangedHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
-                	String layerName=displayName!=null?displayName:paintableId;
+                    String layerName=displayName!=null?displayName:paintableId;
                     client.updateVariable(paintableId, "lvis",layerName,false);
                     client.updateVariable(paintableId, "lisvis",layer.isVisible(),false);
                     client.sendPendingVariableChanges();
                 }
             };
-            layer.registerHandler("visibilitychanged", visChangedHandler);    		    		
-    	}
+            layer.registerHandler("visibilitychanged", visChangedHandler);
+        }
     }
 
     protected void attachLayerToMap() {
@@ -131,7 +131,7 @@ public abstract class VAbstracMapLayer<T extends Layer> extends Widget
     protected String getDisplayName() {
         return displayName;
     }
-    
+
     protected String getAttribution() {
         return attribution;
     }

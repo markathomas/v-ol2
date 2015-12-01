@@ -9,19 +9,19 @@ public class LonLat extends JavaScriptObject {
 
     public native static LonLat create(double lon, double lat)
     /*-{
-    	return new $wnd.OpenLayers.LonLat(lon, lat)
+        return new $wnd.OpenLayers.LonLat(lon, lat)
     }-*/;
 
     /**
      * TODO Projection type and better typed version of this method.
-     * 
+     *
      * @param fromProjection
      * @param toProjection
      */
     public final native void transform(Projection fromProjection,
             Projection toProjection)
     /*-{
-    	this.transform(fromProjection, toProjection);
+        this.transform(fromProjection, toProjection);
     }-*/;
 
     public final native double getLat()

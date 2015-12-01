@@ -9,7 +9,7 @@ public enum ComparisonFilterType {
 
     /**
      * Constructor
-     * 
+     *
      * @param value
      *            The value to attribute to this enum constant.
      * */

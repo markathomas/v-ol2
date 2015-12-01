@@ -169,7 +169,7 @@ public class VOpenLayersMap extends FlowPanel implements Container, ActionOwner 
             extentChangeListener = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
-                    
+
                     int zoom = map.getZoom();
                     client.updateVariable(paintableId, "zoom", zoom, false);
                     Bounds extent = map.getExtent();
@@ -198,19 +198,19 @@ public class VOpenLayersMap extends FlowPanel implements Container, ActionOwner 
                 public void onEvent(JsArray arguments) {
                     Layer baseLayer = map.getBaseLayer();
                     for (Widget widget : components.values()) {
-						if (widget instanceof VLayer) {
-							VLayer vlayer = (VLayer) widget;
-							if( baseLayer == vlayer.getLayer()) {
-			                    client.updateVariable(paintableId, "baseLayer", vlayer, true);
-								return;
-							}
-						}
-					}
+                        if (widget instanceof VLayer) {
+                            VLayer vlayer = (VLayer) widget;
+                            if( baseLayer == vlayer.getLayer()) {
+                                client.updateVariable(paintableId, "baseLayer", vlayer, true);
+                                return;
+                            }
+                        }
+                    }
                 }
             };
             getMap().registerEventHandler("changebaselayer", changeBaseLayer);
         }
-        
+
         // if (clickListener == null) {
         if (client.hasEventListeners(this, "click")) {
             if (clickListener == null) {
@@ -244,8 +244,8 @@ public class VOpenLayersMap extends FlowPanel implements Container, ActionOwner 
                 };
                 getMap().registerEventHandler("click", clickListener);
             }
-            
-           
+
+
         } else {
             // TODO : HOW WILL WE UNREGISTER EVENTHANDLER ???
         }
@@ -310,7 +310,7 @@ public class VOpenLayersMap extends FlowPanel implements Container, ActionOwner 
             VLayer baseLayer = (VLayer) uidl.getPaintableAttribute("baseLayer", client);
             getMap().setBaseLayer(baseLayer.getLayer());
         }
-        
+
         updateActionMap(uidl);
     }
 
@@ -480,19 +480,19 @@ public class VOpenLayersMap extends FlowPanel implements Container, ActionOwner 
             com.google.gwt.dom.client.Element elementById) {
         add(paintable, (Element) elementById.cast());
     }
-    
+
     VLazyExecutor resizeMap = new VLazyExecutor(300, new ScheduledCommand() {
         public void execute() {
             map.updateSize();
         }
     });
-    
+
     @Override
     public void setWidth(String width) {
         super.setWidth(width);
         resizeMap.trigger();
     }
-    
+
     @Override
     public void setHeight(String height) {
         super.setHeight(height);

@@ -17,12 +17,12 @@ public class ModifyFeature extends Control {
            toggle: false,
            hover: false
         }
-    	return new $wnd.OpenLayers.Control.ModifyFeature(targetLayer, o);
+        return new $wnd.OpenLayers.Control.ModifyFeature(targetLayer, o);
     }-*/;
 
     public final native Vector getModifiedFeature()
     /*-{
-    	return this.feature;
+        return this.feature;
     }-*/;
 
     // TODO combine these various methods to a common super class. Most shared

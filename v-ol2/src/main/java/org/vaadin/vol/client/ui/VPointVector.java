@@ -21,11 +21,11 @@ public class VPointVector extends VAbstractVector {
         JavaScriptObject style = null;
         ValueMap attributes = getAttributes();
         if (vector == null) {
-        	vector = Vector.create(p, attributes, style);
+            vector = Vector.create(p, attributes, style);
         } else {
-        	vector.setGeometry(p);
-        	vector.setStyle(style);
-        	vector.setAttributes(attributes);
+            vector.setGeometry(p);
+            vector.setStyle(style);
+            vector.setAttributes(attributes);
         }
 
     }
