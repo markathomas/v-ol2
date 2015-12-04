@@ -1,5 +1,16 @@
 package org.vaadin.vol.client.ui;
 
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.Paintable;
+import com.vaadin.client.RenderSpace;
+import com.vaadin.client.UIDL;
+import com.vaadin.client.ValueMap;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -25,19 +36,6 @@ import org.vaadin.vol.client.wrappers.handler.PointHandler;
 import org.vaadin.vol.client.wrappers.handler.PolygonHandler;
 import org.vaadin.vol.client.wrappers.handler.RegularPolygonHandler;
 import org.vaadin.vol.client.wrappers.layer.VectorLayer;
-
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
-import com.vaadin.terminal.gwt.client.Container;
-import com.vaadin.terminal.gwt.client.Paintable;
-import com.vaadin.terminal.gwt.client.RenderSpace;
-import com.vaadin.terminal.gwt.client.UIDL;
-import com.vaadin.terminal.gwt.client.Util;
-import com.vaadin.terminal.gwt.client.ValueMap;
 
 public class VVectorLayer extends FlowPanel implements VLayer, Container {
 

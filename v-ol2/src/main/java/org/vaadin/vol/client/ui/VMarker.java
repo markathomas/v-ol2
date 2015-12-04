@@ -1,12 +1,9 @@
 package org.vaadin.vol.client.ui;
 
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
-import com.vaadin.terminal.gwt.client.UIDL;
 
-import org.vaadin.vol.client.wrappers.GwtOlHandler;
+import org.vaadin.vol.client.MarkerState;
 import org.vaadin.vol.client.wrappers.Icon;
 import org.vaadin.vol.client.wrappers.LonLat;
 import org.vaadin.vol.client.wrappers.Map;
@@ -19,8 +16,6 @@ import org.vaadin.vol.client.wrappers.layer.MarkerLayer;
 public class VMarker extends Widget implements VMarkable {
 
     protected Marker marker;
-    protected String paintableId;
-    protected ApplicationConnection client;
 
     public VMarker() {
         setElement(Document.get().createDivElement());
@@ -33,87 +28,61 @@ public class VMarker extends Widget implements VMarkable {
      * com.vaadin.terminal.gwt.client.Paintable#updateFromUIDL(com.vaadin.terminal
      * .gwt.client.UIDL, com.vaadin.terminal.gwt.client.ApplicationConnection)
      */
-    public void updateFromUIDL(UIDL childUIDL,
-            final ApplicationConnection client) {
-        if (client.updateComponent(this, childUIDL, false)) {
-            return;
-        }
-
-        this.client = client;
-        this.paintableId = childUIDL.getStringAttribute("id");
+    public <E extends MarkerState> void updateFromStateChange(E state, com.vaadin.client.ui.Icon icon) {
 
         if (marker != null) {
             getLayer().removeMarker(marker);
         }
 
-        this.beforeMarkerCreation(childUIDL);
+        this.beforeMarkerCreation(state);
 
-        this.marker = this.createMarker(childUIDL);
+        this.marker = this.createMarker(state, icon);
 
-        this.addEventListeners();
-
-        this.afterMarkerCreation(childUIDL);
+        this.afterMarkerCreation(state);
 
         getLayer().addMarker(marker);
     }
 
-    protected Marker createMarker(UIDL childUIDL) {
-        LonLat point = createPoint(childUIDL);
+    protected <E extends MarkerState> Marker createMarker(E state, com.vaadin.client.ui.Icon icon) {
+        LonLat point = createPoint(state);
 
-        Icon icon = getIcon(childUIDL);
-        return Marker.create(point, icon);
+        Icon markerIcon = getIcon(state, icon);
+        return Marker.create(point, markerIcon);
     }
 
-    protected LonLat createPoint(UIDL childUIDL) {
-        double lon = childUIDL.getDoubleAttribute("lon");
-        double lat = childUIDL.getDoubleAttribute("lat");
+    protected <E extends MarkerState> LonLat createPoint(E state) {
+        double lon = state.lon;
+        double lat = state.lat;
         LonLat point = LonLat.create(lon, lat);
-        this.reproject(childUIDL, point);
+        this.reproject(state, point);
         return point;
     }
 
-    protected void reproject(UIDL childUIDL, LonLat point) {
+    protected <E extends MarkerState> void reproject(E state, LonLat point) {
         Projection projection2 = getMap().getProjection();
-        final Projection projection = Projection.get(childUIDL
-          .getStringAttribute("pr"));
+        final Projection projection = Projection.get(state.projection);
         point.transform(projection, projection2);
     }
 
-    protected void addEventListeners() {
-        final VMarkable paintable = this;
-        if (this.client.hasEventListeners(this, "click")) {
-            this.marker.addClickHandler(new GwtOlHandler() {
-                @SuppressWarnings("rawtypes")
-                public void onEvent(JsArray arguments) {
-                    client.updateVariable(client.getPid(paintable), "click",
-                            "", true);
-                }
-            });
-        }
-    }
-
-    protected Icon getIcon(UIDL childUIDL) {
-        if (childUIDL.hasAttribute("icon")) {
-            String url = this.client.translateVaadinUri(childUIDL
-                    .getStringAttribute("icon"));
-            int width = childUIDL.hasAttribute("icon_w") ? childUIDL
-                    .getIntAttribute("icon_w") : 32;
-            int height = childUIDL.hasAttribute("icon_h") ? childUIDL
-                    .getIntAttribute("icon_h") : 32;
-            if(childUIDL.hasAttribute("icon_ox") && childUIDL.hasAttribute("icon_oy")) {
+    protected <E extends MarkerState> Icon getIcon(E state, com.vaadin.client.ui.Icon icon) {
+        if (icon != null) {
+            String url = icon.getUri();
+            int width = state.iconWidth > 0 ? state.iconWidth : 32;
+            int height = state.iconHeight > 0 ? state.iconHeight : 32;
+            if (state.iconXOffset > 0 && state.iconYOffset > 0) {
                 return Icon.create(url, Size.create(width, height),
-                        Pixel.create(childUIDL.getIntAttribute("icon_ox"),
-                                childUIDL.getIntAttribute("icon_oy")));
+                        Pixel.create(state.iconXOffset, state.iconYOffset));
             }
             return Icon.create(url, Size.create(width, height));
         }
         return null;
     }
 
-    protected void beforeMarkerCreation(UIDL uidl) {
+    protected <E extends MarkerState> void beforeMarkerCreation(E state) {
     }
 
-    protected void afterMarkerCreation(UIDL uidl) {
+    protected <E extends MarkerState> void afterMarkerCreation(E state) {
+
     }
 
     protected MarkerLayer getLayer() {
@@ -130,7 +99,9 @@ public class VMarker extends Widget implements VMarkable {
 
     @Override
     protected void onDetach() {
-        getLayer().removeMarker(marker);
+        if (marker != null) {
+            getLayer().removeMarker(marker);
+        }
         super.onDetach();
     }
 

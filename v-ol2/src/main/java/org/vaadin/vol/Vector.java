@@ -1,49 +1,46 @@
 package org.vaadin.vol;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
+
+import org.vaadin.vol.client.VectorState;
 
 public abstract class Vector extends AbstractComponent {
 
-    private String projection;
-
-    private Point[] points;
-
-    private Style style;
-
-    private Attributes vectAttributes = null;
+    @Override
+    public VectorState getState() {
+        return (VectorState)super.getState();
+    }
 
     public void setPoints(Point... points) {
         setPointsWithoutRepaint(points);
-        requestRepaint();
+        markAsDirty();
     }
 
     protected void setPointsWithoutRepaint(Point... points) {
-        this.points = points;
+        this.getState().points = points;
     }
 
     public Point[] getPoints() {
-        return points;
+        return getState().points;
     }
 
     public void setProjection(String projection) {
-        this.projection = projection;
+        this.getState().projection = projection;
     }
 
     public String getProjection() {
-        if(projection == null && getApplication() != null) {
-            OpenLayersMap parent2 = (OpenLayersMap) getParent().getParent();
+        if (getState().projection == null && getUI() != null) {
+            OpenLayersMap parent2 = (OpenLayersMap)getParent().getParent();
             return parent2.getApiProjection();
         }
-        return projection;
+        return getState().projection;
     }
 
     /**
      * @return the custom style declaration assosicated with this Vector
      */
     public Style getCustomStyle() {
-        return style;
+        return getState().style;
     }
 
     /**
@@ -52,28 +49,13 @@ public abstract class Vector extends AbstractComponent {
      *            Vector
      */
     public void setCustomStyle(Style style) {
-        this.style = style;
-        requestRepaint();
-    }
-
-    @Override
-    public void paintContent(PaintTarget target) throws PaintException {
-        super.paintContent(target);
-        target.addAttribute("points", getPoints());
-        if(getProjection() != null) {
-            target.addAttribute("projection", getProjection());
-        }
-        if (style != null) {
-            style.paint("olStyle", target);
-        }
-        if (vectAttributes != null) {
-            vectAttributes.paint("olVectAttributes", target);
-        }
+        this.getState().style = style;
+        markAsDirty();
     }
 
     public void select() {
-        if(getParent() != null) {
-            ((VectorLayer) getParent()).setSelectedVector(this);
+        if (getParent() != null) {
+            ((VectorLayer)getParent()).setSelectedVector(this);
         }
     }
 
@@ -108,7 +90,7 @@ public abstract class Vector extends AbstractComponent {
      * @return the vectAttributes
      */
     public Attributes getAttributes() {
-        return vectAttributes;
+        return getState().vectAttributes;
     }
 
     /**
@@ -116,7 +98,7 @@ public abstract class Vector extends AbstractComponent {
      *            the vectAttributes to set
      */
     public void setAttributes(Attributes attributes) {
-        this.vectAttributes = attributes;
+        this.getState().vectAttributes = attributes;
     }
 
 }

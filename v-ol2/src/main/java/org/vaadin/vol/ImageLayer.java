@@ -3,95 +3,76 @@
  */
 package org.vaadin.vol;
 
-import org.vaadin.vol.client.ui.VImageLayer;
-
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.ClientWidget;
 
-/**
- */
-@ClientWidget(VImageLayer.class)
+import org.vaadin.vol.client.ImageLayerState;
+
 public class ImageLayer extends AbstractComponent implements Layer {
-    private String uri = "";
-    private String display_name = "";
-    private Boolean isBaseLayer = true;
-    private Double opacity = 1.0;
-    private Boolean transparent = true;
-    private Double[] bounds = new Double[] { -180d, -90d, 180d, 90d };
-    private int height;
-    private int width;
+
 
     public ImageLayer(String url, int width, int height) {
         setUri(url);
-        this.width = width;
-        this.height = height;
+        this.getState().width = width;
+        this.getState().height = height;
     }
 
     @Override
-    public void paintContent(PaintTarget target) throws PaintException {
-        target.addAttribute("uri", uri);
-        target.addAttribute("name", getDisplayName());
-        target.addAttribute("isBaseLayer", isBaseLayer);
-        target.addAttribute("opacity", opacity);
-        target.addAttribute("transparent", transparent);
-        target.addAttribute("bounds", getBounds());
-        target.addAttribute("w", width);
-        target.addAttribute("h", height);
+    public ImageLayerState getState() {
+        return (ImageLayerState)super.getState();
     }
 
     public void setUri(String uri) {
-        this.uri = uri;
-        requestRepaint();
+        this.getState().uri = uri;
+        markAsDirty();
     }
 
     public void setBaseLayer(boolean isBaseLayer) {
-        this.isBaseLayer = isBaseLayer;
-        requestRepaint();
+        this.getState().isBaseLayer = isBaseLayer;
+        markAsDirty();
     }
 
     public boolean isBaseLayer() {
-        return isBaseLayer;
+        return getState().isBaseLayer;
     }
 
     public void setOpacity(Double opacity) {
-        this.opacity = opacity;
-        requestRepaint();
+        this.getState().opacity = opacity;
+        markAsDirty();
     }
 
     public Double getOpacity() {
-        return opacity;
+        return getState().opacity;
     }
 
     public String getDisplayName() {
-        return display_name;
+        return getState().displayName;
     }
 
     public void setDisplayName(String displayName) {
-        display_name = displayName;
-        requestRepaint();
-
+        getState().displayName = displayName;
+        markAsDirty();
     }
 
     public String getUri() {
-        return uri;
+        return getState().uri;
     }
 
     public void setTransparent(Boolean transparent) {
-        this.transparent = transparent;
+        this.getState().transparent = transparent;
+        markAsDirty();
     }
 
     public Boolean getTransparent() {
-        return transparent;
+        return getState().transparent;
     }
 
     public void setBounds(Double... bounds) {
-        this.bounds = bounds;
+        this.getState().bounds = bounds;
+        markAsDirty();
     }
 
     public Double[] getBounds() {
-        return bounds;
+        return getState().bounds;
     }
 
 }

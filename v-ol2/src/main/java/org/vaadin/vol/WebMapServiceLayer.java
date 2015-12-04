@@ -3,196 +3,156 @@
  */
 package org.vaadin.vol;
 
-import org.vaadin.vol.client.ui.VWebMapServiceLayer;
+import org.vaadin.vol.client.WebMapServiceLayerState;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.ClientWidget;
-
-@ClientWidget(VWebMapServiceLayer.class)
 public class WebMapServiceLayer extends AbstractLayerBase implements Layer {
-    private String uri = "";
-    private String type = "wms";
-    private String layers = "basic";
-    private String cqlFilter = null;
-    private String display_name = "";
-    private Boolean isBaseLayer = true;
-    private Double opacity = 1.0;
-    private Boolean transparent = true;
-    private Boolean isSingleTile = false;
-    private String feature_id = "";
-    private String format = "image/jpeg";
-    private String projection;
-    private String styles;
-    private String viewparams = null;
 
-    public WebMapServiceLayer() {
-
+    @Override
+    public WebMapServiceLayerState getState() {
+        return (WebMapServiceLayerState)super.getState();
     }
-
-    public void paintContent(PaintTarget target) throws PaintException {
-        super.paintContent(target);
-        target.addAttribute("uri", uri);
-        target.addAttribute("type", type);
-        target.addAttribute("layers", layers);
-        target.addAttribute("display", display_name);
-        target.addAttribute("isBaseLayer", isBaseLayer);
-        target.addAttribute("opacity", opacity);
-        target.addAttribute("isSingleTile", isSingleTile);
-        target.addAttribute("featureid", feature_id);
-        target.addAttribute("format", format);
-        target.addAttribute("transparent", transparent);
-        if(projection != null) {
-            target.addAttribute("projection", projection);
-        }
-        if(cqlFilter != null) {
-            target.addAttribute("cqlFilter", cqlFilter);
-        }
-        if(styles != null) {
-            target.addAttribute("styles", styles);
-        }
-        if(viewparams != null) {
-            target.addAttribute("viewparams", viewparams);
-        }
-    }
-
 
     public String getStyles() {
-        return styles;
+        return getState().styles;
     }
 
     public void setStyles(String styles) {
-        this.styles = styles;
-        requestRepaint();
+        this.getState().styles = styles;
+        markAsDirty();
     }
 
     public void setUri(String uri) {
-        this.uri = uri;
-        requestRepaint();
+        this.getState().uri = uri;
+        markAsDirty();
     }
 
     public void setBaseLayer(boolean isBaseLayer) {
-        this.isBaseLayer = isBaseLayer;
-        requestRepaint();
+        this.getState().isBaseLayer = isBaseLayer;
+        markAsDirty();
     }
 
     public boolean isBaseLayer() {
-        return isBaseLayer;
+        return getState().isBaseLayer;
     }
 
     public void setOpacity(Double opacity) {
-        this.opacity = opacity;
-        requestRepaint();
+        this.getState().opacity = opacity;
+        markAsDirty();
     }
 
     public Double getOpacity() {
-        return opacity;
-    }
-
-    public String getDisplayName() {
-        return display_name;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.display_name = displayName;
-        requestRepaint();
-
+        return getState().opacity;
     }
 
     public String getUri() {
-        return uri;
+        return getState().uri;
     }
 
-    public void setServiceType(String name) {
-        this.type = name;
-        requestRepaint();
+    public void setServiceType(String type) {
+        this.getState().type = type;
+        markAsDirty();
     }
 
     public String getServiceType() {
-        return type;
+        return getState().type;
     }
 
     public String getFeatureID() {
-        return feature_id;
+        return getState().feature_id;
     }
 
     public void setLayers(String layers) {
-        this.layers = layers;
-        requestRepaint();
+        this.getState().layers = layers;
+        markAsDirty();
     }
 
     public void resetFeatures() {
-        this.feature_id = "";
+        this.getState().feature_id = "";
     }
 
     public void addFeatureID(String featureid) {
-        if (feature_id.equals("")) {
-            this.feature_id = featureid;
+        if ("".equals(getState().feature_id)) {
+            this.getState().feature_id = featureid;
         } else {
-            StringBuffer buf = new StringBuffer(feature_id);
+            StringBuilder buf = new StringBuilder(getState().feature_id);
             buf.append(",");
             buf.append(featureid);
-            this.feature_id = null;
-            this.feature_id = buf.toString();
+            this.getState().feature_id = null;
+            this.getState().feature_id = buf.toString();
         }
     }
 
     public String getLayer() {
-        return layers;
+        return getState().layers;
     }
 
     public void setFormat(String format) {
-        this.format = format;
-        requestRepaint();
+        this.getState().format = format;
+        markAsDirty();
     }
 
     public String getFormat() {
-        return format;
+        return getState().format;
     }
 
     public void setTransparent(Boolean transparent) {
-        this.transparent = transparent;
-        requestRepaint();
+        this.getState().transparent = transparent;
+        markAsDirty();
     }
 
     public Boolean getTransparent() {
-        return transparent;
+        return getState().transparent;
     }
 
     public void setCqlFilter(String cqlFilter) {
-        this.cqlFilter = cqlFilter;
-        requestRepaint();
+        this.getState().cqlFilter = cqlFilter;
+        markAsDirty();
     }
 
     public String getCqlFilter() {
-        return cqlFilter;
+        return getState().cqlFilter;
     }
 
     public String getProjection() {
-        return projection;
+        return getState().projection;
     }
 
     public void setProjection(String projection) {
-        this.projection = projection;
+        this.getState().projection = projection;
     }
 
     public Boolean isSingleTile() {
-        return isSingleTile;
+        return getState().isSingleTile;
     }
 
     public void setSingleTile(Boolean isSingleTile) {
-        this.isSingleTile = isSingleTile;
+        this.getState().isSingleTile = isSingleTile;
     }
 
     public String getViewparams()
     {
-       return viewparams;
+       return getState().viewparams;
     }
 
     public void setViewparams(String viewparams)
     {
-      this.viewparams = viewparams;
-      requestRepaint();
+      this.getState().viewparams = viewparams;
+      markAsDirty();
+    }
+
+    public boolean isInLayerSwitcher() {
+        return this.getState().inLayerSwitcher;
+    }
+
+    public void setInLayerSwitcher(boolean inLayerSwitcher) {
+        this.getState().inLayerSwitcher = inLayerSwitcher;
+    }
+
+    public boolean isVisibility() {
+        return this.getState().visibility;
+    }
+
+    public void setVisibility(boolean visibility) {
+        this.getState().visibility = visibility;
     }
 }

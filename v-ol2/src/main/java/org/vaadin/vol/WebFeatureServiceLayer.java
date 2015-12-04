@@ -3,54 +3,47 @@
  */
 package org.vaadin.vol;
 
-import org.vaadin.vol.client.ui.VWebFeatureServiceLayer;
+import java.util.Objects;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.ClientWidget;
+import org.vaadin.vol.client.WebFeatureServiceLayerState;
 
-@ClientWidget(VWebFeatureServiceLayer.class)
 public class WebFeatureServiceLayer extends AbstractAutoPopulatedVectorLayer implements Layer {
-    private String uri = "";
-    private String featureType = "basic";
-    private String featureNS;
-    boolean unselectAll=false;
 
-
-    public WebFeatureServiceLayer() {
-
-    }
-
-    public void paintContent(PaintTarget target) throws PaintException {
-        super.paintContent(target);
-        target.addAttribute("uri", uri);
-        target.addAttribute("featureType", featureType);
-        target.addAttribute("featureNS", featureNS);
+    @Override
+    public WebFeatureServiceLayerState getState() {
+        return (WebFeatureServiceLayerState)super.getState();
     }
 
     public void setUri(String uri) {
-        this.uri = uri;
-        requestRepaint();
+        if (!Objects.equals(getState().uri, uri)) {
+            this.getState().uri = uri;
+            markAsDirty();
+        }
     }
 
     public String getUri() {
-        return uri;
+        return this.getState().uri;
     }
 
     public void setFeatureType(String featureType) {
-        this.featureType = featureType;
-        requestRepaint();
+        if (!Objects.equals(getState().featureType, featureType)) {
+            this.getState().featureType = featureType;
+            markAsDirty();
+        }
     }
 
     public String getFeatureType() {
-        return featureType;
+        return this.getState().featureType;
     }
 
     public void setFeatureNS(String ns) {
-        this.featureNS = ns;
+        if (!Objects.equals(getState().featureNS, ns)) {
+            this.getState().featureNS = ns;
+            markAsDirty();
+        }
     }
 
     public String getFeatureNS() {
-        return featureNS;
+        return this.getState().featureNS;
     }
 }

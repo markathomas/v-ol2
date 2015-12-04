@@ -8,7 +8,8 @@ public class WebMapServiceLayer extends Layer {
     public native final static WebMapServiceLayer create(String display,
             String url, String layers, String format, String cqlFilter, String styles,
             boolean isBaseLayer, boolean transparent, double opacity,
-            boolean singleTile, String projection, String viewparams)
+            boolean singleTile, String projection, String viewparams,
+            boolean isDisplayInLayerSwitcher, boolean isVisibility)
     /*-{
         var params = {};
         if(layers) params.layers = layers;
@@ -19,6 +20,8 @@ public class WebMapServiceLayer extends Layer {
         params.transparent = transparent;
         var options = {};
         options.isBaseLayer = isBaseLayer;
+        options.visibility = isVisibility;
+        options.displayInLayerSwitcher = isDisplayInLayerSwitcher;
         options.opacity = opacity;
         options.singleTile = singleTile;
     if(viewparams) params.viewparams = viewparams;

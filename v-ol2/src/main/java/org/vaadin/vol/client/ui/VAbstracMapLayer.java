@@ -6,18 +6,16 @@ import com.google.gwt.user.client.ui.Widget;
 import org.vaadin.vol.client.wrappers.Map;
 import org.vaadin.vol.client.wrappers.layer.Layer;
 
-public abstract class VAbstracMapLayer<T extends Layer> extends Widget
-        implements VLayer {
+public abstract class VAbstracMapLayer<T extends Layer> extends Widget implements VLayer {
 
     public VAbstracMapLayer() {
         setElement(Document.get().createDivElement());
     }
 
-    private T layer;
+    protected T layer;
     protected boolean layerAttached = false;
     private String displayName;
     private String projection;
-    protected String paintableId;
     private String attribution;
 
 

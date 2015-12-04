@@ -2,14 +2,10 @@ package org.vaadin.vol.client.ui;
 
 import org.vaadin.vol.client.wrappers.layer.WebMapServiceLayer;
 
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
-import com.vaadin.terminal.gwt.client.UIDL;
-
 public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
 
     private String uri;
     private String layers;
-    private String display;
     private Boolean isBaseLayer;
     private Boolean isSingleTile;
     private Double opacity;
@@ -19,76 +15,117 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
     private String projection;
     private String styles;
     private String viewparams;
+    private boolean inLayerSwitcher;
+    private boolean visibility;
 
     @Override
-    WebMapServiceLayer createLayer() {
-    return WebMapServiceLayer.create(display, uri, layers, format,
-        cqlFilter, styles, isBaseLayer, transparent, opacity, isSingleTile,
-        projection, viewparams);
-    }
-
-    @Override
-    public void updateFromUIDL(final UIDL uidl, final ApplicationConnection client) {
-        if (!uidl.hasAttribute("cached")) {
-            uri = uidl.getStringAttribute("uri");
-            layers = uidl.getStringAttribute("layers");
-            display = uidl.getStringAttribute("display");
-            isBaseLayer = uidl.getBooleanAttribute("isBaseLayer");
-            transparent = uidl.getBooleanAttribute("transparent");
-            opacity = uidl.getDoubleAttribute("opacity");
-            isSingleTile = uidl.getBooleanAttribute("isSingleTile");
-            format = uidl.getStringAttribute("format");
-            cqlFilter = uidl.hasAttribute("cqlFilter") ? uidl
-                    .getStringAttribute("cqlFilter") : null;
-            projection = uidl.hasAttribute("projection") ? uidl
-                    .getStringAttribute("projection") : null;
-            styles = uidl.hasAttribute("styles") ? uidl
-                    .getStringAttribute("styles") : null;
-            viewparams = uidl.hasAttribute("viewparams") ? uidl
-                .getStringAttribute("viewparams") : null;
-        }
-        super.updateFromUIDL(uidl, client);
+    protected WebMapServiceLayer createLayer() {
+        return WebMapServiceLayer.create(getDisplayName(), uri, layers, format,
+          cqlFilter, styles, isBaseLayer, transparent, opacity, isSingleTile,
+          projection, viewparams, inLayerSwitcher, visibility);
     }
 
     public String getUri() {
-        return uri;
+        return this.uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getLayers() {
-        return layers;
+        return this.layers;
     }
 
-    public String getDisplay() {
-        return display;
+    public void setLayers(String layers) {
+        this.layers = layers;
     }
 
     public Boolean isBaseLayer() {
-        return isBaseLayer;
+        return this.isBaseLayer;
     }
 
-    public Double getOpacity() {
-        return opacity;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public boolean isTransparent() {
-        return transparent;
+    public void setBaseLayer(Boolean baseLayer) {
+        isBaseLayer = baseLayer;
     }
 
     public Boolean isSingleTile() {
-    return isSingleTile;
+        return this.isSingleTile;
+    }
+
+    public void setSingleTile(Boolean singleTile) {
+        isSingleTile = singleTile;
+    }
+
+    public Double getOpacity() {
+        return this.opacity;
+    }
+
+    public void setOpacity(Double opacity) {
+        this.opacity = opacity;
+    }
+
+    public String getFormat() {
+        return this.format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public boolean isTransparent() {
+        return this.transparent;
+    }
+
+    public void setTransparent(boolean transparent) {
+        this.transparent = transparent;
+    }
+
+    public String getCqlFilter() {
+        return this.cqlFilter;
+    }
+
+    public void setCqlFilter(String cqlFilter) {
+        this.cqlFilter = cqlFilter;
+    }
+
+    public String getProjection() {
+        return this.projection;
+    }
+
+    public void setProjection(String projection) {
+        this.projection = projection;
     }
 
     public String getStyles() {
-        return styles;
+        return this.styles;
     }
 
-    public String getViewparams()
-    {
-    return viewparams;
+    public void setStyles(String styles) {
+        this.styles = styles;
     }
 
+    public String getViewparams() {
+        return this.viewparams;
+    }
+
+    public void setViewparams(String viewparams) {
+        this.viewparams = viewparams;
+    }
+
+    public boolean isInLayerSwitcher() {
+        return this.inLayerSwitcher;
+    }
+
+    public void setInLayerSwitcher(boolean inLayerSwitcher) {
+        this.inLayerSwitcher = inLayerSwitcher;
+    }
+
+    public boolean isVisibility() {
+        return this.visibility;
+    }
+
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
+    }
 }

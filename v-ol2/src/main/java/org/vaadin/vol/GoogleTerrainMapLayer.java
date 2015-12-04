@@ -1,9 +1,5 @@
 package org.vaadin.vol;
 
-import org.vaadin.vol.client.ui.VGoogleTerrainMapLayer;
-
-import com.vaadin.ui.ClientWidget;
-
 /**
  * Google terrain layer that can be added to {@link OpenLayersMap}.
  * <p>
@@ -16,8 +12,6 @@ import com.vaadin.ui.ClientWidget;
  *  &lt;script src="http://maps.google.com/maps/api/js?v=3.2&amp;sensor=false"&gt;&lt;/script&gt;
  * </code>
  */
-@ClientWidget(VGoogleTerrainMapLayer.class)
-public class GoogleTerrainMapLayer extends GoogleStreetMapLayer implements
-        Layer {
+public class GoogleTerrainMapLayer extends GoogleStreetMapLayer implements Layer {
 
 }

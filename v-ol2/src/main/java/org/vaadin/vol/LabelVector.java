@@ -43,6 +43,4 @@ public class LabelVector extends PointVector {
             setTextToSymbolizerOrAsLabelAttribute(getCaption());
         }
     }
-
-
 }

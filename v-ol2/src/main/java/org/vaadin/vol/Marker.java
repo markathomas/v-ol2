@@ -3,51 +3,49 @@
  */
 package org.vaadin.vol;
 
-import java.util.Map;
-
-import org.vaadin.vol.client.ui.VMarker;
-
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.event.MouseEvents.ClickListener;
-import com.vaadin.terminal.ExternalResource;
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-import com.vaadin.terminal.Resource;
+import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.ClientWidget;
+
+import org.vaadin.vol.client.MarkerServerRpc;
+import org.vaadin.vol.client.MarkerState;
 
 @SuppressWarnings("serial")
-@ClientWidget(VMarker.class)
 public class Marker extends AbstractComponent {
-    private double lon;
-    private double lat;
-    private String projection = "EPSG:4326";
-    private int icon_w;
-    private int icon_h;
-    private int icon_ox = Integer.MIN_VALUE; // Integer.MIN_VALUE means ignore explicit offset
-    private int icon_oy = Integer.MIN_VALUE; // Integer.MIN_VALUE means ignore explicit offset
 
     public Marker(double lon, double lat) {
-        this.lon = lon;
-        this.lat = lat;
+        this.registerRpc(new MarkerServerRpc() {
+            public void markerClicked() {
+                fireEvent(new ClickEvent(Marker.this, null));
+            }
+        });
+        this.getState().lon = lon;
+        this.getState().lat = lat;
+    }
+
+    @Override
+    public MarkerState getState() {
+        return (MarkerState)super.getState();
     }
 
     public double getLon() {
-        return lon;
+        return getState().lon;
     }
 
     public double getLat() {
-        return lat;
+        return getState().lat;
     }
 
     public void setLon(double lon) {
-        this.lon = lon;
-        requestRepaint();
+        this.getState().lon = lon;
+        markAsDirty();
     }
 
     public void setLat(double lat) {
-        this.lat = lat;
-        requestRepaint();
+        this.getState().lat = lat;
+        markAsDirty();
     }
 
     public void setIcon(String url, int width, int height) {
@@ -63,44 +61,22 @@ public class Marker extends AbstractComponent {
     }
 
     public void setIcon(Resource icon, int width, int height, int xOffset, int yOffset) {
-        icon_w = width;
-        icon_h = height;
-        icon_ox = xOffset;
-        icon_oy = yOffset;
-        setIcon(icon); // also calls requestRepaint()
-    }
-
-    public void paintContent(PaintTarget target) throws PaintException {
-        target.addAttribute("lon", lon);
-        target.addAttribute("lat", lat);
-        target.addAttribute("pr", projection);
-        if(getIcon() != null && icon_h != 0 && icon_w != 0) {
-            target.addAttribute("icon_w", icon_w);
-            target.addAttribute("icon_h", icon_h);
-            if(icon_ox != Integer.MIN_VALUE && icon_oy != Integer.MIN_VALUE)
-            {
-                target.addAttribute("icon_ox", icon_ox);
-                target.addAttribute("icon_oy", icon_oy);
-            }
-        }
+        getState().iconWidth = width;
+        getState().iconHeight = height;
+        getState().iconXOffset = xOffset;
+        getState().iconYOffset = yOffset;
+        setIcon(icon); // also calls markAsDirty()
     }
 
     public void addClickListener(ClickListener listener) {
         addListener("click", ClickEvent.class, listener,
                 ClickListener.clickMethod);
-        requestRepaint();
+        getState().hasClickListeners = true;
+        markAsDirty();
     }
 
     public void removeClickListener(ClickListener listener) {
         removeListener(ClickEvent.class, listener);
+        getState().hasClickListeners = !this.getListeners(ClickListener.class).isEmpty();
     }
-
-    @Override
-    public void changeVariables(Object source, Map<String, Object> variables) {
-        super.changeVariables(source, variables);
-        if (variables.containsKey("click")) {
-            fireEvent(new ClickEvent(this, null));
-        }
-    }
-
 }

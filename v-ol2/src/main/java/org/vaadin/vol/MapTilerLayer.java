@@ -3,37 +3,26 @@
  */
 package org.vaadin.vol;
 
+import com.vaadin.ui.AbstractComponent;
+
 import java.io.IOException;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.vaadin.vol.client.ui.VMapTilerLayer;
+import org.vaadin.vol.client.MapTilerLayerState;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.ClientWidget;
-
 /**
  * see great tool: www.maptiler.org
  */
-@ClientWidget(VMapTilerLayer.class)
 public class MapTilerLayer extends AbstractComponent implements Layer {
+
     private static final double MARGIN = 0.0001;
-    private String uri = "";
-    private String layers = "basic";
-    private String display_name = "";
-    private Boolean isBaseLayer = true;
-    private Double opacity = 1.0;
-    private Boolean transparent = true;
-    private Double[] bounds;
-    private int minZoom;
-    private int maxZoom = -1;
+
 
     public MapTilerLayer(Double[] bounds, int maxZoom, int minZoom) {
         this.setMaxZoom(maxZoom);
@@ -79,94 +68,91 @@ public class MapTilerLayer extends AbstractComponent implements Layer {
         }
     }
 
-    public void paintContent(PaintTarget target) throws PaintException {
-        target.addAttribute("uri", uri);
-        target.addAttribute("layers", layers);
-        target.addAttribute("display", display_name);
-        target.addAttribute("isBaseLayer", isBaseLayer);
-        target.addAttribute("opacity", opacity);
-        target.addAttribute("transparent", transparent);
-        target.addAttribute("zoomMax", getMaxZoom());
-        target.addAttribute("zoomMin", getMinZoom());
-        target.addAttribute("bounds", getBounds());
+    @Override
+    public MapTilerLayerState getState() {
+        return (MapTilerLayerState)super.getState();
     }
 
     public void setUri(String uri) {
-        this.uri = uri;
-        requestRepaint();
+        this.getState().uri = uri;
+        markAsDirty();
     }
 
     public void setBaseLayer(boolean isBaseLayer) {
-        this.isBaseLayer = isBaseLayer;
-        requestRepaint();
+        this.getState().isBaseLayer = isBaseLayer;
+        markAsDirty();
     }
 
     public boolean isBaseLayer() {
-        return isBaseLayer;
+        return getState().isBaseLayer;
     }
 
     public void setOpacity(Double opacity) {
-        this.opacity = opacity;
-        requestRepaint();
+        this.getState().opacity = opacity;
+        markAsDirty();
     }
 
     public Double getOpacity() {
-        return opacity;
+        return getState().opacity;
     }
 
     public String getDisplayName() {
-        return display_name;
+        return getState().displayName;
     }
 
     public void setDisplayName(String displayName) {
-        this.display_name = displayName;
-        requestRepaint();
+        this.getState().displayName = displayName;
+        markAsDirty();
 
     }
 
     public String getUri() {
-        return uri;
+        return getState().uri;
     }
 
     public void setLayers(String layers) {
-        this.layers = layers;
-        requestRepaint();
+        this.getState().layers = layers;
+        markAsDirty();
     }
 
     public String getLayer() {
-        return layers;
+        return getState().layers;
     }
 
     public void setTransparent(Boolean transparent) {
-        this.transparent = transparent;
+        this.getState().transparent = transparent;
+        markAsDirty();
     }
 
     public Boolean getTransparent() {
-        return transparent;
+        return getState().transparent;
     }
 
     public void setBounds(Double[] bounds) {
-        this.bounds = bounds;
+        this.getState().bounds = bounds;
+        markAsDirty();
     }
 
     public Double[] getBounds() {
-        return bounds;
+        return getState().bounds;
     }
 
     public int setMinZoom(int minZoom) {
-        this.minZoom = minZoom;
+        this.getState().minZoom = minZoom;
+        markAsDirty();
         return minZoom;
     }
 
     public int getMinZoom() {
-        return minZoom;
+        return getState().minZoom;
     }
 
     public void setMaxZoom(int maxZoom) {
-        this.maxZoom = maxZoom;
+        this.getState().maxZoom = maxZoom;
+        markAsDirty();
     }
 
     public int getMaxZoom() {
-        return maxZoom;
+        return getState().maxZoom;
     }
 }

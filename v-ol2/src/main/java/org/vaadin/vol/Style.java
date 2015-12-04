@@ -1,8 +1,5 @@
 package org.vaadin.vol;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-
 //  Style Properties
 //
 //  The properties that you can use for styling are:
@@ -63,7 +60,9 @@ import com.vaadin.terminal.PaintTarget;
 //  -- display
 //  Can be set to none to hide features from rendering.
 
-public class Style {
+import java.io.Serializable;
+
+public class Style implements Serializable {
 
     public static final String STROKE_DASHSTYLE_SOLID = "solid";
     public static final String STROKE_DASHSTYLE_DASHDOT = "dashdot";
@@ -596,9 +595,9 @@ public class Style {
         return (String) getProperty("graphicTitle");
     }
 
-    public void paint(String string, PaintTarget target) throws PaintException {
+    /*public void paint(String string, PaintTarget target) throws PaintException {
         target.addAttribute(string, styleProperty.getKeyValueMap());
-    }
+    }*/
 
     /**
      * @param coreStyleName

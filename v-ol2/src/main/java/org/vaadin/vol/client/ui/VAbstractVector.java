@@ -1,21 +1,20 @@
 package org.vaadin.vol.client.ui;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.user.client.ui.Widget;
+import com.vaadin.client.communication.StateChangeEvent;
+
+import org.vaadin.vol.Attributes;
+import org.vaadin.vol.client.VectorState;
 import org.vaadin.vol.client.wrappers.Map;
 import org.vaadin.vol.client.wrappers.Projection;
 import org.vaadin.vol.client.wrappers.Vector;
 import org.vaadin.vol.client.wrappers.layer.VectorLayer;
 
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
-import com.vaadin.terminal.gwt.client.Paintable;
-import com.vaadin.terminal.gwt.client.UIDL;
-import com.vaadin.terminal.gwt.client.ValueMap;
-
-public abstract class VAbstractVector extends Widget implements Paintable {
+public abstract class VAbstractVector<T extends VectorState> extends Widget {
 
     protected Vector vector;
-    protected ValueMap vectAttributes = null;
+    protected Attributes vectAttributes;
     private Projection projection;
     private String intent;
 
@@ -23,65 +22,19 @@ public abstract class VAbstractVector extends Widget implements Paintable {
         setElement(Document.get().createDivElement());
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.terminal.gwt.client.Paintable#updateFromUIDL(com.vaadin.terminal
-     * .gwt.client.UIDL, com.vaadin.terminal.gwt.client.ApplicationConnection)
-     */
-    public void updateFromUIDL(UIDL childUIDL,
-            final ApplicationConnection client) {
-        if (client.updateComponent(this, childUIDL, false)) {
-            return;
-        }
-        if (childUIDL.hasAttribute("projection")) {
-            projection = Projection.get(childUIDL
-                    .getStringAttribute("projection"));
-        } else {
-            projection = null;
-        }
-
-        boolean update = vector != null;
-        if(update) {
-            // temporary remove erase the vector
-            getLayer().eraseFeature(vector);
-        }
-
-        updateAttributes(childUIDL, client);
-
-        createOrUpdateVector(childUIDL, client);
-        if (childUIDL.hasAttribute("style")) {
-            intent = childUIDL.getStringAttribute("style");
-            getVector().setRenderIntent(intent);
-        }
-        updateStyle(childUIDL, client);
-
-        if (update) {
-            ((VVectorLayer) getParent()).vectorUpdated(this);
-        } else {
-            getLayer().addFeature(vector);
-        }
-
-    }
-
-    private void updateAttributes(UIDL childUIDL, ApplicationConnection client) {
-        if (childUIDL.hasAttribute("olVectAttributes")) {
-            vectAttributes = childUIDL.getMapAttribute("olVectAttributes");
-        }
-    }
-
-    protected ValueMap getAttributes() {
+    protected Attributes getAttributes() {
         return vectAttributes;
     }
 
-    private void updateStyle(UIDL childUIDL, ApplicationConnection client) {
-        if (childUIDL.hasAttribute("olStyle")) {
-            vector.setStyle(childUIDL.getMapAttribute("olStyle"));
-        }
+    public void setAttributes(Attributes vectAttributes) {
+        this.vectAttributes = vectAttributes;
     }
 
-    protected Projection getProjection() {
+    public void setProjection(Projection projection) {
+        this.projection = projection;
+    }
+
+    public Projection getProjection() {
         if (projection == null) {
             VVectorLayer parent2 = (VVectorLayer) getParent();
             return parent2.getProjection();
@@ -89,10 +42,17 @@ public abstract class VAbstractVector extends Widget implements Paintable {
         return projection;
     }
 
-    protected abstract void createOrUpdateVector(UIDL childUIDL,
-            ApplicationConnection client);
+    public String getIntent() {
+        return this.intent;
+    }
 
-    protected VectorLayer getLayer() {
+    public void setIntent(String intent) {
+        this.intent = intent;
+    }
+
+    public abstract void createOrUpdateVector(StateChangeEvent event, T state);
+
+    public VectorLayer getLayer() {
         return ((VVectorLayer) getParent()).getLayer();
     }
 

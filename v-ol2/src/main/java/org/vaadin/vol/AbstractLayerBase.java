@@ -18,26 +18,25 @@ import org.vaadin.vol.client.LayerBaseState;
  */
 abstract public class AbstractLayerBase extends AbstractComponent {
 
-    private final LayerBaseServerRpc baseRpc = new LayerBaseServerRpc() {
-        public void loadStarted(String layerName) {
-            final LoadStartEvent event = new LoadStartEvent(AbstractLayerBase.this, layerName);
-            fireEvent(event);
-        }
-
-        public void loadEnded(String layerName) {
-            final LoadEndEvent event = new LoadEndEvent(AbstractLayerBase.this, layerName);
-            fireEvent(event);
-        }
-
-        public void visibilityChanged(String layerName, boolean visible) {
-            VisibilityChangedEvent event = new VisibilityChangedEvent(AbstractLayerBase.this, layerName, visible);
-            fireEvent(event);
-
-        }
-    };
-
     protected AbstractLayerBase() {
-        this.registerRpc(this.baseRpc);
+        final LayerBaseServerRpc baseRpc = new LayerBaseServerRpc() {
+            public void loadStarted(String layerName) {
+                final LoadStartEvent event = new LoadStartEvent(AbstractLayerBase.this, layerName);
+                fireEvent(event);
+            }
+
+            public void loadEnded(String layerName) {
+                final LoadEndEvent event = new LoadEndEvent(AbstractLayerBase.this, layerName);
+                fireEvent(event);
+            }
+
+            public void visibilityChanged(String layerName, boolean visible) {
+                VisibilityChangedEvent event = new VisibilityChangedEvent(AbstractLayerBase.this, layerName, visible);
+                fireEvent(event);
+
+            }
+        };
+        this.registerRpc(baseRpc);
     }
 
     /*
@@ -93,24 +92,20 @@ abstract public class AbstractLayerBase extends AbstractComponent {
 
     /**
      * Sets the attribution text for layer. Feature is not functional in all layers.
-     *
-     * @param attribution
      */
     public void setAttribution(String attribution) {
         this.getState().attribution = attribution;
     }
 
-    public String getName() {
-        return this.getState().name;
+    public String getDisplayName() {
+        return this.getState().displayName;
     }
 
     /**
-     * Sets the display name for layer.
-     *
-     * @param name
+     * Sets the display displayName for layer.
      */
-    public void setName(String name) {
-        this.getState().name = name;
+    public void setDisplayName(String name) {
+        this.getState().displayName = name;
     }
 
     public String getProjection() {
@@ -119,8 +114,6 @@ abstract public class AbstractLayerBase extends AbstractComponent {
 
     /**
      * Sets the projection for layer.
-     *
-     * @param projection
      */
     public void setProjection(String projection) {
         this.getState().projection = projection;

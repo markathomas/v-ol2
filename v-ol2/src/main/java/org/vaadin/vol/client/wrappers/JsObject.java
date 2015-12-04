@@ -1,7 +1,7 @@
 package org.vaadin.vol.client.wrappers;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.vaadin.terminal.gwt.client.ValueMap;
+import com.vaadin.client.ValueMap;
 
 public class JsObject extends JavaScriptObject {
     protected JsObject() {

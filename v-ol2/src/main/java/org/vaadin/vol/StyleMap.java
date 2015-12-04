@@ -3,11 +3,6 @@ package org.vaadin.vol;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import org.vaadin.vol.client.Costants;
-
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-
 /**
  * StyleMaps are collections of Styles (aka renderer intents). Styles are mapped
  * with unique style names (aka render intent). The actual style that is used to
@@ -48,6 +43,14 @@ public class StyleMap implements Serializable {
         styles.put(renderIntent.getValue(), style);
     }
 
+    public Style getStyle(String renderIntent) {
+        return styles.get(renderIntent);
+    }
+
+    public Style getStyle(RenderIntent renderIntent) {
+        return styles.get(renderIntent.getValue());
+    }
+
     private boolean extendDefault = false;
 
     /**
@@ -76,7 +79,7 @@ public class StyleMap implements Serializable {
     public StyleMap() {
     }
 
-    public void paint(PaintTarget target) throws PaintException {
+    /*public void paint(PaintTarget target) throws PaintException {
         String[] intents = styles.keySet().toArray(
                 new String[styles.size() + (extendDefault ? 1 : 0)]);
         if (extendDefault) {
@@ -125,7 +128,7 @@ public class StyleMap implements Serializable {
                 }
             }
         }
-    }
+    }*/
 
     /**
      * @param extendDefault
@@ -145,7 +148,7 @@ public class StyleMap implements Serializable {
      *            specifies the desired intent - usually 'default'
      * @param property
      *            specifies the property of the feature to check
-     * @param symbolizer_lookup
+     * @param lookup
      *            specifies the JSON object containing the key:value pairs to
      *            use if the rule match
      * @param context
@@ -153,9 +156,8 @@ public class StyleMap implements Serializable {
      *            is passed in, feature attributes are used by default
      *
      */
-    public void addUniqueValueRules(RenderIntent intent, String property,
-            Symbolizer lookup, Object context) {
-        // reset the rules setting property or simbolozer_lookup to null or
+    public void addUniqueValueRules(RenderIntent intent, String property, Symbolizer lookup, Object context) {
+        // reset the rules setting property or lookup to null or
         // empty
         //
 
@@ -177,7 +179,7 @@ public class StyleMap implements Serializable {
  * addUniqueValueRules
  *
  */
-class UniqueValueRule {
+class UniqueValueRule implements Serializable {
     RenderIntent intent;
     String property;
     Symbolizer lookup;

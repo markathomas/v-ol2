@@ -229,7 +229,7 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
     }
 
     /**
-     * @return the stylemap
+     * @return the styleMap
      */
     public StyleMap getStyleMap() {
         return stylemap;
@@ -237,7 +237,7 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
 
     /**
      * @param stylemap
-     *            the stylemap to set
+     *            the styleMap to set
      */
     public void setStyleMap(StyleMap stylemap) {
         this.stylemap = stylemap;

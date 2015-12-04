@@ -1,17 +1,10 @@
-/**
- *
- */
 package org.vaadin.vol;
 
-import org.vaadin.vol.client.ui.VWellKnownTextLayer;
+import java.util.Objects;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.ClientWidget;
+import org.vaadin.vol.client.WellKnownTextLayerState;
 
-@ClientWidget(VWellKnownTextLayer.class)
 public class WellKnownTextLayer extends AbstractAutoPopulatedVectorLayer implements Layer {
-    private String wkt = "";
 
 
     public WellKnownTextLayer() {
@@ -23,18 +16,20 @@ public class WellKnownTextLayer extends AbstractAutoPopulatedVectorLayer impleme
         setWellKnownText(wkt);
     }
 
-    public void paintContent(PaintTarget target) throws PaintException {
-        super.paintContent(target);
-        target.addAttribute("wkt", wkt);
+    @Override
+    public WellKnownTextLayerState getState() {
+        return (WellKnownTextLayerState)super.getState();
     }
 
     public void setWellKnownText(String wkt) {
-        this.wkt = wkt;
-        requestRepaint();
+        if (!Objects.equals(getState().wkt, wkt)) {
+            getState().wkt = wkt;
+            markAsDirty();
+        }
     }
 
     public String getWellKnownText() {
-        return wkt;
+        return getState().wkt;
     }
 
 }

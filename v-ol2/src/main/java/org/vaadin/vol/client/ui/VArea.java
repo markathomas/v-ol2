@@ -1,27 +1,26 @@
 package org.vaadin.vol.client.ui;
 
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.vaadin.client.ValueMap;
+import com.vaadin.client.communication.StateChangeEvent;
+
+import org.vaadin.vol.Attributes;
+import org.vaadin.vol.client.VectorState;
 import org.vaadin.vol.client.wrappers.Projection;
 import org.vaadin.vol.client.wrappers.Vector;
 import org.vaadin.vol.client.wrappers.geometry.LinearRing;
 import org.vaadin.vol.client.wrappers.geometry.Point;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
-import com.vaadin.terminal.gwt.client.UIDL;
-import com.vaadin.terminal.gwt.client.ValueMap;
-
-public class VArea extends VAbstractVector {
+public class VArea extends VAbstractVector<VectorState> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void createOrUpdateVector(UIDL childUIDL, ApplicationConnection client) {
+    public void createOrUpdateVector(StateChangeEvent stateChangeEvent, VectorState state) {
         Projection mapProjection = getMap().getProjection();
-        String[] stringArrayAttribute = childUIDL
-                .getStringArrayAttribute("points");
         JsArray<Point> points = (JsArray<Point>) JsArray.createArray();
-        for (int i = 0; i < stringArrayAttribute.length; i++) {
-            Point p = Point.create(stringArrayAttribute[i]);
+        for (int i = 0; i < state.points.length; i++) {
+            Point p = Point.create(state.points[i].getLon(), state.points[i].getLat());
             p.transform(getProjection(), mapProjection);
             points.push(p);
         }
@@ -29,13 +28,18 @@ public class VArea extends VAbstractVector {
         LinearRing lr = LinearRing.create(points);
 
         JavaScriptObject style = null;
-        ValueMap attributes = getAttributes();
+        Attributes attributes = getAttributes();  // TODO: how do i convert this to a ValueMap or a JavaScriptObject???
         if (vector == null) {
-            vector = Vector.create(lr, attributes, style);
+            // TODO: FIX ME!
+            //vector = Vector.create(lr, attributes, style);
+            vector = Vector.create(lr, JavaScriptObject.createObject(), style);
         } else {
             vector.setGeometry(lr);
             vector.setStyle(style);
-            vector.setAttributes(attributes);
+            // TODO: FIX ME!
+            // vector.setAttributes(attributes);
+            ValueMap attr = JavaScriptObject.createObject().cast();
+            vector.setAttributes(attr);
         }
     }
 

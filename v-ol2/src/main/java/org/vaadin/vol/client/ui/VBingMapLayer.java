@@ -2,9 +2,6 @@ package org.vaadin.vol.client.ui;
 
 import org.vaadin.vol.client.wrappers.layer.BingMapLayer;
 
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
-import com.vaadin.terminal.gwt.client.UIDL;
-
 public class VBingMapLayer extends VAbstracMapLayer<BingMapLayer> {
 
     private String apiKey;
@@ -15,6 +12,14 @@ public class VBingMapLayer extends VAbstracMapLayer<BingMapLayer> {
         return BingMapLayer.create(getDisplayName(), getApiKey(), getType());
     }
 
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     private String getApiKey() {
         return apiKey;
     }
@@ -22,14 +27,4 @@ public class VBingMapLayer extends VAbstracMapLayer<BingMapLayer> {
     private String getType() {
         return type;
     }
-
-    @Override
-    public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
-        if (!uidl.hasAttribute("cached")) {
-            apiKey = uidl.getStringAttribute("apikey");
-            type = uidl.getStringAttribute("type");
-        }
-        super.updateFromUIDL(uidl, client);
-    }
-
 }

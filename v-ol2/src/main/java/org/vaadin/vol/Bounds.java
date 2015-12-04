@@ -2,9 +2,6 @@ package org.vaadin.vol;
 
 import java.io.Serializable;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-
 public class Bounds implements Serializable {
 
     private double top;
@@ -174,13 +171,6 @@ public class Bounds implements Serializable {
      */
     public double getMaxLon() {
         return getRight();
-    }
-
-    public void paint(String string, PaintTarget target) throws PaintException {
-        target.addAttribute(string + "_top", top);
-        target.addAttribute(string + "_right", right);
-        target.addAttribute(string + "_bottom", bottom);
-        target.addAttribute(string + "_left", left);
     }
 
     @Override

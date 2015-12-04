@@ -34,12 +34,12 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
     }
 
     @OnStateChange("hasLoadStartHandlers")
-    void hasLoadStartHandlers(boolean value) {
-        if (value && this.loadStartHandler == null) {
+    void hasLoadStartHandlers() {
+        if (getState().hasLoadStartListeners && this.loadStartHandler == null) {
             this.loadStartHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
-                    layerBaseServerRpc.loadStarted(getState().name);
+                    layerBaseServerRpc.loadStarted(getState().displayName);
                 }
             };
             this.getWidget().getLayer().registerHandler("loadstart", this.loadStartHandler);
@@ -47,12 +47,12 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
     }
 
     @OnStateChange("hasLoadEndHandlers")
-    void hasLoadEndHandlers(boolean value) {
-        if (value && this.loadEndHandler == null) {
+    void hasLoadEndHandlers() {
+        if (getState().hasLoadEndListeners && this.loadEndHandler == null) {
             this.loadEndHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
-                    layerBaseServerRpc.loadEnded(getState().name);
+                    layerBaseServerRpc.loadEnded(getState().displayName);
                 }
             };
             this.getWidget().getLayer().registerHandler("loadend", this.loadEndHandler);
@@ -60,31 +60,16 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
     }
 
     @OnStateChange("hasVisibilityChangedHandlers")
-    void hasVisibilityChangedHandlers(boolean value) {
-        if (value && this.visibilityChangedHandler == null) {
+    void hasVisibilityChangedHandlers() {
+        if (getState().hasVisibilityChangedListeners && this.visibilityChangedHandler == null) {
             this.visibilityChangedHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
-                    layerBaseServerRpc.visibilityChanged(getState().name, getWidget().getLayer().isVisible());
+                    layerBaseServerRpc.visibilityChanged(getState().displayName, getWidget().getLayer().isVisible());
                 }
             };
             this.getWidget().getLayer().registerHandler("visibilitychanged", this.visibilityChangedHandler);
         }
-    }
-
-    @OnStateChange("attribution")
-    void attributionChanged(String attribution) {
-        this.getWidget().setAttribution(attribution);
-    }
-
-    @OnStateChange("name")
-    void nameChanged(String name) {
-        this.getWidget().setDisplayName(name);
-    }
-
-    @OnStateChange("projection")
-    void projectionChanged(String projection) {
-        this.getWidget().setProjection(projection);
     }
 }
 
