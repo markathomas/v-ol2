@@ -2,63 +2,58 @@ package org.vaadin.vol.client.ui;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
-import com.vaadin.terminal.gwt.client.Container;
-import com.vaadin.terminal.gwt.client.Paintable;
-import com.vaadin.terminal.gwt.client.RenderSpace;
-import com.vaadin.terminal.gwt.client.UIDL;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
+import com.vaadin.client.Profiler;
 
 import org.vaadin.vol.client.wrappers.Map;
 import org.vaadin.vol.client.wrappers.layer.MarkerLayer;
 
-public class VMarkerLayer extends FlowPanel implements VLayer, Container {
+public class VMarkerLayer extends FlowPanel implements VLayer {
 
     private MarkerLayer markers;
-    private String name;
+    private String displayName;
     private boolean layerAdded;
 
     public MarkerLayer getLayer() {
         if (markers == null) {
-            markers = MarkerLayer.create(name);
+            markers = MarkerLayer.create(displayName);
         }
         return markers;
     }
 
-    public void updateFromUIDL(UIDL layer, ApplicationConnection client) {
-        if (client.updateComponent(this, layer, false)) {
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    /**
+     * For internal use only. May be removed or replaced in the future.
+     */
+    public void addOrMove(Widget child, int index) {
+        Profiler.enter("VMarkerLayer.addOrMove");
+        if (child.getParent() == this) {
+            Profiler.enter("VMarkerLayer.addOrMove getWidgetIndex");
+            int currentIndex = getWidgetIndex(child);
+            Profiler.leave("VMarkerLayer.addOrMove getWidgetIndex");
+            if (index == currentIndex) {
+                Profiler.leave("VMarkerLayer.addOrMove");
+                return;
+            }
+        } else if (index == getWidgetCount()) {
+            // optimized path for appending components - faster especially for
+            // initial rendering
+            Profiler.enter("VMarkerLayer.addOrMove add");
+            add(child);
+            Profiler.leave("VMarkerLayer.addOrMove add");
+            Profiler.leave("VMarkerLayer.addOrMove");
             return;
         }
-        name = layer.getStringAttribute("name");
-        if (!layerAdded) {
-            getMap().addLayer(getLayer());
-            layerAdded = true;
-        }
-
-        Iterator<Widget> iterator = getChildren().iterator();
-        LinkedList<Widget> orphaned = new LinkedList<Widget>();
-        while (iterator.hasNext()) {
-            orphaned.add(iterator.next());
-        }
-        int childCount = layer.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            UIDL childUIDL = layer.getChildUIDL(i);
-            VMarkable paintable = (VMarkable)client.getPaintable(childUIDL);
-            Widget marker = (Widget)paintable;
-            boolean isNew = !hasChildComponent(marker);
-            if (isNew) {
-                add(marker);
-            }
-            paintable.updateFromUIDL(childUIDL, client);
-            orphaned.remove(marker);
-        }
-        for (Widget widget : orphaned) {
-            remove(widget);
-        }
-
+        Profiler.enter("VMarkerLayer.addOrMove insert");
+        insert(child, index);
+        Profiler.leave("VMarkerLayer.addOrMove insert");
+        Profiler.leave("VMarkerLayer.addOrMove");
     }
 
     @Override
@@ -72,28 +67,7 @@ public class VMarkerLayer extends FlowPanel implements VLayer, Container {
         return ((VOpenLayersMap) getParent().getParent()).getMap();
     }
 
-    public void replaceChildComponent(Widget oldComponent, Widget newComponent) {
-        // TODO Auto-generated method stub
-
-    }
-
     public boolean hasChildComponent(Widget component) {
         return getWidgetIndex(component) != -1;
     }
-
-    public void updateCaption(Paintable component, UIDL uidl) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public boolean requestLayout(Set<Paintable> children) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public RenderSpace getAllocatedSpace(Widget child) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

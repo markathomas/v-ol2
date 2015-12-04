@@ -3,41 +3,41 @@
  */
 package org.vaadin.vol;
 
+import com.vaadin.ui.AbstractComponentContainer;
+import com.vaadin.ui.Component;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.AbstractComponentContainer;
-import com.vaadin.ui.ClientWidget;
-import com.vaadin.ui.Component;
+import org.vaadin.vol.client.MarkerLayerState;
 
-@ClientWidget(org.vaadin.vol.client.ui.VMarkerLayer.class)
 public class MarkerLayer extends AbstractComponentContainer implements Layer {
 
     private List<Marker> markers = new LinkedList<Marker>();
 
-    private String displayName = "Markers";
+    @Override
+    public MarkerLayerState getState() {
+        return (MarkerLayerState)super.getState();
+    }
 
     public void addMarker(Marker m) {
         addComponent(m);
     }
 
-    @Override
-    public void paintContent(PaintTarget target) throws PaintException {
-        target.addAttribute("name", getDisplayName());
-        for (Marker m : markers) {
-            m.paint(target);
-        }
-    }
-
     public void replaceComponent(Component oldComponent, Component newComponent) {
-        throw new UnsupportedOperationException();
+        removeComponent(oldComponent);
+        addComponent(newComponent);
     }
 
-    public Iterator<Component> getComponentIterator() {
-        LinkedList<Component> list = new LinkedList<Component>(markers);
+    @Override
+    public int getComponentCount() {
+        return this.markers.size();
+    }
+
+    public Iterator<Component> iterator() {
+        List<Component> list = new ArrayList<Component>(markers);
         return list.iterator();
     }
 
@@ -46,25 +46,31 @@ public class MarkerLayer extends AbstractComponentContainer implements Layer {
         if (c instanceof Marker) {
             markers.add((Marker) c);
             super.addComponent(c);
+            markAsDirty();
         } else {
             throw new IllegalArgumentException(
-                    "MarkerLayer supports only markers");
+              "MarkerLayer supports only markers");
         }
     }
 
     @Override
     public void removeComponent(Component c) {
-        super.removeComponent(c);
-        markers.remove(c);
-        requestRepaint();
+        if (c instanceof Marker) {
+            super.removeComponent(c);
+            markers.remove(c);
+            markAsDirty();
+        } else {
+            throw new IllegalArgumentException(
+              "MarkerLayer supports only markers");
+        }
     }
 
     public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+        this.getState().displayName = displayName;
     }
 
     public String getDisplayName() {
-        return displayName;
+        return getState().displayName;
     }
 
     public void removeMarker(Marker marker) {

@@ -37,7 +37,7 @@ import org.vaadin.vol.client.wrappers.handler.PolygonHandler;
 import org.vaadin.vol.client.wrappers.handler.RegularPolygonHandler;
 import org.vaadin.vol.client.wrappers.layer.VectorLayer;
 
-public class VVectorLayer extends FlowPanel implements VLayer, Container {
+public class VVectorLayer extends FlowPanel implements VLayer {
 
     private VectorLayer vectors;
     private String drawingMode = "NONE";
