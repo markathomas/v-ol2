@@ -1,12 +1,12 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.ui.Component;
+
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenLayersMap.MapClickEvent;
 import org.vaadin.vol.OpenLayersMap.MapClickListener;
 import org.vaadin.vol.OpenStreetMapLayer;
 import org.vaadin.vol.Popup;
-
-import com.vaadin.ui.Component;
 
 public class Issue72PopupHangsMap extends AbstractVOLTest {
 
@@ -21,12 +21,12 @@ public class Issue72PopupHangsMap extends AbstractVOLTest {
         map.setSizeFull();
         map.addLayer(new OpenStreetMapLayer());
 
-        map.addListener(new MapClickListener() {
+        map.addMapClickListener(new MapClickListener() {
 
             public void mapClicked(MapClickEvent event) {
                 final Popup popup = new Popup(event.getPointInfo().getLon(),
                         event.getPointInfo().getLat(), "FOOBAR");
-                popup.addListener(new Popup.CloseListener() {
+                popup.addCloseListener(new Popup.CloseListener() {
 
                     public void onClose(org.vaadin.vol.Popup.CloseEvent event) {
                         map.removeComponent(popup);

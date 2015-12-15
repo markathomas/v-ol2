@@ -3,56 +3,36 @@
  */
 package org.vaadin.vol;
 
-import org.vaadin.vol.client.ui.VXYZLayer;
+import org.vaadin.vol.client.XYZLayerState;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.ClientWidget;
-
-/**
- */
-@ClientWidget(VXYZLayer.class)
 public class XYZLayer extends AbstractLayerBase implements Layer {
-    private String uri = "";
-    private String name = "";
-    private boolean sphericalMercator = false;
 
-    public XYZLayer() {
-    }
-
-    public void paintContent(PaintTarget target) throws PaintException {
-        super.paintContent(target);
-        target.addAttribute("uri", uri);
-        target.addAttribute("name", name);
-        if(isSphericalMercator()) {
-            target.addAttribute("sphericalMercator", true);
-        }
+    @Override
+    public XYZLayerState getState() {
+        return (XYZLayerState)super.getState();
     }
 
     public void setUri(String uri) {
-        this.uri = uri;
-        requestRepaint();
+        this.getState().uri = uri;
+        markAsDirty();
     }
 
-    public String getDisplayName() {
-        return name;
-    }
-
+    @Override
     public void setDisplayName(String displayName) {
-        this.name = displayName;
+        super.setDisplayName(displayName);
         setCaption(displayName);
-        requestRepaint();
     }
 
     public String getUri() {
-        return uri;
+        return getState().uri;
     }
 
     public boolean isSphericalMercator() {
-        return sphericalMercator;
+        return getState().sphericalMercator;
     }
 
     public void setSphericalMercator(boolean sphericalMercator) {
-        this.sphericalMercator = sphericalMercator;
+        this.getState().sphericalMercator = sphericalMercator;
+        markAsDirty();
     }
 }

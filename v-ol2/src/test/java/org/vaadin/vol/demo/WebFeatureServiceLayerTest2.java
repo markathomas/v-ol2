@@ -1,5 +1,7 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.ui.Component;
+
 import org.vaadin.vol.AbstractAutoPopulatedVectorLayer.BeforeFeatureSelectedEvent;
 import org.vaadin.vol.AbstractAutoPopulatedVectorLayer.BeforeFeatureSelectedListener;
 import org.vaadin.vol.LabelVector;
@@ -10,8 +12,6 @@ import org.vaadin.vol.Style;
 import org.vaadin.vol.StyleMap;
 import org.vaadin.vol.VectorLayer;
 import org.vaadin.vol.WebFeatureServiceLayer;
-
-import com.vaadin.ui.Component;
 
 /**
  * Loads different feature types from a wfs use beforefeature select event
@@ -59,8 +59,7 @@ public class WebFeatureServiceLayerTest2 extends AbstractVOLTest {
         osmLayer.setUrl("http://b.tile.openstreetmap.org/${z}/${x}/${y}.png");
         osmLayer.setDisplayName("OSM");
 
-        String proxyUrl = getApplication().getURL()
-                + "../WFSPROXY/demo.opengeo.org/geoserver/wfs";
+        String proxyUrl = contextPath + "/WFSPROXY/demo.opengeo.org/geoserver/wfs";
 
         WebFeatureServiceLayer wfsCities = createWfsLayer("Cities", proxyUrl,
                 "tasmania_cities");

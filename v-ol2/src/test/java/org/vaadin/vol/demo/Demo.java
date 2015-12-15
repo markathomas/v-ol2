@@ -1,5 +1,19 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.event.MouseEvents.ClickEvent;
+import com.vaadin.event.MouseEvents.ClickListener;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,33 +34,20 @@ import org.vaadin.vol.OpenStreetMapLayer;
 import org.vaadin.vol.Point;
 import org.vaadin.vol.PointVector;
 import org.vaadin.vol.Popup;
-import org.vaadin.vol.Popup.PopupStyle;
 import org.vaadin.vol.RenderIntent;
 import org.vaadin.vol.Style;
 import org.vaadin.vol.StyleMap;
 import org.vaadin.vol.Vector;
 import org.vaadin.vol.VectorLayer;
-import org.vaadin.vol.VectorLayer.DrawingMode;
-import org.vaadin.vol.VectorLayer.SelectionMode;
 import org.vaadin.vol.VectorLayer.VectorDrawnEvent;
 import org.vaadin.vol.VectorLayer.VectorDrawnListener;
 import org.vaadin.vol.VectorLayer.VectorModifiedEvent;
 import org.vaadin.vol.VectorLayer.VectorSelectedEvent;
 import org.vaadin.vol.VectorLayer.VectorSelectedListener;
+import org.vaadin.vol.client.PopupState;
+import org.vaadin.vol.client.VectorLayerState;
+import org.vaadin.vol.client.VectorLayerState.DrawingMode;
 import org.xml.sax.SAXException;
-
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.event.MouseEvents.ClickEvent;
-import com.vaadin.event.MouseEvents.ClickListener;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
 
 public class Demo extends AbstractVOLTest {
     private HorizontalLayout controls;
@@ -130,14 +131,14 @@ public class Demo extends AbstractVOLTest {
 
         final VectorLayer vectorLayer = new VectorLayer();
 
-        vectorLayer.setSelectionMode(SelectionMode.SIMPLE);
+        vectorLayer.setSelectionMode(VectorLayerState.SelectionMode.SIMPLE);
 
-        vectorLayer.addListener(new VectorSelectedListener() {
+        vectorLayer.addVectorSelectedListener(new VectorSelectedListener() {
             public void vectorSelected(VectorSelectedEvent event) {
                 Vector vector = event.getVector();
-                vectorLayer.getWindow().showNotification(
-                        "Selected vector with points "
-                                + Arrays.deepToString(vector.getPoints()));
+                Notification.show(
+                  "Selected vector with points "
+                    + Arrays.deepToString(vector.getPoints()));
             }
         });
 
@@ -199,14 +200,12 @@ public class Demo extends AbstractVOLTest {
         style.setPointRadiusByAttribute("pointRadius");
         stylemap.setStyle(new RenderIntent("red"), style);
         Style markerStyle = new Style();
-        markerStyle
-                .setExternalGraphic(getURL()
-                        + "../VAADIN/widgetsets/org.vaadin.vol.demo.VolExampleAppWidgetset/img/marker.png");
+        markerStyle.setExternalGraphic(this.contextPath
+          + "/VAADIN/widgetsets/org.vaadin.vol.demo.VolExampleAppWidgetset/img/marker.png");
         markerStyle.setGraphicZIndex(11);
         markerStyle.setGraphicSize(16, 21);
-        markerStyle
-                .setBackgroundGraphic(getURL()
-                        + "../VAADIN/widgetsets/org.vaadin.vol.demo.VolExampleAppWidgetset/img/marker_shadow.png");
+        markerStyle.setBackgroundGraphic(this.contextPath
+          + "/VAADIN/widgetsets/org.vaadin.vol.demo.VolExampleAppWidgetset/img/marker_shadow.png");
         markerStyle.setBackgroundYOffset(-7);
         markerStyle.setBackgroundXOffset(0);
         markerStyle.setBackgroundGraphicZIndex(10);
@@ -246,8 +245,8 @@ public class Demo extends AbstractVOLTest {
                 final Popup popup = new Popup(marker.getLon(), marker.getLat(),
                         "Vaadin HQ is <em>here</em>!");
                 popup.setAnchor(marker);
-                popup.setPopupStyle(PopupStyle.FRAMED_CLOUD);
-                popup.addListener(new Popup.CloseListener() {
+                popup.setPopupStyle(PopupState.PopupStyle.FRAMED_CLOUD);
+                popup.addCloseListener(new Popup.CloseListener() {
 
                     public void onClose(org.vaadin.vol.Popup.CloseEvent event) {
                         System.err.println("Closed");
@@ -268,10 +267,10 @@ public class Demo extends AbstractVOLTest {
         // map.setHeight("400px");
 
         OptionGroup drawingMode = new OptionGroup();
-        for (DrawingMode l : VectorLayer.DrawingMode.values()) {
+        for (DrawingMode l : DrawingMode.values()) {
             drawingMode.addItem(l);
         }
-        drawingMode.addListener(new Property.ValueChangeListener() {
+        drawingMode.addValueChangeListener(new Property.ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
                 DrawingMode mode = (DrawingMode) event.getProperty().getValue();
                 if (mode == DrawingMode.MODIFY || mode == DrawingMode.AREA
@@ -282,26 +281,24 @@ public class Demo extends AbstractVOLTest {
                         || mode == DrawingMode.NONE) {
                     vectorLayer.setDrawingMode(mode);
                 } else {
-                    showNotification("Sorry, feature is on TODO list. Try area.");
+                    Notification.show("Sorry, feature is on TODO list. Try area.");
                 }
             }
         });
         drawingMode.setValue(DrawingMode.NONE);
         drawingMode.setImmediate(true);
 
-        vectorLayer.addListener(new VectorDrawnListener() {
+        vectorLayer.addVectorDrawnListener(new VectorDrawnListener() {
             public void vectorDrawn(VectorDrawnEvent event) {
                 Vector vector = event.getVector();
                 vectorLayer.addVector(vector);
-                vectorLayer.getWindow().showNotification(
-                        "Vector drawn:" + vector);
+                Notification.show("Vector drawn:" + vector);
             }
         });
 
-        vectorLayer.addListener(new VectorLayer.VectorModifiedListener() {
+        vectorLayer.addVectorModifiedListener(new VectorLayer.VectorModifiedListener() {
             public void vectorModified(VectorModifiedEvent event) {
-                vectorLayer.getWindow().showNotification(
-                        "Vector modified:" + event.getVector());
+                Notification.show("Vector modified:" + event.getVector());
             }
         });
 
@@ -320,7 +317,7 @@ public class Demo extends AbstractVOLTest {
         controls = new HorizontalLayout();
         controls.addComponent(drawingMode);
         Button moveToTMSExample = new Button("Move to TMS example");
-        moveToTMSExample.addListener(new Button.ClickListener() {
+        moveToTMSExample.addClickListener(new Button.ClickListener() {
             public void buttonClick(com.vaadin.ui.Button.ClickEvent event) {
                 map.setCenter(22.805, 60.447);
                 map.setZoom(15);
@@ -336,7 +333,7 @@ public class Demo extends AbstractVOLTest {
             mapcontrols.addItem(values[i]);
         }
         mapcontrols.setValue(map.getControls());
-        mapcontrols.addListener(new ValueChangeListener() {
+        mapcontrols.addValueChangeListener(new ValueChangeListener() {
             @SuppressWarnings("unchecked")
             public void valueChange(ValueChangeEvent event) {
                 Control[] controls3 = map.getControls().toArray(
@@ -354,7 +351,7 @@ public class Demo extends AbstractVOLTest {
         });
         panel.setHeight("100px");
         panel.setWidth("200px");
-        panel.addComponent(mapcontrols);
+        panel.setContent(mapcontrols);
 
         controls.addComponent(panel);
 
@@ -386,5 +383,4 @@ public class Demo extends AbstractVOLTest {
         Bounds bounds = new Bounds(points);
         map.setRestrictedExtent(bounds);
     }
-
 }

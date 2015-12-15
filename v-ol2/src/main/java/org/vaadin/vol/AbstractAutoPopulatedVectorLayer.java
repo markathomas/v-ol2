@@ -6,9 +6,9 @@ import com.vaadin.util.ReflectTools;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import org.vaadin.vol.VectorLayer.SelectionMode;
 import org.vaadin.vol.client.AutoPopulatedVectorLayerState;
 import org.vaadin.vol.client.FeatureSelectionServerRpc;
+import org.vaadin.vol.client.VectorLayerState;
 
 /**
  * An abstract implementation (based on client side vector layer) that populates
@@ -64,15 +64,15 @@ public abstract class AbstractAutoPopulatedVectorLayer extends AbstractLayerBase
         markAsDirty();
     }
 
-    public void setSelectionMode(SelectionMode selectionMode) {
+    public void setSelectionMode(VectorLayerState.SelectionMode selectionMode) {
         this.getState().selectionMode = selectionMode.toString();
         markAsDirty();
     }
 
-    public SelectionMode getSelectionMode() {
+    public VectorLayerState.SelectionMode getSelectionMode() {
         if (getState().selectionMode == null)
             return null;
-        return SelectionMode.valueOf(getState().selectionMode);
+        return VectorLayerState.SelectionMode.valueOf(getState().selectionMode);
     }
 
     public void setSelectionCtrlId(String selectionCtrlId) {

@@ -1,27 +1,27 @@
 package org.vaadin.vol.demo;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-
-import com.vaadin.Application;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.DefaultItemSorter;
 import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.terminal.ExternalResource;
+import com.vaadin.server.ExternalResource;
+import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Window.ResizeEvent;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 
-public class VolApplication extends Application {
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class VolApplication extends UI {
 
     private Container testClassess;
 
-    @Override
+    /*@Override
     public Window getWindow(String name) {
         Window window = super.getWindow(name);
         if (window == null && name != null && !"".equals(name)
@@ -49,24 +49,13 @@ public class VolApplication extends Application {
 
         }
         return window;
-    }
+    }*/
 
     @Override
-    public void init() {
-        Window window = new Window("VOL tests and demos");
-        window.setImmediate(true);
-        window.addListener(new Window.ResizeListener() {
-            public void windowResized(ResizeEvent e) {
-                // hack to do test case loading only when first UIDL request is
-                // done.
-                loadTestClasses(e.getWindow());
-            }
-        });
-        setMainWindow(window);
-    }
-
-    private void loadTestClasses(Window window) {
-        window.addComponent(new Label(
+    public void init(final VaadinRequest request) {
+        VerticalLayout content = new VerticalLayout();
+        setContent(content);
+        content.addComponent(new Label(
                 "Note, all tests below might not work! "
                         + "They are mostly code examples and tests that might e.g."
                         + " require a local or some custom configured map server. "
@@ -83,7 +72,7 @@ public class VolApplication extends Application {
                 String name = (String) source.getItem(itemId)
                         .getItemProperty(columnId).getValue();
                 Link link = new Link(name,
-                        new ExternalResource(getURL() + name));
+                        new ExternalResource(request.getContextPath() + '/' + name));
                 link.setTargetName("_new");
                 return link;
             }
@@ -98,7 +87,7 @@ public class VolApplication extends Application {
         });
         table.setSizeFull();
         table.setColumnExpandRatio("description", 1);
-        window.addComponent(table);
+        content.addComponent(table);
     }
 
     private Container listTestClasses() {
@@ -172,5 +161,4 @@ public class VolApplication extends Application {
                     newInstance.isSuitebleOnlineDemo());
         }
     }
-
 }

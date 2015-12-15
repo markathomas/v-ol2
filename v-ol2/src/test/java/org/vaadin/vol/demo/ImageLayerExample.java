@@ -1,17 +1,18 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
+
 import java.util.Arrays;
 
 import org.vaadin.vol.ImageLayer;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.Vector;
 import org.vaadin.vol.VectorLayer;
-import org.vaadin.vol.VectorLayer.DrawingMode;
 import org.vaadin.vol.VectorLayer.VectorDrawnEvent;
 import org.vaadin.vol.VectorLayer.VectorDrawnListener;
 import org.vaadin.vol.WebMapServiceLayer;
-
-import com.vaadin.ui.Component;
+import org.vaadin.vol.client.VectorLayerState;
 
 public class ImageLayerExample extends AbstractVOLTest {
 
@@ -46,12 +47,12 @@ public class ImageLayerExample extends AbstractVOLTest {
         map.addLayer(webMapServiceLayer);
 
         final VectorLayer vectorLayer = new VectorLayer();
-        vectorLayer.setDrawingMode(DrawingMode.LINE);
-        vectorLayer.addListener(new VectorDrawnListener() {
+        vectorLayer.setDrawingMode(VectorLayerState.DrawingMode.LINE);
+        vectorLayer.addVectorDrawnListener(new VectorDrawnListener() {
             public void vectorDrawn(VectorDrawnEvent event) {
                 Vector vector = event.getVector();
                 vectorLayer.addComponent(vector);
-                getWindow().showNotification(
+                Notification.show(
                         "Route drawn with points: "
                                 + Arrays.toString(vector.getPoints()));
             }

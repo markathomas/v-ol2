@@ -1,11 +1,12 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
+
 import org.vaadin.vol.Marker;
 import org.vaadin.vol.MarkerLayer;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-
-import com.vaadin.ui.Component;
 
 public class CustomMarkerIcon extends AbstractVOLTest {
 
@@ -40,7 +41,7 @@ public class CustomMarkerIcon extends AbstractVOLTest {
     @Override
     public void attach() {
         super.attach();
-        showNotification(getDescription(), Notification.TYPE_WARNING_MESSAGE);
+        Notification.show(getDescription(), Notification.Type.WARNING_MESSAGE);
     }
 
     private void addMarker(double lon, double lat) {

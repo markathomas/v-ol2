@@ -1,5 +1,7 @@
 package org.vaadin.vol;
 
+import com.vaadin.server.VaadinServlet;
+
 import java.io.File;
 
 import org.eclipse.jetty.server.Connector;
@@ -8,8 +10,6 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.vaadin.vol.demo.VolApplication;
-
-import com.vaadin.terminal.gwt.server.ApplicationServlet;
 
 public class VolTestServer {
 
@@ -32,11 +32,10 @@ public class VolTestServer {
         server.setConnectors(new Connector[] { connector });
 
         WebAppContext context = new WebAppContext();
-        ServletHolder servletHolder = new ServletHolder(
-                ApplicationServlet.class);
+        ServletHolder servletHolder = new ServletHolder(VaadinServlet.class);
         servletHolder.setInitParameter("widgetset",
                 "org.vaadin.vol.demo.VolExampleAppWidgetset");
-        servletHolder.setInitParameter("application",
+        servletHolder.setInitParameter("ui",
                 VolApplication.class.getName());
 
         File file = new File("./target/testwebapp");

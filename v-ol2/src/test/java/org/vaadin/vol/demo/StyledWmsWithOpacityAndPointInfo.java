@@ -1,5 +1,12 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Slider;
+import com.vaadin.ui.Slider.ValueOutOfBoundsException;
+
 import org.vaadin.vol.GoogleStreetMapLayer;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenLayersMap.MapClickEvent;
@@ -7,12 +14,6 @@ import org.vaadin.vol.OpenLayersMap.MapClickListener;
 import org.vaadin.vol.OpenStreetMapLayer;
 import org.vaadin.vol.PointInformation;
 import org.vaadin.vol.WebMapServiceLayerStyled;
-
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Slider;
-import com.vaadin.ui.Slider.ValueOutOfBoundsException;
 
 public class StyledWmsWithOpacityAndPointInfo extends AbstractVOLTest {
 
@@ -92,12 +93,12 @@ public class StyledWmsWithOpacityAndPointInfo extends AbstractVOLTest {
         opacitySlider.setSizeUndefined();
         content.addComponent(opacitySlider);
 
-        map.addListener(new MapClickListener() {
+        map.addMapClickListener(new MapClickListener() {
 
             public void mapClicked(MapClickEvent event) {
                 PointInformation info = event.getPointInfo();
-                 showNotification("Point Information", info.toString(),
-                            Notification.TYPE_WARNING_MESSAGE, true);
+                 Notification.show("Point Information", info.toString(),
+                            Notification.Type.WARNING_MESSAGE);
             }
         });
         map.setImmediate(true);

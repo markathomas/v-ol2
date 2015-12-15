@@ -2,18 +2,19 @@ package org.vaadin.vol.demo;
 
 
 
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.ui.AbstractSelect.Filtering;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
+
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.Style;
 import org.vaadin.vol.StyleMap;
 import org.vaadin.vol.WebFeatureServiceLayer;
 import org.vaadin.vol.WebMapServiceLayer;
-
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.ui.AbstractSelect.Filtering;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
 
 public class WebFeatureServiceFilter extends AbstractVOLTest {
 
@@ -68,8 +69,7 @@ public class WebFeatureServiceFilter extends AbstractVOLTest {
         webMapServiceLayer.setDisplayName("Base map");
         openLayersMap.addLayer(webMapServiceLayer);
 
-        String proxyUrl = getApplication().getURL()
-                + "../WFSPROXY/demo.opengeo.org/geoserver/wfs";
+        String proxyUrl = contextPath + "/WFSPROXY/demo.opengeo.org/geoserver/wfs";
 
         final WebFeatureServiceLayer wfsRoads = createWfsLayer("Roads", proxyUrl,
 //                "tasmania_water_bodies"/*"tasmania_roads"*/);
@@ -94,7 +94,7 @@ public class WebFeatureServiceFilter extends AbstractVOLTest {
         filterCombo.addItem("road");
         filterCombo.addItem("highway");
         filterCombo.select("road");
-        filterCombo.addListener(new Property.ValueChangeListener() {
+        filterCombo.addValueChangeListener(new Property.ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
                 String s=(String)event.getProperty().getValue();
                 if (s.equals("highway") || s.equals("road"))
@@ -104,7 +104,7 @@ public class WebFeatureServiceFilter extends AbstractVOLTest {
             }
         });
 
-        addComponent(filterCombo);
+        ((ComponentContainer)getContent()).addComponent(filterCombo);
         controls.addComponent(filterCombo);
 
         return openLayersMap;

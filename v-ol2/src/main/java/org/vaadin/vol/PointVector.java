@@ -1,14 +1,13 @@
 package org.vaadin.vol;
 
-import org.vaadin.vol.client.ui.VPointVector;
-
-import com.vaadin.ui.ClientWidget;
-
-@ClientWidget(VPointVector.class)
 public class PointVector extends Vector {
 
+    public PointVector(Point point) {
+        setPoints(point);
+    }
+
     public PointVector(double x, double y) {
-        setPoints(new Point(x, y));
+        this(new Point(x, y));
     }
 
     public PointVector() {
@@ -28,6 +27,4 @@ public class PointVector extends Vector {
     public void setPoints(Point... points) {
         super.setPoints(points);
     }
-
-
 }

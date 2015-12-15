@@ -1,9 +1,16 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
+
 import org.vaadin.vol.Area;
 import org.vaadin.vol.Layer;
-import org.vaadin.vol.VectorLayer.SelectionMode;
-import org.vaadin.vol.VectorLayer.VectorSelectedEvent;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
 import org.vaadin.vol.Point;
@@ -11,13 +18,8 @@ import org.vaadin.vol.PointVector;
 import org.vaadin.vol.Style;
 import org.vaadin.vol.StyleMap;
 import org.vaadin.vol.VectorLayer;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import org.vaadin.vol.VectorLayer.VectorSelectedEvent;
+import org.vaadin.vol.client.VectorLayerState;
 
 /**
  * Demonstrates issue of only last VectorLayer added being able to listen for VectorSelected events.
@@ -25,7 +27,7 @@ import com.vaadin.ui.VerticalLayout;
  */
 public class SelectMultipleVectorLayers extends AbstractVOLTest {
 
-        private OpenLayersMap map = new OpenLayersMap();
+    private OpenLayersMap map = new OpenLayersMap();
     //private VectorLayer layer1;
     //private VectorLayer layer2;
 
@@ -66,7 +68,7 @@ public class SelectMultipleVectorLayers extends AbstractVOLTest {
         CheckBox cb = new CheckBox(caption);
         cb.setImmediate(true);
 
-        cb.addListener(new ValueChangeListener() {
+        cb.addValueChangeListener(new ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
                 addRemoveLayer((Boolean) event.getProperty().getValue(), layer);
             }
@@ -91,12 +93,12 @@ public class SelectMultipleVectorLayers extends AbstractVOLTest {
 
         layer1.addVector(new PointVector(-104.9, 40.8));
         layer1.addVector(new PointVector(-105.6, 40.6));
-        layer1.addListener(new VectorLayer.VectorSelectedListener() {
+        layer1.addVectorSelectedListener(new VectorLayer.VectorSelectedListener() {
             public void vectorSelected(VectorSelectedEvent event) {
-                showNotification("Select on Layer1");
+                Notification.show("Select on Layer1");
             }
         });
-        layer1.setSelectionMode(SelectionMode.SIMPLE);
+        layer1.setSelectionMode(VectorLayerState.SelectionMode.SIMPLE);
 
         Style s = new Style();
         s.setPointRadius(15.0);
@@ -132,13 +134,13 @@ public class SelectMultipleVectorLayers extends AbstractVOLTest {
         a2.setPoints(r2);
         layer2.addVector(a2);
 
-        layer2.addListener(new VectorLayer.VectorSelectedListener() {
+        layer2.addVectorSelectedListener(new VectorLayer.VectorSelectedListener() {
             public void vectorSelected(VectorSelectedEvent event) {
-                showNotification("Select on Layer2");
+                Notification.show("Select on Layer2");
 
             }
         });
-        layer2.setSelectionMode(SelectionMode.SIMPLE);
+        layer2.setSelectionMode(VectorLayerState.SelectionMode.SIMPLE);
 
         Style s = new Style();
         s.setFillColor("green");

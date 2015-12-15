@@ -1,11 +1,5 @@
 package org.vaadin.vol.demo;
 
-import org.vaadin.vol.GoogleStreetMapLayer;
-import org.vaadin.vol.OpenLayersMap;
-import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.PointVector;
-import org.vaadin.vol.VectorLayer;
-
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -13,6 +7,12 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+
+import org.vaadin.vol.GoogleStreetMapLayer;
+import org.vaadin.vol.OpenLayersMap;
+import org.vaadin.vol.OpenStreetMapLayer;
+import org.vaadin.vol.PointVector;
+import org.vaadin.vol.VectorLayer;
 
 public class Issue90AttachReattach extends AbstractVOLTest {
 
@@ -47,7 +47,7 @@ public class Issue90AttachReattach extends AbstractVOLTest {
         layout2.addComponent(label2);
 
         Button toggle = new Button("Toggle");
-        toggle.addListener(new ClickListener() {
+        toggle.addClickListener(new ClickListener() {
             private static final long serialVersionUID = 1L;
 
             public void buttonClick(final ClickEvent event) {

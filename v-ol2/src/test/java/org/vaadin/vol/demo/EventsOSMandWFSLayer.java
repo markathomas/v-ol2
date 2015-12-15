@@ -1,6 +1,11 @@
 package org.vaadin.vol.demo;
 
 
+import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
+
 import org.vaadin.vol.AbstractLayerBase.LoadEndEvent;
 import org.vaadin.vol.AbstractLayerBase.LoadEndListener;
 import org.vaadin.vol.AbstractLayerBase.LoadStartEvent;
@@ -12,10 +17,6 @@ import org.vaadin.vol.OpenStreetMapLayer;
 import org.vaadin.vol.Style;
 import org.vaadin.vol.StyleMap;
 import org.vaadin.vol.WebFeatureServiceLayer;
-
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
 
 /**
  * Loads different feature types from a wfs use beforefeature select event
@@ -87,8 +88,7 @@ public class EventsOSMandWFSLayer extends AbstractVOLTest {
         osmLayer.setUrl("http://b.tile.openstreetmap.org/${z}/${x}/${y}.png");
         osmLayer.setDisplayName("OSM");
 
-        String proxyUrl = getApplication().getURL()
-                + "../WFSPROXY/demo.opengeo.org/geoserver/wfs";
+        String proxyUrl = contextPath + "/WFSPROXY/demo.opengeo.org/geoserver/wfs";
 
         WebFeatureServiceLayer wfsCities = createWfsLayer("Cities", proxyUrl,
                 "tasmania_cities");
@@ -120,7 +120,7 @@ public class EventsOSMandWFSLayer extends AbstractVOLTest {
         editor.setRows(20);
         editor.setColumns(20);
         editor.setImmediate(true);
-        addComponent(editor);
+        ((ComponentContainer)getContent()).addComponent(editor);
         controls.addComponent(editor);
 
         return openLayersMap;

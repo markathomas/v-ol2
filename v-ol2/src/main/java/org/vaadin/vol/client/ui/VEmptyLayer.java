@@ -15,7 +15,7 @@ public class VEmptyLayer extends VWebMapServiceLayer {
         return this.layer;
     }
 
-    EmptyLayer createLayer() {
+    protected EmptyLayer createLayer() {
         return EmptyLayer.createLayer(this.isBaseLayer());
     }
 }

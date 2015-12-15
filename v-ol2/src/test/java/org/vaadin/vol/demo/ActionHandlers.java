@@ -1,20 +1,13 @@
 package org.vaadin.vol.demo;
 
-import org.vaadin.vol.Bounds;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.Point;
-import org.vaadin.vol.PointVector;
-import org.vaadin.vol.PolyLine;
 import org.vaadin.vol.VectorLayer;
-
-import com.vaadin.event.Action;
-import com.vaadin.event.Action.Handler;
 
 /**
  * Example where one can drag points or squares with context menu.
  */
-public class ActionHandlers extends AbstractVOLTest implements Handler {
+public class ActionHandlers extends AbstractVOLTest {
 
     private VectorLayer vectorLayer;
     private OpenLayersMap openLayersMap;
@@ -25,7 +18,6 @@ public class ActionHandlers extends AbstractVOLTest implements Handler {
         vectorLayer = new VectorLayer();
         openLayersMap.addLayer(vectorLayer);
 
-        openLayersMap.addActionHandler(this);
         openLayersMap.setImmediate(true); // to get extent eagerly, used to draw
                                           // relatively sized squares
         this.openLayersMap = openLayersMap;
@@ -37,7 +29,7 @@ public class ActionHandlers extends AbstractVOLTest implements Handler {
         return "Example where one can add points or squares with context menu";
     }
 
-    private static final Action POINT = new Action("Add Point");
+    /*private static final Action POINT = new Action("Add Point");
     private static final Action RECT = new Action("Add Rectangle");
     private static final Action[] ACTIONS = new Action[] { POINT, RECT };
 
@@ -72,7 +64,7 @@ public class ActionHandlers extends AbstractVOLTest implements Handler {
             vectorLayer.addVector(polyLine);
         }
 
-    }
+    }*/
 
     @Override
     OpenLayersMap getMap() {

@@ -1,5 +1,15 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.NativeButton;
+import com.vaadin.ui.ProgressBar;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
+
 import java.util.Date;
 
 import org.vaadin.vol.Bounds;
@@ -10,16 +20,6 @@ import org.vaadin.vol.PolyLine;
 import org.vaadin.vol.Style;
 import org.vaadin.vol.StyleMap;
 import org.vaadin.vol.VectorLayer;
-
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.NativeButton;
-import com.vaadin.ui.ProgressIndicator;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class VectorAnimation extends AbstractVOLTest implements ClickListener {
@@ -33,11 +33,9 @@ public class VectorAnimation extends AbstractVOLTest implements ClickListener {
     private Button stop = new NativeButton("Stop animation", this);
     private Button playData = new NativeButton("Play", this);
 
-    private ProgressIndicator pi = new ProgressIndicator();
+    private ProgressBar pi = new ProgressBar();
 
     private Bounds bounds;
-
-    private VectorLayer vectorLayer;
 
     private PolyLine polyline = new PolyLine();
 
@@ -67,7 +65,7 @@ public class VectorAnimation extends AbstractVOLTest implements ClickListener {
     private void playDetails() {
         pi.setVisible(true);
         animationThread = new Thread(new VectorAnimator(
-                Integer.parseInt(animationDuration.toString())));
+                Integer.parseInt(animationDuration.getValue())));
         animationThread.start();
         playData.setEnabled(false);
     }
@@ -104,7 +102,7 @@ public class VectorAnimation extends AbstractVOLTest implements ClickListener {
             // base layers
             map.addLayer(osm);
 
-            vectorLayer = new VectorLayer();
+            VectorLayer vectorLayer = new VectorLayer();
 
             showWholeVector();
 
@@ -132,13 +130,13 @@ public class VectorAnimation extends AbstractVOLTest implements ClickListener {
 
             controls = new HorizontalLayout();
 
-            animationDuration.setValue(15);
+            animationDuration.setValue("15");
             controls.addComponent(animationDuration);
             controls.addComponent(playData);
             controls.addComponent(stop);
             controls.addComponent(pi);
             pi.setIndeterminate(true);
-            pi.setPollingInterval(1000 / FPS);
+            setPollInterval(1000 / FPS);
             pi.setVisible(false);
         }
         return map;
@@ -218,7 +216,7 @@ public class VectorAnimation extends AbstractVOLTest implements ClickListener {
                 Point front = interpolateFront(curIndex, fraction);
                 Point back = interpolateBack(curIndex, fraction);
 
-                Point[] points = new Point[SNAKE_LENGHT + 2];
+                final Point[] points = new Point[SNAKE_LENGHT + 2];
                 points[0] = front;
                 points[1] = coordinateList[(curIndex + 1)
                         % coordinateList.length];
@@ -227,15 +225,19 @@ public class VectorAnimation extends AbstractVOLTest implements ClickListener {
                         % coordinateList.length];
                 points[4] = back;
 
-                synchronized (getApplication()) {
-                    polyline.setPoints(points);
-                }
+                access(new Runnable() {
+                    public void run() {
+                        polyline.setPoints(points);
+                    }
+                });
             }
 
-            synchronized (getApplication()) {
-                pi.setVisible(false);
-                showWholeVector();
-            }
+            access(new Runnable() {
+                public void run() {
+                    pi.setVisible(false);
+                    showWholeVector();
+                }
+            });
         }
 
         private Point interpolateFront(int curIndex, double fraction) {

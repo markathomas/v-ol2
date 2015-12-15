@@ -1,16 +1,17 @@
 package org.vaadin.vol.demo;
 
-import org.vaadin.vol.Marker;
-import org.vaadin.vol.MarkerLayer;
-import org.vaadin.vol.OpenLayersMap;
-import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.Point;
-
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
+
+import org.vaadin.vol.Marker;
+import org.vaadin.vol.MarkerLayer;
+import org.vaadin.vol.OpenLayersMap;
+import org.vaadin.vol.OpenStreetMapLayer;
+import org.vaadin.vol.Point;
 
 public class MarkerAddingAndRemoving extends AbstractVOLTest implements Handler {
 
@@ -40,8 +41,6 @@ public class MarkerAddingAndRemoving extends AbstractVOLTest implements Handler 
         // base layers
         map.addLayer(new OpenStreetMapLayer());
 
-        map.addActionHandler(this);
-
         markerLayer = new MarkerLayer();
 
         map.addLayer(markerLayer);
@@ -56,7 +55,7 @@ public class MarkerAddingAndRemoving extends AbstractVOLTest implements Handler 
     @Override
     public void attach() {
         super.attach();
-        showNotification(getDescription(), Notification.TYPE_WARNING_MESSAGE);
+        Notification.show(getDescription(), Notification.Type.WARNING_MESSAGE);
     }
 
     private void addMarker(double lon, double lat) {

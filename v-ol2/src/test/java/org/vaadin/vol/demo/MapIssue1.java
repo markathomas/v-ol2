@@ -1,12 +1,13 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.ui.Component;
+
 import org.vaadin.vol.Marker;
 import org.vaadin.vol.MarkerLayer;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
 import org.vaadin.vol.VectorLayer;
-
-import com.vaadin.ui.Component;
+import org.vaadin.vol.client.VectorLayerState;
 
 public class MapIssue1 extends AbstractVOLTest {
 
@@ -36,7 +37,7 @@ public class MapIssue1 extends AbstractVOLTest {
          */
         VectorLayer vectorLayer = new VectorLayer();
         vectorLayer.setDisplayName("Vector layer");
-        vectorLayer.setDrawingMode(VectorLayer.DrawingMode.NONE);
+        vectorLayer.setDrawingMode(VectorLayerState.DrawingMode.NONE);
 
         OpenStreetMapLayer osmLayer = new OpenStreetMapLayer();
 

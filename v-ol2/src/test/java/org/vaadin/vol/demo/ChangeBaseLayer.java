@@ -1,5 +1,12 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.VerticalLayout;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,13 +17,6 @@ import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenLayersMap.BaseLayerChangeEvent;
 import org.vaadin.vol.OpenLayersMap.BaseLayerChangeListener;
 import org.vaadin.vol.OpenStreetMapLayer;
-
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.VerticalLayout;
 
 /**
  * Demonstrates changing base layer from server-side and
@@ -60,7 +60,7 @@ public class ChangeBaseLayer extends AbstractVOLTest {
         baseLayers.select(osm.getDisplayName());
         baseLayers.setNullSelectionAllowed(false);
         baseLayers.setImmediate(true);
-        baseLayers.addListener(new ValueChangeListener() {
+        baseLayers.addValueChangeListener(new ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
                 Layer newlayer = (Layer) event.getProperty().getValue();
                 if (!newlayer.equals(map.getBaseLayer())) {
@@ -70,7 +70,7 @@ public class ChangeBaseLayer extends AbstractVOLTest {
         });
 
 
-        map.addListener(new BaseLayerChangeListener() {
+        map.addBaseLayerChangeListener(new BaseLayerChangeListener() {
 
             public void baseLayerChanged(BaseLayerChangeEvent event) {
                 Layer newBaseLayer = map.getBaseLayer();

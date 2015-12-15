@@ -5,17 +5,20 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.Paintable;
 import com.vaadin.client.RenderSpace;
 import com.vaadin.client.UIDL;
 import com.vaadin.client.ValueMap;
+import com.vaadin.shared.Connector;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.vaadin.vol.client.Costants;
+import org.vaadin.vol.client.VectorLayerServerRpc;
+import org.vaadin.vol.client.VectorLayerState;
 import org.vaadin.vol.client.wrappers.GwtOlHandler;
 import org.vaadin.vol.client.wrappers.JsObject;
 import org.vaadin.vol.client.wrappers.Map;
@@ -44,19 +47,23 @@ public class VVectorLayer extends FlowPanel implements VLayer {
     private Control df;
     private GwtOlHandler _fAddedListener;
     private boolean updating;
-    private ApplicationConnection client;
+    private VectorLayerServerRpc vectorLayerServerRpc;
+    private VectorLayerState vectorLayerState;
     private String displayName;
     private GwtOlHandler _fModifiedListener;
 
-    private boolean immediate;
+    private Vector lastNewDrawing;
+    private boolean added;
+    private String currentSelectionMode;
+    private SelectFeature selectFeature;
+    private String selectionCtrlId;             // Common SelectFeature control identifier
 
     public VectorLayer getLayer() {
         if (vectors == null) {
             vectors = VectorLayer.create(displayName);
             vectors.registerHandler("featureadded", getFeatureAddedListener());
-            vectors.registerHandler("featuremodified",
-                    getFeatureModifiedListener());
-            vectors.registerHandler("afterfeaturemodified", new GwtOlHandler() {
+            vectors.registerHandler("featuremodified", getFeatureModifiedListener());
+            /*vectors.registerHandler("afterfeaturemodified", new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
                     if (updating) {
@@ -67,7 +74,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                     }
                     client.sendPendingVariableChanges();
                 }
-            });
+            });*/
             vectors.registerHandler("featureselected", new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
@@ -77,17 +84,10 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                         // side
                         return;
                     }
-                    if (client.hasEventListeners(VVectorLayer.this, "vsel")) {
+                    if (vectorLayerState.registeredEventListeners.contains("vsel")) {
                         ValueMap javaScriptObject = arguments.get(0).cast();
-                        Vector vector = javaScriptObject.getValueMap("feature")
-                                .cast();
-                        for (Widget w : getChildren()) {
-                            VAbstractVector v = (VAbstractVector) w;
-                            if (v.getVector() == vector) {
-                                client.updateVariable(paintableId, "vsel", v,
-                                        true);
-                            }
-                        }
+                        Vector vector = javaScriptObject.getValueMap("feature").cast();
+                        vectorLayerServerRpc.select(getConnectorIdForVector(vector));
                     }
                 }
             });
@@ -96,19 +96,17 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
                     ValueMap javaScriptObject = arguments.get(0).cast();
-                    Vector vector = javaScriptObject.getValueMap("feature")
-                            .cast();
-                    for (Widget w : getChildren()) {
-                        VAbstractVector v = (VAbstractVector) w;
+                    Vector vector = javaScriptObject.getValueMap("feature").cast();
+                    for (Connector c : vectorLayerState.vectors) {
+                        Widget w = ((ComponentConnector)c).getWidget();
+                        VAbstractVector v = (VAbstractVector)w;
                         if (v.getVector() == vector) {
                             v.revertDefaultIntent();
-                            // ignore selections that happend during update, those
+                            // ignore selections that happened during update, those
                             // should be already known and notified by the server
                             // side
-                            if (!updating && client.hasEventListeners(VVectorLayer.this,
-                                    "vusel")) {
-                                client.updateVariable(paintableId, "vusel", v,
-                                        true);
+                            if (!updating && vectorLayerState.registeredEventListeners.contains("vusel")) {
+                                vectorLayerServerRpc.unselect(c.getConnectorId());
                                 break;
                             }
                         }
@@ -118,6 +116,17 @@ public class VVectorLayer extends FlowPanel implements VLayer {
 
         }
         return vectors;
+    }
+
+    private String getConnectorIdForVector(Vector vector) {
+        for (Connector c : vectorLayerState.vectors) {
+            Widget w = ((ComponentConnector)c).getWidget();
+            VAbstractVector v = (VAbstractVector)w;
+            if (v.getVector() == vector) {
+                return c.getConnectorId();
+            }
+        }
+        return null;
     }
 
     private GwtOlHandler getFeatureModifiedListener() {
@@ -138,35 +147,20 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                         if (isLineString) {
                             LineString ls = geometry.cast();
                             JsArray<Point> allVertices = ls.getAllVertices();
-                            client.updateVariable(paintableId,
-                                    "newVerticesProj", getMap().getProjection()
-                                            .toString(), false);
                             String[] points = new String[allVertices.length()];
                             for (int i = 0; i < allVertices.length(); i++) {
                                 Point point = allVertices.get(i);
                                 point = point.nativeClone();
-                                point.transform(getMap().getProjection(),
-                                        getProjection());
+                                point.transform(getMap().getProjection(), getProjection());
                                 points[i] = point.toString();
                             }
                             // VConsole.log("modified");
                             // communicate points to server and mark the
                             // new geometry to be removed on next update.
-                            client.updateVariable(paintableId, "vertices",
-                                    points, false);
 
-                            Vector modifiedFeature = ((ModifyFeature) df.cast())
-                                    .getModifiedFeature();
-                            Iterator<Widget> iterator = iterator();
-                            while (iterator.hasNext()) {
-                                VAbstractVector next = (VAbstractVector) iterator
-                                        .next();
-                                Vector vector = next.getVector();
-                                if (vector == modifiedFeature) {
-                                    client.updateVariable(paintableId,
-                                            "modifiedVector", next, immediate);
-                                    break;
-                                }
+                            Vector modifiedFeature = ((ModifyFeature)df.cast()).getModifiedFeature();
+                            if (modifiedFeature != null) {
+                                vectorLayerServerRpc.modify(points, getConnectorIdForVector(modifiedFeature));
                             }
 
                             // client.sendPendingVariableChanges();
@@ -179,12 +173,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         return _fModifiedListener;
     }
 
-    private String paintableId;
-    private Vector lastNewDrawing;
-    private boolean added = false;
-    private String currentSelectionMode;
-    private SelectFeature selectFeature;
-    private String selectionCtrlId;             // Common SelectFeature control identifier
+
 
     private GwtOlHandler getFeatureAddedListener() {
         if (_fAddedListener == null) {
@@ -200,22 +189,19 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                         Vector feature = event.getFieldByName("feature").cast();
                         Geometry geometry = feature.getGeometry();
 
-                        if (drawingMode == "AREA" || drawingMode == "LINE" || drawingMode == "RECTANGLE" || drawingMode == "CIRCLE") {
+                        if (drawingMode == "AREA"
+                          || drawingMode == "LINE"
+                          || drawingMode == "RECTANGLE"
+                          || drawingMode == "CIRCLE") {
                             LineString ls = geometry.cast();
                             JsArray<Point> allVertices = ls.getAllVertices();
-                            // TODO this can be removed??
-                            client.updateVariable(paintableId,
-                                    "newVerticesProj", getMap().getProjection()
-                                            .toString(), false);
                             String[] points = new String[allVertices.length()];
                             for (int i = 0; i < allVertices.length(); i++) {
                                 Point point = allVertices.get(i);
-                                point.transform(getMap().getProjection(),
-                                        getProjection());
+                                point.transform(getMap().getProjection(), getProjection());
                                 points[i] = point.toString();
                             }
-                            client.updateVariable(paintableId, "vertices",
-                                    points, false);
+                            vectorLayerServerRpc.draw(points, VectorLayerState.DrawingMode.valueOf(drawingMode));
                         } else if (drawingMode == "POINT") {
                             // point
                             Point point = geometry.cast();
@@ -223,13 +209,12 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                                     getProjection());
                             double x = point.getX();
                             double y = point.getY();
-                            client.updateVariable(paintableId, "x", x, false);
-                            client.updateVariable(paintableId, "y", y, false);
+                            String[] points = new String[] { Point.create(x, y).toString() };
+                            vectorLayerServerRpc.draw(points, VectorLayerState.DrawingMode.valueOf(drawingMode));
                         }
                         // VConsole.log("drawing done");
                         // communicate points to server and mark the
                         // new geometry to be removed on next update.
-                        client.sendPendingVariableChanges();
                         if (drawingMode != "MODIFY") {
                             lastNewDrawing = feature;
                         }
@@ -240,18 +225,15 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         return _fAddedListener;
     }
 
-    public void updateFromUIDL(UIDL layer, ApplicationConnection client) {
-        if (client.updateComponent(this, layer, false)) {
-            return;
-        }
-        this.client = client;
-        paintableId = layer.getId();
-        updating = true;
-        displayName = layer.getStringAttribute("name");
-        immediate = layer.getBooleanAttribute("immediate");
-        if (!added) {
+    public void update(VectorLayerState state, VectorLayerServerRpc vectorLayerServerRpc) {
+        this.updating = true;
+        this.displayName = state.displayName;
+        this.vectorLayerServerRpc = vectorLayerServerRpc;
+        this.vectorLayerState = state;
+
+        if (!this.added) {
             getMap().addLayer(getLayer());
-            added = true;
+            this.added = true;
         }
 
         // Last new drawing only visible to next update. If used by server side
@@ -261,30 +243,29 @@ public class VVectorLayer extends FlowPanel implements VLayer {
             lastNewDrawing = null;
         }
 
-        updateStyleMap(layer);
-        setDrawingMode(layer.getStringAttribute("dmode"));
+        //TODO: fix me
+        // updateStyleMap(state);
+        setDrawingMode(state.drawingMode.toString());
 
         // Identifier for SelectFeature control to use ... layers specifying the
         // the same identifier can all listen for their own Select events on the map.
-        selectionCtrlId = layer.getStringAttribute("selectionCtrlId");
+        selectionCtrlId = state.selectionCtrlId;
 
-        setSelectionMode(layer);
+        setSelectionMode();
 
         HashSet<Widget> orphaned = new HashSet<Widget>();
         for (Iterator<Widget> iterator = iterator(); iterator.hasNext();) {
             orphaned.add(iterator.next());
         }
 
-        int childCount = layer.getChildCount();
+        int childCount = state.vectors.size();
         for (int i = 0; i < childCount; i++) {
-            UIDL childUIDL = layer.getChildUIDL(i);
-            VAbstractVector vector = (VAbstractVector) client
-                    .getPaintable(childUIDL);
+            VAbstractVector vector = (VAbstractVector)state.vectors.get(i);
             boolean isNew = !hasChildComponent(vector);
             if (isNew) {
                 add(vector);
             }
-            vector.updateFromUIDL(childUIDL, client);
+            //vector.updateFromUIDL(childUIDL, client);
             orphaned.remove(vector);
         }
         for (Widget widget : orphaned) {
@@ -293,8 +274,8 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         updating = false;
     }
 
-    private void setSelectionMode(final UIDL layer) {
-        String newSelectionMode = layer.getStringAttribute("smode").intern();
+    private void setSelectionMode() {
+        String newSelectionMode = this.vectorLayerState.selectionMode.toString().intern();
         if (currentSelectionMode != newSelectionMode) {
             if (selectFeature != null) {
                 /* remove this layer from the SelectFeature instead of removing the control
@@ -318,12 +299,12 @@ public class VVectorLayer extends FlowPanel implements VLayer {
             currentSelectionMode = newSelectionMode;
         }
         if (currentSelectionMode != "NONE" || drawingMode == "MODIFY") {
-            if (layer.hasAttribute("svector")) {
+            if (this.vectorLayerState.selectedVector != null) {
                 Scheduler.get().scheduleFinally(new ScheduledCommand() {
 
                     public void execute() {
-                        VAbstractVector selectedVector = (VAbstractVector) layer
-                                .getPaintableAttribute("svector", client);
+                        Widget w = ((ComponentConnector)vectorLayerState.selectedVector).getWidget();
+                        VAbstractVector selectedVector = (VAbstractVector)w;
                         if (selectedVector != null) {
                             updating = true;
                             // ensure selection
@@ -563,5 +544,4 @@ public class VVectorLayer extends FlowPanel implements VLayer {
             }
         }
     }
-
 }

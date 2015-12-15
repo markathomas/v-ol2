@@ -1,20 +1,26 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-
-public abstract class AbstractVOLTest extends Window {
+@SuppressWarnings("unchecked")
+public abstract class AbstractVOLTest extends UI {
 
     protected VerticalLayout content;
+    protected String contextPath;
 
-    public AbstractVOLTest() {
+    @Override
+    protected void init(VaadinRequest request) {
+        this.contextPath = request.getContextPath();
         content = new VerticalLayout();
         setContent(content);
     }
@@ -23,8 +29,7 @@ public abstract class AbstractVOLTest extends Window {
     public void attach() {
         super.attach();
         setup();
-        showNotification(getClass().getSimpleName(), getDescription(),
-                Notification.TYPE_WARNING_MESSAGE);
+        Notification.show(getClass().getSimpleName(), getDescription(), Notification.Type.WARNING_MESSAGE);
     }
 
     protected void setup() {
