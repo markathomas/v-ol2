@@ -9,18 +9,18 @@ public class VMapTilerLayer extends VAbstracMapLayer<TileMapServiceLayer> {
 
     private String uri;
     private String layers;
-    private Boolean isBaseLayer;
+    private Boolean baseLayer;
     private Double opacity;
     private String format;
     private boolean transparent;
-    private Bounds bounds;
+    private Double[] bounds;
     private int minZoomLevel = 13;
     private int maxZoomLevel = 16;
 
     @Override
     TileMapServiceLayer createLayer() {
-        return TileMapServiceLayer.create(getDisplayName(), uri, isBaseLayer,
-                getGetUrlMethod(bounds, minZoomLevel, maxZoomLevel));
+        return TileMapServiceLayer.create(getDisplayName(), uri, baseLayer,
+                getGetUrlMethod(Bounds.create(bounds[0], bounds[1], bounds[2], bounds[3]), minZoomLevel, maxZoomLevel));
     }
 
     private native JavaScriptObject getGetUrlMethod(Bounds mapBounds,
@@ -75,11 +75,11 @@ public class VMapTilerLayer extends VAbstracMapLayer<TileMapServiceLayer> {
     }
 
     public Boolean isBaseLayer() {
-        return this.isBaseLayer;
+        return this.baseLayer;
     }
 
     public void setBaseLayer(Boolean baseLayer) {
-        isBaseLayer = baseLayer;
+        this.baseLayer = baseLayer;
     }
 
     public Double getOpacity() {
@@ -106,11 +106,11 @@ public class VMapTilerLayer extends VAbstracMapLayer<TileMapServiceLayer> {
         this.transparent = transparent;
     }
 
-    public Bounds getBounds() {
+    public Double[] getBounds() {
         return this.bounds;
     }
 
-    public void setBounds(Bounds bounds) {
+    public void setBounds(Double[] bounds) {
         this.bounds = bounds;
     }
 

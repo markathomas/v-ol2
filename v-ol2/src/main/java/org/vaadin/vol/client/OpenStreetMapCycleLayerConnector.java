@@ -10,11 +10,6 @@ import org.vaadin.vol.client.ui.VOpenStreetMapCycleLayer;
 public class OpenStreetMapCycleLayerConnector extends LayerBaseConnector {
 
     @Override
-    public OpenStreetMapLayerState getState() {
-        return (OpenStreetMapLayerState)super.getState();
-    }
-
-    @Override
     public VOpenStreetMapCycleLayer getWidget() {
         return (VOpenStreetMapCycleLayer)super.getWidget();
     }

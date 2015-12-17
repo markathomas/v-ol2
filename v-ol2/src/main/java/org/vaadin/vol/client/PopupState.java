@@ -3,8 +3,6 @@ package org.vaadin.vol.client;
 import com.vaadin.shared.AbstractComponentState;
 import com.vaadin.shared.Connector;
 
-import org.vaadin.vol.Point;
-
 public class PopupState extends AbstractComponentState {
 
     public enum PopupStyle {

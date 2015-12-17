@@ -1,12 +1,6 @@
 package org.vaadin.vol.client;
 
-import org.vaadin.vol.StyleMap;
-
 public class AutoPopulatedVectorLayerState extends LayerBaseState {
-
-    public boolean hasBeforeFeatureSelectedListeners;
-    public boolean hasFeatureSelectedListeners;
-    public boolean hasFeatureUnselectedListeners;
 
     public StyleMap styleMap;
     public String selectionMode;

@@ -1,4 +1,4 @@
-package org.vaadin.vol;
+package org.vaadin.vol.client;
 
 public enum Control {
     ArgParser, Navigation, LayerSwitcher, ScaleLine, PanZoomBar, PanZoom, NavToolbar, OverviewMap, MousePosition,

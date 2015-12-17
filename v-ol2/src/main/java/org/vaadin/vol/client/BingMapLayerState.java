@@ -8,7 +8,7 @@ public class BingMapLayerState extends AbstractComponentState {
     @DelegateToWidget
     public String displayName;
     @DelegateToWidget
-    public String apikey;
+    public String apiKey;
     @DelegateToWidget
     public String type = "Road";
 }

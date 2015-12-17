@@ -173,8 +173,6 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         return _fModifiedListener;
     }
 
-
-
     private GwtOlHandler getFeatureAddedListener() {
         if (_fAddedListener == null) {
             _fAddedListener = new GwtOlHandler() {
@@ -495,7 +493,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
     }
 
     private VOpenLayersMap getVMap() {
-        return ((VOpenLayersMap) getParent().getParent());
+        return ((VOpenLayersMap)getParent());
     }
 
     protected Projection getProjection() {

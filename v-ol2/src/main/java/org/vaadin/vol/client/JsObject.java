@@ -1,4 +1,4 @@
-package org.vaadin.vol;
+package org.vaadin.vol.client;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -10,13 +10,13 @@ import java.util.Set;
  *
  */
 public class JsObject implements Serializable {
-    private HashMap<String, Object> keyvalue;
+    private HashMap<String, Serializable> keyvalue;
 
     public JsObject() {
-        keyvalue = new HashMap<String, Object>();
+        keyvalue = new HashMap<String, Serializable>();
     }
 
-    public void setProperty(String key, Object value) {
+    public void setProperty(String key, Serializable value) {
         keyvalue.put(key, value);
     }
 
@@ -44,7 +44,7 @@ public class JsObject implements Serializable {
         return keyvalue.get(key);
     }
 
-    public Map<String, Object> getKeyValueMap() {
+    public Map<String, Serializable> getKeyValueMap() {
         return keyvalue;
     }
 

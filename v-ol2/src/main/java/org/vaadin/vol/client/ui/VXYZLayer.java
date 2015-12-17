@@ -5,11 +5,11 @@ import org.vaadin.vol.client.wrappers.layer.XYZLayer;
 public class VXYZLayer extends VAbstracMapLayer<XYZLayer> {
 
     private String uri;
-    private boolean spheriacalMercator;
+    private boolean sphericalMercator;
 
     @Override
     XYZLayer createLayer() {
-        return XYZLayer.create(getDisplayName(), uri, spheriacalMercator, getAttribution());
+        return XYZLayer.create(getDisplayName(), uri, sphericalMercator, getAttribution());
     }
 
     public String getUri() {
@@ -20,11 +20,11 @@ public class VXYZLayer extends VAbstracMapLayer<XYZLayer> {
         this.uri = uri;
     }
 
-    public boolean isSpheriacalMercator() {
-        return this.spheriacalMercator;
+    public boolean isSphericalMercator() {
+        return this.sphericalMercator;
     }
 
-    public void setSpheriacalMercator(boolean spheriacalMercator) {
-        this.spheriacalMercator = spheriacalMercator;
+    public void setSphericalMercator(boolean sphericalMercator) {
+        this.sphericalMercator = sphericalMercator;
     }
 }

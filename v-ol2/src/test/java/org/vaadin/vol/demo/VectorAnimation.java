@@ -12,13 +12,13 @@ import com.vaadin.ui.VerticalLayout;
 
 import java.util.Date;
 
-import org.vaadin.vol.Bounds;
+import org.vaadin.vol.client.Bounds;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.Point;
+import org.vaadin.vol.client.Point;
 import org.vaadin.vol.PolyLine;
-import org.vaadin.vol.Style;
-import org.vaadin.vol.StyleMap;
+import org.vaadin.vol.client.Style;
+import org.vaadin.vol.client.StyleMap;
 import org.vaadin.vol.VectorLayer;
 
 @SuppressWarnings("serial")

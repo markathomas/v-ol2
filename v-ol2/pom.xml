@@ -10,6 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <servlet.version>3.0.1</servlet.version>
         <vaadin.version>7.5.9</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 
@@ -89,6 +90,12 @@
             <version>${vaadin.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- This can be replaced with TestNG or some other test framework supported by the surefire plugin -->
         <dependency>
@@ -152,7 +159,7 @@
                             <!-- Package format version - do not change -->
                             <Vaadin-Package-Version>1</Vaadin-Package-Version>
                             <Vaadin-License-Title>${Vaadin-License-Title}</Vaadin-License-Title>
-                            <Vaadin-Widgetsets>org.vaadin.addons.WidgetSet</Vaadin-Widgetsets>
+                            <Vaadin-Widgetsets>org.vaadin.vol.VolWidgetset</Vaadin-Widgetsets>
                         </manifestEntries>
                     </archive>
                 </configuration>

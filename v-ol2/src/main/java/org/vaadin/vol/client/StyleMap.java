@@ -1,4 +1,4 @@
-package org.vaadin.vol;
+package org.vaadin.vol.client;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -156,15 +156,14 @@ public class StyleMap implements Serializable {
      *            is passed in, feature attributes are used by default
      *
      */
-    public void addUniqueValueRules(RenderIntent intent, String property, Symbolizer lookup, Object context) {
+    public void addUniqueValueRules(RenderIntent intent, String property, Symbolizer lookup) {
         // reset the rules setting property or lookup to null or
         // empty
         //
 
         if ((property != null) && (lookup != null)) {
             if (!("".equals(property)) && (lookup.size() > 0)) {
-                UniqueValueRule uvr = new UniqueValueRule(intent, property,
-                        lookup, context);
+                UniqueValueRule uvr = new UniqueValueRule(intent, property, lookup);
                 uniqueValueRules.put(intent.getValue(), uvr);
             }
         } else {
@@ -172,52 +171,4 @@ public class StyleMap implements Serializable {
         }
     }
 
-}
-
-/**
- * UniqueValueRule class is a wrapper class used to store the the parameter of
- * addUniqueValueRules
- *
- */
-class UniqueValueRule implements Serializable {
-    RenderIntent intent;
-    String property;
-    Symbolizer lookup;
-    Object context;
-
-    public UniqueValueRule(RenderIntent intent, String property,
-            Symbolizer lookup, Object context) {
-        this.intent = intent;
-        this.property = property;
-        this.lookup = lookup;
-        this.context = context;
-    }
-
-    /**
-     * @return the intent
-     */
-    public RenderIntent getIntent() {
-        return intent;
-    }
-
-    /**
-     * @return the property
-     */
-    public String getProperty() {
-        return property;
-    }
-
-    /**
-     * @return the lookup
-     */
-    public Symbolizer getLookup() {
-        return lookup;
-    }
-
-    /**
-     * @return the context
-     */
-    public Object getContext() {
-        return context;
-    }
 }

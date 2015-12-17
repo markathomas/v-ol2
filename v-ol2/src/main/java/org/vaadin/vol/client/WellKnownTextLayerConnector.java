@@ -4,14 +4,14 @@ import com.google.gwt.core.client.JsArray;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.shared.ui.Connect;
 
-import org.vaadin.vol.WebFeatureServiceLayer;
+import org.vaadin.vol.WellKnownTextLayer;
 import org.vaadin.vol.client.ui.VOpenLayersMap;
 import org.vaadin.vol.client.ui.VWellKnownTextLayer;
 import org.vaadin.vol.client.wrappers.Projection;
 import org.vaadin.vol.client.wrappers.Vector;
 import org.vaadin.vol.client.wrappers.format.WKT;
 
-@Connect(WebFeatureServiceLayer.class)
+@Connect(WellKnownTextLayer.class)
 public class WellKnownTextLayerConnector extends AutoPopulatedVectorLayerConnector {
 
     @Override
@@ -42,7 +42,7 @@ public class WellKnownTextLayerConnector extends AutoPopulatedVectorLayerConnect
             sourceProjection = Projection.get(projection);
         } else {
             // if not explicitly defined, use the API projection from the map
-            sourceProjection = ((VOpenLayersMap)getWidget().getParent().getParent()).getProjection();
+            sourceProjection = ((VOpenLayersMap)getWidget().getParent()).getProjection();
         }
         WKT wktFormatter = WKT.create(targetProjection, sourceProjection);
         JsArray<Vector> read = wktFormatter.read(getState().wkt);

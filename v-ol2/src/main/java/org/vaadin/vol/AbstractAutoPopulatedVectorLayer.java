@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.vaadin.vol.client.AutoPopulatedVectorLayerState;
 import org.vaadin.vol.client.FeatureSelectionServerRpc;
+import org.vaadin.vol.client.StyleMap;
 import org.vaadin.vol.client.VectorLayerState;
 
 /**
@@ -52,7 +53,7 @@ public abstract class AbstractAutoPopulatedVectorLayer extends AbstractLayerBase
      * @return the styleMap
      */
     public StyleMap getStyleMap() {
-        return getState().styleMap;
+        return this.getState().styleMap;
     }
 
     /**
@@ -116,28 +117,21 @@ public abstract class AbstractAutoPopulatedVectorLayer extends AbstractLayerBase
 
     }
 
-    public void addListener(FeatureSelectedListener listener) {
-        addListener(FeatureSelectedListener.EVENT_ID, FeatureSelectedEvent.class,
-                listener, FeatureSelectedListener.method);
-        getState().hasFeatureSelectedListeners = true;
+    public void addFeatureSelectedListener(FeatureSelectedListener listener) {
+        addListener(FeatureSelectedListener.EVENT_ID, FeatureSelectedEvent.class, listener, FeatureSelectedListener.method);
     }
 
-    public void removeListener(FeatureSelectedListener listener) {
-        removeListener(FeatureSelectedListener.EVENT_ID,
-                FeatureSelectedEvent.class, listener);
-        getState().hasFeatureSelectedListeners = !getListeners(FeatureSelectedListener.class).isEmpty();
+    public void removeFeatureSelectedListener(FeatureSelectedListener listener) {
+        removeListener(FeatureSelectedListener.EVENT_ID, FeatureSelectedEvent.class, listener);
     }
 
-    public void addListener(BeforeFeatureSelectedListener listener) {
-        addListener(BeforeFeatureSelectedListener.EVENT_ID, BeforeFeatureSelectedEvent.class,
-                listener, BeforeFeatureSelectedListener.method);
-        getState().hasBeforeFeatureSelectedListeners = true;
+    public void addBeforeFeatureSelectedListener(BeforeFeatureSelectedListener listener) {
+        addListener(BeforeFeatureSelectedListener.EVENT_ID, BeforeFeatureSelectedEvent.class, listener,
+          BeforeFeatureSelectedListener.method);
     }
 
-    public void removeListener(BeforeFeatureSelectedListener listener) {
-        removeListener(BeforeFeatureSelectedListener.EVENT_ID,
-                BeforeFeatureSelectedEvent.class, listener);
-        getState().hasBeforeFeatureSelectedListeners = !getListeners(BeforeFeatureSelectedListener.class).isEmpty();
+    public void removeBeforeFeatureSelectedListener(BeforeFeatureSelectedListener listener) {
+        removeListener(BeforeFeatureSelectedListener.EVENT_ID, BeforeFeatureSelectedEvent.class, listener);
     }
 
     public class FeatureSelectedEvent extends Event {
@@ -203,17 +197,12 @@ public abstract class AbstractAutoPopulatedVectorLayer extends AbstractLayerBase
 
     }
 
-    public void addListener(FeatureUnSelectedListener listener) {
-        addListener(FeatureUnSelectedListener.EVENT_ID,
-                FeatureUnSelectedEvent.class, listener,
-                FeatureUnSelectedListener.method);
-        getState().hasFeatureUnselectedListeners = true;
+    public void addFeatureUnSelectedListener(FeatureUnSelectedListener listener) {
+        addListener(FeatureUnSelectedListener.EVENT_ID, FeatureUnSelectedEvent.class, listener, FeatureUnSelectedListener.method);
     }
 
-    public void removeListener(FeatureUnSelectedListener listener) {
-        removeListener(FeatureUnSelectedListener.EVENT_ID,
-                FeatureUnSelectedEvent.class, listener);
-        getState().hasFeatureUnselectedListeners = !getListeners(FeatureUnSelectedListener.class).isEmpty();
+    public void removeFeatureUnSelectedListener(FeatureUnSelectedListener listener) {
+        removeListener(FeatureUnSelectedListener.EVENT_ID, FeatureUnSelectedEvent.class, listener);
     }
 
     public class FeatureUnSelectedEvent extends FeatureSelectedEvent {

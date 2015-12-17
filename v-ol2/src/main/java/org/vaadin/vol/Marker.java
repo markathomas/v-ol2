@@ -69,14 +69,11 @@ public class Marker extends AbstractComponent {
     }
 
     public void addClickListener(ClickListener listener) {
-        addListener("click", ClickEvent.class, listener,
-                ClickListener.clickMethod);
-        getState().hasClickListeners = true;
+        addListener("click", ClickEvent.class, listener, ClickListener.clickMethod);
         markAsDirty();
     }
 
     public void removeClickListener(ClickListener listener) {
         removeListener(ClickEvent.class, listener);
-        getState().hasClickListeners = !this.getListeners(ClickListener.class).isEmpty();
     }
 }

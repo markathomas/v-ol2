@@ -1,5 +1,7 @@
 package org.vaadin.vol;
 
+import org.vaadin.vol.client.Point;
+
 public class PointVector extends Vector {
 
     public PointVector(Point point) {
@@ -21,7 +23,7 @@ public class PointVector extends Vector {
     /**
      * Note that for PointVector only one points is needed and handled.
      *
-     * @see org.vaadin.vol.Vector#setPoints(org.vaadin.vol.Point[])
+     * @see org.vaadin.vol.Vector#setPoints(Point[])
      */
     @Override
     public void setPoints(Point... points) {

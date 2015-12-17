@@ -8,16 +8,13 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.vaadin.vol.Bounds;
-import org.vaadin.vol.Control;
-
 public class OpenLayersMapState extends AbstractComponentState {
 
     public List<Connector> layers = new LinkedList<Connector>();
-    public double centerLon = 0;
-    public double centerLat = 0;
+    public double centerLon;
+    public double centerLat;
     public int zoom = 3;
-    public Bounds bounds = new Bounds();
+    public Bounds bounds = Bounds.WORLD;
 
     public String jsMapOptions;
     public Bounds zoomToExtent;

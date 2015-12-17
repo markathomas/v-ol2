@@ -5,6 +5,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
+import com.vaadin.client.Profiler;
 import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
@@ -15,8 +16,6 @@ import com.vaadin.shared.ui.Connect;
 import java.util.logging.Logger;
 
 import org.vaadin.vol.OpenLayersMap;
-import org.vaadin.vol.Point;
-import org.vaadin.vol.PointInformation;
 import org.vaadin.vol.client.ui.VLayer;
 import org.vaadin.vol.client.ui.VOpenLayersMap;
 import org.vaadin.vol.client.wrappers.Bounds;
@@ -51,25 +50,15 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
 
     @Override
     public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent event) {
-        /*Profiler.enter("MarkerLayerConnector.onConnectorHierarchyChange");
-        Profiler.enter("MarkerLayerConnector.onConnectorHierarchyChange add children");
-        int index = 0;
-        for (ComponentConnector child : getChildComponents()) {
-            getWidget().addOrMove(child.getWidget(), index++);
-        }
-        Profiler.leave("MarkerLayerConnector.onConnectorHierarchyChange add children");
+        Profiler.enter("OpenLayersMapConnector.onConnectorHierarchyChange");
+        Profiler.enter("OpenLayersMapConnector.onConnectorHierarchyChange add children");
 
-        // Detach old child widgets and possibly their caption
-        Profiler.enter("MarkerLayerConnector.onConnectorHierarchyChange remove old children");
-        for (ComponentConnector child : event.getOldChildren()) {
-            if (child.getParent() == this) {
-                // Skip current children
-                continue;
-            }
-            getWidget().remove(child.getWidget());
+        getWidget().clear();
+        for (ComponentConnector child : getChildComponents()) {
+            getWidget().add(child.getWidget());
         }
-        Profiler.leave("MarkerLayerConnector.onConnectorHierarchyChange remove old children");
-        Profiler.leave("MarkerLayerConnector.onConnectorHierarchyChange");*/
+        Profiler.leave("OpenLayersMapConnector.onConnectorHierarchyChange add children");
+        Profiler.leave("OpenLayersMapConnector.onConnectorHierarchyChange");
     }
 
     @Override
@@ -85,9 +74,9 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     @Override
     public void onStateChanged(StateChangeEvent stateChangeEvent) {
         super.onStateChanged(stateChangeEvent);
-        getState().registeredEventListeners.contains("click");
 
-        if (getState().registeredEventListeners.contains("extentChange")) {
+        final boolean hasListeners = getState().registeredEventListeners != null;
+        if (hasListeners && getState().registeredEventListeners.contains("extentChange")) {
             if (this.extentChangeListener == null) {
                 this.extentChangeListener = new GwtOlHandler() {
                     @SuppressWarnings("rawtypes")
@@ -103,7 +92,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
                         Projection projection = map.getProjection();
                         extent.transform(projection, getWidget().getProjection());
 
-                        org.vaadin.vol.Bounds b = new org.vaadin.vol.Bounds(
+                        org.vaadin.vol.client.Bounds b = new org.vaadin.vol.client.Bounds(
                           new Point(extent.getLeft(), extent.getBottom()),
                           new Point(extent.getRight(), extent.getTop())
                         );
@@ -114,7 +103,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             }
         }
 
-        if (getState().registeredEventListeners.contains("baseLayerChange")) {
+        if (hasListeners && getState().registeredEventListeners.contains("baseLayerChange")) {
             if (changeBaseLayer == null) {
                 changeBaseLayer = new GwtOlHandler() {
                     public void onEvent(JsArray arguments) {
@@ -135,7 +124,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             }
         }
 
-        if (getState().registeredEventListeners.contains("click")) {
+        if (hasListeners && getState().registeredEventListeners.contains("click")) {
             if (clickListener == null) {
                 clickListener = new GwtOlHandler() {
 
@@ -180,6 +169,8 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
 
     @OnStateChange("restrictedExtent")
     void restrictedExtentChanged() {
+        if (getState().restrictedExtent == null)
+            return;
         Bounds bounds = Bounds.create(
           getState().restrictedExtent.getLeft(),
           getState().restrictedExtent.getBottom(),

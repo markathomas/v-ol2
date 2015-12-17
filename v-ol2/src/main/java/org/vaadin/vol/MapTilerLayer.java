@@ -79,12 +79,12 @@ public class MapTilerLayer extends AbstractComponent implements Layer {
     }
 
     public void setBaseLayer(boolean isBaseLayer) {
-        this.getState().isBaseLayer = isBaseLayer;
+        this.getState().baseLayer = isBaseLayer;
         markAsDirty();
     }
 
     public boolean isBaseLayer() {
-        return getState().isBaseLayer;
+        return getState().baseLayer;
     }
 
     public void setOpacity(Double opacity) {
@@ -138,21 +138,21 @@ public class MapTilerLayer extends AbstractComponent implements Layer {
     }
 
     public int setMinZoom(int minZoom) {
-        this.getState().minZoom = minZoom;
+        this.getState().minZoomLevel = minZoom;
         markAsDirty();
         return minZoom;
     }
 
     public int getMinZoom() {
-        return getState().minZoom;
+        return getState().minZoomLevel;
     }
 
     public void setMaxZoom(int maxZoom) {
-        this.getState().maxZoom = maxZoom;
+        this.getState().maxZoomLevel = maxZoom;
         markAsDirty();
     }
 
     public int getMaxZoom() {
-        return getState().maxZoom;
+        return getState().maxZoomLevel;
     }
 }

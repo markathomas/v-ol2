@@ -38,7 +38,7 @@ public class MarkerConnector extends AbstractComponentConnector {
 
         Icon icon = getIcon();
         getWidget().updateFromStateChange(getState(), icon);
-        if (getState().hasClickListeners) {
+        if (getState().registeredEventListeners != null && getState().registeredEventListeners.contains("click")) {
             getWidget().getMarker().addClickHandler(new GwtOlHandler() {
                 public void onEvent(JsArray arguments) {
                     markerServerRpc.markerClicked();

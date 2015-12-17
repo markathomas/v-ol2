@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.vaadin.vol.client.Point;
 import org.vaadin.vol.client.PopupServerRpc;
 import org.vaadin.vol.client.PopupState;
 

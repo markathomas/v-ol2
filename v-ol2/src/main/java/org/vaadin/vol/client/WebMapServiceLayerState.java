@@ -12,13 +12,13 @@ public class WebMapServiceLayerState extends LayerBaseState {
     @DelegateToWidget
     public String cqlFilter;
     @DelegateToWidget
-    public boolean isBaseLayer = true;
+    public boolean baseLayer = true;
     @DelegateToWidget
     public double opacity = 1.0;
     @DelegateToWidget
     public boolean transparent = true;
     @DelegateToWidget
-    public boolean isSingleTile;
+    public boolean singleTile;
     public String feature_id = "";
     @DelegateToWidget
     public String format = "image/jpeg";

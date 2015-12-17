@@ -90,7 +90,7 @@ public class VPopup extends Widget {
                 getMap().addPopup(popup);
                 Element elementById = Document.get().getElementById(pid + "_contentDiv");
                 elementById.setInnerHTML("");
-                VOpenLayersMap parent2 = (VOpenLayersMap) getParent().getParent();
+                VOpenLayersMap parent2 = (VOpenLayersMap)getParent();
                 parent2.attachSpecialWidget(paintable, elementById);
                 int offsetHeight = paintable.getOffsetHeight();
                 int offsetWidth = paintable.getOffsetWidth();
@@ -101,7 +101,7 @@ public class VPopup extends Widget {
     }
 
     private Map getMap() {
-        return ((VOpenLayersMap) getParent().getParent()).getMap();
+        return ((VOpenLayersMap)getParent()).getMap();
     }
 
     public Popup getPopup() {

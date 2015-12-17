@@ -2,6 +2,10 @@ package org.vaadin.vol;
 
 import com.vaadin.ui.AbstractComponent;
 
+import org.vaadin.vol.client.Attributes;
+import org.vaadin.vol.client.Point;
+import org.vaadin.vol.client.Style;
+import org.vaadin.vol.client.StyleMap;
 import org.vaadin.vol.client.VectorState;
 
 public abstract class Vector extends AbstractComponent {

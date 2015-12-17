@@ -90,10 +90,10 @@ public class VOpenLayersMap extends FlowPanel {
         }
     }
 
-    public void updateControls(Set<org.vaadin.vol.Control> controls) {
+    public void updateControls(Set<org.vaadin.vol.client.Control> controls) {
         HashSet<String> oldcontrols = new HashSet<String>(myControls.keySet());
 
-        for (org.vaadin.vol.Control control : controls) {
+        for (org.vaadin.vol.client.Control control : controls) {
             String name = control.name();
             if (oldcontrols.contains(name)) {
                 oldcontrols.remove(name);

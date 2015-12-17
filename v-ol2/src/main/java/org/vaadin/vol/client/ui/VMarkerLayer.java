@@ -64,7 +64,7 @@ public class VMarkerLayer extends FlowPanel implements VLayer {
     }
 
     protected Map getMap() {
-        return ((VOpenLayersMap) getParent().getParent()).getMap();
+        return ((VOpenLayersMap)getParent()).getMap();
     }
 
     public boolean hasChildComponent(Widget component) {

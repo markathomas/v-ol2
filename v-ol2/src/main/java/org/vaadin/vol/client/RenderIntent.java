@@ -1,4 +1,4 @@
-package org.vaadin.vol;
+package org.vaadin.vol.client;
 
 import java.io.Serializable;
 
@@ -12,6 +12,9 @@ public class RenderIntent implements Serializable {
      * The intent string that OpenLayers JavaScript uses
      * */
     private String value;
+
+    public RenderIntent() {
+    }
 
     /**
      * Constructor

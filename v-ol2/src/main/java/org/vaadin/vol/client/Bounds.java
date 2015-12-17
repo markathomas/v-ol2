@@ -1,8 +1,10 @@
-package org.vaadin.vol;
+package org.vaadin.vol.client;
 
 import java.io.Serializable;
 
 public class Bounds implements Serializable {
+
+    public static final Bounds WORLD = new Bounds(new Point(-180d, -90d), new Point(180d, 90d));
 
     private double top;
     private double bottom;
@@ -10,6 +12,9 @@ public class Bounds implements Serializable {
     private double right;
 
     private boolean empty = true;
+
+    public Bounds() {
+    }
 
     public Bounds(Point... points) {
         if(points.length == 0) {

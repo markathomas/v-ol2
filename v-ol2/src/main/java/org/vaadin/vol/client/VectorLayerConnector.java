@@ -3,6 +3,7 @@ package org.vaadin.vol.client;
 import com.google.gwt.core.client.GWT;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
+import com.vaadin.client.Profiler;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
@@ -34,25 +35,15 @@ public class VectorLayerConnector extends AbstractComponentContainerConnector {
 
     @Override
     public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent event) {
-        /*Profiler.enter("VectorLayerConnector.onConnectorHierarchyChange");
+        Profiler.enter("VectorLayerConnector.onConnectorHierarchyChange");
         Profiler.enter("VectorLayerConnector.onConnectorHierarchyChange add children");
-        int index = 0;
+
+        getWidget().clear();
         for (ComponentConnector child : getChildComponents()) {
-            getWidget().addOrMove(child.getWidget(), index++);
+            getWidget().add(child.getWidget());
         }
         Profiler.leave("VectorLayerConnector.onConnectorHierarchyChange add children");
-
-        // Detach old child widgets and possibly their caption
-        Profiler.enter("VectorLayerConnector.onConnectorHierarchyChange remove old children");
-        for (ComponentConnector child : event.getOldChildren()) {
-            if (child.getParent() == this) {
-                // Skip current children
-                continue;
-            }
-            getWidget().remove(child.getWidget());
-        }
-        Profiler.leave("VectorLayerConnector.onConnectorHierarchyChange remove old children");
-        Profiler.leave("VectorLayerConnector.onConnectorHierarchyChange");*/
+        Profiler.leave("VectorLayerConnector.onConnectorHierarchyChange");
     }
 
     @Override

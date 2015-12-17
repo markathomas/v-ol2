@@ -27,12 +27,12 @@ public class ImageLayer extends AbstractComponent implements Layer {
     }
 
     public void setBaseLayer(boolean isBaseLayer) {
-        this.getState().isBaseLayer = isBaseLayer;
+        this.getState().baseLayer = isBaseLayer;
         markAsDirty();
     }
 
     public boolean isBaseLayer() {
-        return getState().isBaseLayer;
+        return getState().baseLayer;
     }
 
     public void setOpacity(Double opacity) {

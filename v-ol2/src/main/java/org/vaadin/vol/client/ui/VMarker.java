@@ -90,7 +90,7 @@ public class VMarker extends Widget implements VMarkable {
     }
 
     protected Map getMap() {
-        return ((VOpenLayersMap) getParent().getParent().getParent()).getMap();
+        return ((VOpenLayersMap)getParent().getParent()).getMap();
     }
 
     public Marker getMarker() {

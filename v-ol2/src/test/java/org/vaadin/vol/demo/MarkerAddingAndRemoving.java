@@ -11,7 +11,7 @@ import org.vaadin.vol.Marker;
 import org.vaadin.vol.MarkerLayer;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.Point;
+import org.vaadin.vol.client.Point;
 
 public class MarkerAddingAndRemoving extends AbstractVOLTest implements Handler {
 

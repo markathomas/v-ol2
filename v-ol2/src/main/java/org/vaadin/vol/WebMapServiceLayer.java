@@ -27,12 +27,12 @@ public class WebMapServiceLayer extends AbstractLayerBase implements Layer {
     }
 
     public void setBaseLayer(boolean isBaseLayer) {
-        this.getState().isBaseLayer = isBaseLayer;
+        this.getState().baseLayer = isBaseLayer;
         markAsDirty();
     }
 
     public boolean isBaseLayer() {
-        return getState().isBaseLayer;
+        return getState().baseLayer;
     }
 
     public void setOpacity(Double opacity) {
@@ -122,11 +122,11 @@ public class WebMapServiceLayer extends AbstractLayerBase implements Layer {
     }
 
     public Boolean isSingleTile() {
-        return getState().isSingleTile;
+        return getState().singleTile;
     }
 
     public void setSingleTile(Boolean isSingleTile) {
-        this.getState().isSingleTile = isSingleTile;
+        this.getState().singleTile = isSingleTile;
     }
 
     public String getViewparams()

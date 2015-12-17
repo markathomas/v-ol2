@@ -6,8 +6,6 @@ import com.vaadin.shared.Connector;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.vaadin.vol.StyleMap;
-
 public class VectorLayerState extends AbstractComponentState {
 
     public enum SelectionMode {
@@ -19,7 +17,7 @@ public class VectorLayerState extends AbstractComponentState {
         NONE, LINE, AREA, RECTANGLE, CIRCLE, POINT, MODIFY
     }
 
-    public StyleMap stylemap;
+    public StyleMap styleMap;
 
     public Connector selectedVector;
 

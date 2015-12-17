@@ -1,5 +1,8 @@
 package org.vaadin.vol;
 
+import org.vaadin.vol.client.Attributes;
+import org.vaadin.vol.client.Style;
+
 public class LabelVector extends PointVector {
 
 

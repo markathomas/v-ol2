@@ -4,7 +4,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.communication.StateChangeEvent;
 
-import org.vaadin.vol.Attributes;
+import org.vaadin.vol.client.Attributes;
 import org.vaadin.vol.client.VectorState;
 import org.vaadin.vol.client.wrappers.Map;
 import org.vaadin.vol.client.wrappers.Projection;
@@ -57,7 +57,7 @@ public abstract class VAbstractVector<T extends VectorState> extends Widget {
     }
 
     protected Map getMap() {
-        return ((VOpenLayersMap) getParent().getParent().getParent()).getMap();
+        return ((VOpenLayersMap)getParent().getParent()).getMap();
     }
 
     @Override

@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import org.vaadin.vol.client.Point;
+import org.vaadin.vol.client.StyleMap;
 import org.vaadin.vol.client.VectorLayerServerRpc;
 import org.vaadin.vol.client.VectorLayerState;
 
@@ -227,7 +229,7 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
      * @return the styleMap
      */
     public StyleMap getStyleMap() {
-        return getState().stylemap;
+        return this.getState().styleMap;
     }
 
     /**
@@ -235,7 +237,7 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
      *            the styleMap to set
      */
     public void setStyleMap(StyleMap stylemap) {
-        this.getState().stylemap = stylemap;
+        this.getState().styleMap = stylemap;
         markAsDirty();
     }
 

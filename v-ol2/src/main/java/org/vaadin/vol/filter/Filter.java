@@ -1,6 +1,6 @@
 package org.vaadin.vol.filter;
 
-import org.vaadin.vol.JsObject;
+import org.vaadin.vol.client.JsObject;
 
 /*
  * TODO for what is this class good for? I can't find any reference to it and

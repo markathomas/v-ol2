@@ -4,7 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.vaadin.client.ValueMap;
 import com.vaadin.client.communication.StateChangeEvent;
 
-import org.vaadin.vol.Attributes;
+import org.vaadin.vol.client.Attributes;
 import org.vaadin.vol.client.VectorState;
 import org.vaadin.vol.client.wrappers.Projection;
 import org.vaadin.vol.client.wrappers.Vector;

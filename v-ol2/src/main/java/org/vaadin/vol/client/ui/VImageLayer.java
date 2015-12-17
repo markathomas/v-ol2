@@ -7,26 +7,26 @@ import org.vaadin.vol.client.wrappers.layer.ImageLayer;
 public class VImageLayer extends VAbstracMapLayer<ImageLayer> {
 
     private String uri;
-    private Boolean isBaseLayer;
-    private Bounds bounds;
+    private Boolean baseLayer;
+    private Double[] bounds;
     private int width;
     private int height;
 
     @Override
     ImageLayer createLayer() {
-        return ImageLayer.create(getDisplayName(), uri, getBounds(), getSize(),
-                isBaseLayer);
+        return ImageLayer.create(getDisplayName(), uri, Bounds.create(bounds[0], bounds[1], bounds[2], bounds[3]), getSize(),
+          baseLayer);
     }
 
     private Size getSize() {
         return Size.create(width, height);
     }
 
-    private Bounds getBounds() {
-        return bounds;
+    public Double[] getBounds() {
+        return this.bounds;
     }
 
-    public void setBounds(Bounds bounds) {
+    public void setBounds(Double[] bounds) {
         this.bounds = bounds;
     }
 
@@ -39,11 +39,11 @@ public class VImageLayer extends VAbstracMapLayer<ImageLayer> {
     }
 
     public Boolean isBaseLayer() {
-        return this.isBaseLayer;
+        return this.baseLayer;
     }
 
     public void setBaseLayer(Boolean baseLayer) {
-        isBaseLayer = baseLayer;
+        this.baseLayer = baseLayer;
     }
 
     public int getWidth() {

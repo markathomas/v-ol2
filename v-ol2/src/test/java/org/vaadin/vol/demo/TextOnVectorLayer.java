@@ -1,15 +1,15 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.ui.Component;
+
 import org.vaadin.vol.LabelVector;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.Point;
 import org.vaadin.vol.PointVector;
-import org.vaadin.vol.Style;
-import org.vaadin.vol.StyleMap;
 import org.vaadin.vol.VectorLayer;
-
-import com.vaadin.ui.Component;
+import org.vaadin.vol.client.Point;
+import org.vaadin.vol.client.Style;
+import org.vaadin.vol.client.StyleMap;
 
 @SuppressWarnings("serial")
 public class TextOnVectorLayer extends AbstractVOLTest {
@@ -72,8 +72,8 @@ public class TextOnVectorLayer extends AbstractVOLTest {
             labelVector.setPoints(new Point(0,-10));
 
             Style styleRed = new Style();
-            styleRed.setFill(false);
-            styleRed.setStroke(false);
+            styleRed.fill(false);
+            styleRed.stroke(false);
             styleRed.setFontColor("purple");
             styleRed.setFontWeight("bold");
             // if using render intents with labels, label must be defined as $label

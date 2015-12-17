@@ -42,43 +42,37 @@ abstract public class AbstractLayerBase extends AbstractComponent {
     /*
      * add a listener to layers 'loadstart' event
      */
-    public void addListener(LoadStartListener listener) {
+    public void addLoadStartListener(LoadStartListener listener) {
         addListener(LoadStartListener.EVENT_ID, LoadStartEvent.class, listener, LoadStartListener.method);
-        this.getState().hasLoadStartListeners = true;
-    }
+            }
 
-    public void removeListener(LoadStartListener listener) {
+    public void removeLoadStartListener(LoadStartListener listener) {
         removeListener(LoadStartListener.EVENT_ID, LoadStartEvent.class, listener);
-        this.getState().hasLoadStartListeners = !getListeners(LoadStartListener.class).isEmpty();
     }
 
     /*
      * add a listener to layers 'loadend' event
      */
-    public void addListener(LoadEndListener listener) {
+    public void addLoadEndListener(LoadEndListener listener) {
         addListener(LoadEndListener.EVENT_ID, LoadEndEvent.class, listener, LoadEndListener.method);
-        this.getState().hasLoadEndListeners = true;
     }
 
-    public void removeListener(LoadEndListener listener) {
+    public void removeLoadEndListener(LoadEndListener listener) {
         removeListener(LoadEndListener.EVENT_ID, LoadEndEvent.class, listener);
-        this.getState().hasLoadEndListeners = !getListeners(LoadEndListener.class).isEmpty();
     }
 
     /*
      * add a listener to layers 'visabilitychanged' event
      */
-    public void addListener(VisibilityChangedListener listener) {
+    public void addVisibilityChangedListener(VisibilityChangedListener listener) {
         addListener(VisibilityChangedListener.EVENT_ID,
                 VisibilityChangedEvent.class, listener,
                 VisibilityChangedListener.method);
-        this.getState().hasVisibilityChangedListeners = true;
     }
 
-    public void removeListener(VisibilityChangedListener listener) {
+    public void removeVisibilityChangedListener(VisibilityChangedListener listener) {
         removeListener(VisibilityChangedListener.EVENT_ID,
                 VisibilityChangedEvent.class, listener);
-        this.getState().hasVisibilityChangedListeners = !getListeners(VisibilityChangedListener.class).isEmpty();
     }
 
     @Override

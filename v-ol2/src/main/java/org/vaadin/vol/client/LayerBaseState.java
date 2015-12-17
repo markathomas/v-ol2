@@ -11,7 +11,4 @@ public class LayerBaseState extends AbstractComponentState {
     public String displayName;
     @DelegateToWidget
     public String attribution;
-    public boolean hasLoadStartListeners;
-    public boolean hasLoadEndListeners;
-    public boolean hasVisibilityChangedListeners;
 }

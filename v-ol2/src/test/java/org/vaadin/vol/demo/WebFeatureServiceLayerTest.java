@@ -5,11 +5,11 @@ import com.vaadin.ui.Notification;
 
 import org.vaadin.vol.AbstractAutoPopulatedVectorLayer.FeatureSelectedEvent;
 import org.vaadin.vol.AbstractAutoPopulatedVectorLayer.FeatureSelectedListener;
-import org.vaadin.vol.Bounds;
+import org.vaadin.vol.client.Bounds;
 import org.vaadin.vol.OpenLayersMap;
-import org.vaadin.vol.Point;
-import org.vaadin.vol.Style;
-import org.vaadin.vol.StyleMap;
+import org.vaadin.vol.client.Point;
+import org.vaadin.vol.client.Style;
+import org.vaadin.vol.client.StyleMap;
 import org.vaadin.vol.WebFeatureServiceLayer;
 import org.vaadin.vol.WebMapServiceLayer;
 
@@ -34,7 +34,7 @@ public class WebFeatureServiceLayerTest extends AbstractVOLTest {
 
         WebFeatureServiceLayer webFeatureServiceLayer = new WebFeatureServiceLayer();
 
-        webFeatureServiceLayer.addListener(new FeatureSelectedListener() {
+        webFeatureServiceLayer.addFeatureSelectedListener(new FeatureSelectedListener() {
             public void featureSelected(FeatureSelectedEvent event) {
                 String featureId = event.getFeatureId();
                 System.err.println("Selected feature id:" + featureId);

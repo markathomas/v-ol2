@@ -10,11 +10,11 @@ import org.vaadin.vol.AbstractLayerBase.LoadEndEvent;
 import org.vaadin.vol.AbstractLayerBase.LoadEndListener;
 import org.vaadin.vol.AbstractLayerBase.LoadStartEvent;
 import org.vaadin.vol.AbstractLayerBase.LoadStartListener;
-import org.vaadin.vol.Bounds;
+import org.vaadin.vol.client.Bounds;
 import org.vaadin.vol.OpenLayersMap;
-import org.vaadin.vol.Point;
-import org.vaadin.vol.Style;
-import org.vaadin.vol.StyleMap;
+import org.vaadin.vol.client.Point;
+import org.vaadin.vol.client.Style;
+import org.vaadin.vol.client.StyleMap;
 import org.vaadin.vol.WebFeatureServiceLayer;
 import org.vaadin.vol.WebMapServiceLayer;
 
@@ -41,13 +41,13 @@ public class EventsWebMapServiceLayer extends AbstractVOLTest {
         webMapServiceLayer.setUri("http://tilecache.osgeo.org/wms-c/Basic.py");
         webMapServiceLayer.setBaseLayer(true);
         webMapServiceLayer.setDisplayName("Base map");
-        webMapServiceLayer.addListener(loadStartListener);
-        webMapServiceLayer.addListener(loadEndListener);
+        webMapServiceLayer.addLoadStartListener(loadStartListener);
+        webMapServiceLayer.addLoadEndListener(loadEndListener);
         openLayersMap.addLayer(webMapServiceLayer);
 
         WebFeatureServiceLayer webFeatureServiceLayer = new WebFeatureServiceLayer();
 
-        webFeatureServiceLayer.addListener(new FeatureSelectedListener() {
+        webFeatureServiceLayer.addFeatureSelectedListener(new FeatureSelectedListener() {
             public void featureSelected(FeatureSelectedEvent event) {
                 String featureId = event.getFeatureId();
                 System.err.println("Selected feature id:" + featureId);

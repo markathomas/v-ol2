@@ -25,9 +25,9 @@ public class VWebMapServiceLayerStyled extends VWebMapServiceLayer
     }
 
     @Override
-    public void setOpacity(Double opacity) {
+    public void setOpacity(double opacity) {
         super.setOpacity(opacity);
-        if (opacity != null && wms != null) {
+        if (wms != null) {
             wms.setOpacity(opacity);
         }
     }

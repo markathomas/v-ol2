@@ -1,6 +1,6 @@
 package org.vaadin.vol.demo;
 
-import org.vaadin.vol.Control;
+import org.vaadin.vol.client.Control;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.PointVector;
 import org.vaadin.vol.VectorLayer;

@@ -1,6 +1,6 @@
 package org.vaadin.vol.filter;
 
-import org.vaadin.vol.Bounds;
+import org.vaadin.vol.client.Bounds;
 
 public class SpatialFilter extends Filter {
 

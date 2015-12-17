@@ -1,4 +1,4 @@
-package org.vaadin.vol;
+package org.vaadin.vol.client;
 
 //  Style Properties
 //
@@ -61,6 +61,7 @@ package org.vaadin.vol;
 //  Can be set to none to hide features from rendering.
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class Style implements Serializable {
 
@@ -95,7 +96,7 @@ public class Style implements Serializable {
         return name;
     }
 
-    public void setProperty(String key, Object value) {
+    public void setProperty(String key, Serializable value) {
         styleProperty.setProperty(key, value);
     }
 
@@ -103,6 +104,9 @@ public class Style implements Serializable {
         return styleProperty.getProperty(key);
     }
 
+    private String getPropertyByAttribute(String key) {
+        return styleProperty.getPropertyAsString(key);
+    }
     private void setPropertyByAttribute(String key, String value) {
         styleProperty.setProperty(key, "${" + value + "}");
     }
@@ -117,6 +121,9 @@ public class Style implements Serializable {
         setProperty("fillColor", c);
     }
 
+    public String getFillColorByAttribute() {
+        return getPropertyByAttribute("fillColor");
+    }
     public void setFillColorByAttribute(String c) {
         setPropertyByAttribute("fillColor", c);
     }
@@ -131,6 +138,9 @@ public class Style implements Serializable {
         setProperty("fillOpacity", o);
     }
 
+    public String getFillOpacityByAttribute() {
+        return getPropertyByAttribute("fillOpacity");
+    }
     public void setFillOpacityByAttribute(String o) {
         setPropertyByAttribute("fillOpacity", o);
     }
@@ -146,6 +156,9 @@ public class Style implements Serializable {
         setProperty("pointRadius", r);
     }
 
+    public String getPointRadiusByAttribute() {
+        return getPropertyByAttribute("pointRadius");
+    }
     public void setPointRadiusByAttribute(String r) {
         setPropertyByAttribute("pointRadius", r);
     }
@@ -165,6 +178,9 @@ public class Style implements Serializable {
         setProperty("strokeColor", c);
     }
 
+    public String getStrokeColorByAttribute() {
+        return getPropertyByAttribute("strokeColor");
+    }
     public void setStrokeColorByAttribute(String c) {
         setPropertyByAttribute("strokeColor", c);
     }
@@ -179,6 +195,9 @@ public class Style implements Serializable {
         setProperty("strokeWidth", w);
     }
 
+    public String getStrokeWidthByAttribute() {
+        return getPropertyByAttribute("strokeWidth");
+    }
     public void setStrokeWidthByAttribute(String w) {
         setPropertyByAttribute("strokeWidth", w);
     }
@@ -193,6 +212,9 @@ public class Style implements Serializable {
         setProperty("externalGraphic", graphicURL);
     }
 
+    public String getExternalGraphicByAttribute() {
+        return (String)getPropertyByAttribute("externalGraphic");
+    }
     public void setExternalGraphicByAttribute(String graphicURL) {
         setPropertyByAttribute("externalGraphic", graphicURL);
     }
@@ -220,6 +242,9 @@ public class Style implements Serializable {
         setProperty("graphicWidth", width);
     }
 
+    public String getGraphicWidthByAttribute() {
+        return getPropertyByAttribute("graphicWidth");
+    }
     public void setGraphicWidthByAttribute(String widthAttr) {
         setPropertyByAttribute("graphicWidth", widthAttr);
     }
@@ -228,6 +253,9 @@ public class Style implements Serializable {
         setProperty("graphicHeight", height);
     }
 
+    public String getGraphicHeightByAttribute() {
+        return getPropertyByAttribute("graphicHeight");
+    }
     public void setGraphicHeightByAttribute(String heightAttr) {
         setPropertyByAttribute("graphicHeight", heightAttr);
     }
@@ -242,57 +270,33 @@ public class Style implements Serializable {
         return (Integer) getProperty("graphicHeight");
     }
 
-    /**
-     * Sets the offset for the displacement of the external graphic. The offset
-     * is from the top-lef of the image (which is considered the point 0,0).
-     *
-     * @param xOffset
-     *            Pixel offset along the positive x axis for displacing an
-     *            external graphic.
-     * @param yOffset
-     *            Pixel offset along the positive y axis for displacing an
-     *            external graphic.
-     */
-    public void setGraphicOffset(int xOffset, int yOffset) {
-        setGraphicXOffset(xOffset);
-        setGraphicYOffset(yOffset);
-    }
 
-    public void setGraphicOffsetByAttribute(String xOffsetAttr,
-            String yOffsetAttr) {
-        setGraphicXOffsetByAttribute(xOffsetAttr);
-        setGraphicYOffsetByAttribute(yOffsetAttr);
+    public int getGraphicXOffset() {
+        return (Integer)getProperty("graphicXOffset");
     }
-
     public void setGraphicXOffset(int xOffset) {
         setProperty("graphicXOffset", xOffset);
     }
 
+    public String getGraphicXOffsetByAttribute() {
+        return getPropertyByAttribute("graphicXOffset");
+    }
     public void setGraphicXOffsetByAttribute(String xOffsetAttr) {
         setPropertyByAttribute("graphicXOffset", xOffsetAttr);
     }
 
+    public int getGraphicYOffset() {
+        return (Integer)getProperty("graphicYOffset");
+    }
     public void setGraphicYOffset(int yOffset) {
         setProperty("graphicYOffset", yOffset);
     }
 
+    public String getGraphicYOffsetByAttribute() {
+        return getPropertyByAttribute("graphicYOffset");
+    }
     public void setGraphicYOffsetByAttribute(String yOffsetAttr) {
         setPropertyByAttribute("graphicYOffset", yOffsetAttr);
-    }
-
-    /**
-     * Sets the size of the background graphic. If none of the dimensions are
-     * set, the external graphic size is used.
-     *
-     * @param backgroundWidth
-     *            The width of the background width.
-     * @param backgroundHeight
-     *            The height of the background graphic.
-     */
-    public void setBackgroundGraphicSize(int backgroundWidth,
-            int backgroundHeight) {
-        setBackgroundWidth(backgroundWidth);
-        setBackgroundHeight(backgroundHeight);
     }
 
     /**
@@ -331,27 +335,16 @@ public class Style implements Serializable {
         return (String) getProperty("backgroundGraphic");
     }
 
-    /**
-     * Sets the offset for the displacement of the background graphic. The
-     * offset is from the top-left of the image (which is considered the point
-     * 0,0).
-     *
-     * @param backgroundXOffset
-     *            Pixel offset along the positive x axis for displacing an
-     *            background graphic.
-     * @param backgroundYOffset
-     *            Pixel offset along the positive y axis for displacing an
-     *            background graphic.
-     */
-    public void setBackgroundOffset(int backgroundXOffset, int backgroundYOffset) {
-        setBackgroundXOffset(backgroundXOffset);
-        setBackgroundYOffset(backgroundYOffset);
+    public int getBackgroundXOffset() {
+        return (Integer)getProperty("backgroundXOffset");
     }
-
     public void setBackgroundXOffset(int backgroundXOffset) {
         setProperty("backgroundXOffset", backgroundXOffset);
     }
 
+    public int getBackgroundYOffset() {
+        return (Integer)getProperty("backgroundYOffset");
+    }
     public void setBackgroundYOffset(int backgroundYOffset) {
         setProperty("backgroundYOffset", backgroundYOffset);
     }
@@ -412,25 +405,40 @@ public class Style implements Serializable {
         return (String) getProperty("label");
     }
 
+    public String getLabelByAttribute() {
+        return getPropertyByAttribute("label");
+    }
     public void setLabelByAttribute(String label) {
         setPropertyByAttribute("label", label);
     }
 
+    public String getFontColor() {
+        return (String)getProperty("fontColor");
+    }
     /** The font color for the label, to be provided like CSS. */
     public void setFontColor(String fontColor) {
         setProperty("fontColor", fontColor);
     }
 
+    public String getFontSize() {
+        return (String)getProperty("fontSize");
+    }
     /** The font size for the label, to be provided like in CSS. */
     public void setFontSize(String fontSize) {
         setProperty("fontSize", fontSize);
     }
 
+    public String getFontFamily() {
+        return (String)getProperty("fontFamily");
+    }
     /** The font family for the label, to be provided like in CSS. */
     public void setFontFamily(String fontFamily) {
         setProperty("fontFamily", fontFamily);
     }
 
+    public String getFontWeight() {
+        return (String)getProperty("fontWeight");
+    }
     /** The font weight for the label, to be provided like in CSS. */
     public void setFontWeight(String fontWeight) {
         setProperty("fontWeight", fontWeight);
@@ -521,7 +529,7 @@ public class Style implements Serializable {
     }
 
     /** Set to false if no fill is desired. */
-    public void setFill(boolean fill) {
+    public void fill(boolean fill) {
         setProperty("fill", fill);
     }
 
@@ -531,7 +539,7 @@ public class Style implements Serializable {
     }
 
     /** Set to false if no stroke is desired. */
-    public void setStroke(boolean stroke) {
+    public void stroke(boolean stroke) {
         setProperty("stroke", stroke);
     }
 
@@ -541,7 +549,7 @@ public class Style implements Serializable {
     }
 
     /** Set to false if no graphic is desired. */
-    public void setGraphic(boolean graphic) {
+    public void graphic(boolean graphic) {
         setProperty("graphic", graphic);
     }
 
@@ -595,9 +603,9 @@ public class Style implements Serializable {
         return (String) getProperty("graphicTitle");
     }
 
-    /*public void paint(String string, PaintTarget target) throws PaintException {
-        target.addAttribute(string, styleProperty.getKeyValueMap());
-    }*/
+    public Map<String, Serializable> getKeyValueMap() {
+        return styleProperty.getKeyValueMap();
+    }
 
     /**
      * @param coreStyleName
@@ -612,6 +620,9 @@ public class Style implements Serializable {
         extendCoreStyle("default");
     }
 
+    public String getContextJs() {
+        return (String)getProperty("__VOL_CONTEXT");
+    }
     public void setContextJs(String js) {
         setProperty("__VOL_CONTEXT", js);
     }

@@ -41,11 +41,11 @@ public class BingMapLayer extends AbstractComponent implements Layer {
     }
 
     public void setApikey(String apikey) {
-        this.getState().apikey = apikey;
+        this.getState().apiKey = apikey;
     }
 
     public String getApikey() {
-        return getState().apikey;
+        return getState().apiKey;
     }
 
     public void setType(Type t) {

@@ -21,9 +21,9 @@ import java.util.Collection;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.vaadin.vol.Area;
-import org.vaadin.vol.Attributes;
-import org.vaadin.vol.Bounds;
-import org.vaadin.vol.Control;
+import org.vaadin.vol.client.Attributes;
+import org.vaadin.vol.client.Bounds;
+import org.vaadin.vol.client.Control;
 import org.vaadin.vol.GoogleSatelliteMapLayer;
 import org.vaadin.vol.GoogleStreetMapLayer;
 import org.vaadin.vol.MapTilerLayer;
@@ -31,12 +31,12 @@ import org.vaadin.vol.Marker;
 import org.vaadin.vol.MarkerLayer;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.Point;
+import org.vaadin.vol.client.Point;
 import org.vaadin.vol.PointVector;
 import org.vaadin.vol.Popup;
-import org.vaadin.vol.RenderIntent;
-import org.vaadin.vol.Style;
-import org.vaadin.vol.StyleMap;
+import org.vaadin.vol.client.RenderIntent;
+import org.vaadin.vol.client.Style;
+import org.vaadin.vol.client.StyleMap;
 import org.vaadin.vol.Vector;
 import org.vaadin.vol.VectorLayer;
 import org.vaadin.vol.VectorLayer.VectorDrawnEvent;
@@ -192,10 +192,10 @@ public class Demo extends AbstractVOLTest {
 
         // Add styled PointVectors to area corners, styling with styleNames
         Style style = new Style();
-        style.setFill(true);
+        style.fill(true);
         style.setFillColor("#ff000e");
         style.setFillOpacity(0.8);
-        style.setStroke(false);
+        style.stroke(false);
         // style.setPointRadius(30);
         style.setPointRadiusByAttribute("pointRadius");
         stylemap.setStyle(new RenderIntent("red"), style);

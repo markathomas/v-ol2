@@ -14,8 +14,8 @@ import org.vaadin.vol.AbstractLayerBase.VisibilityChangedEvent;
 import org.vaadin.vol.AbstractLayerBase.VisibilityChangedListener;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.Style;
-import org.vaadin.vol.StyleMap;
+import org.vaadin.vol.client.Style;
+import org.vaadin.vol.client.StyleMap;
 import org.vaadin.vol.WebFeatureServiceLayer;
 
 /**
@@ -55,9 +55,9 @@ public class EventsOSMandWFSLayer extends AbstractVOLTest {
         wfsLayer.setFeatureNS("http://www.openplans.org/topp");
         wfsLayer.setProjection("EPSG:4326");
         wfsLayer.setSelectionCtrlId("1");
-        wfsLayer.addListener(loadStartListener);
-        wfsLayer.addListener(loadEndListener);
-        wfsLayer.addListener(visChangedListener);
+        wfsLayer.addLoadStartListener(loadStartListener);
+        wfsLayer.addLoadEndListener(loadEndListener);
+        wfsLayer.addVisibilityChangedListener(visChangedListener);
         return wfsLayer;
     }
 
@@ -82,8 +82,8 @@ public class EventsOSMandWFSLayer extends AbstractVOLTest {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         OpenStreetMapLayer osmLayer = new OpenStreetMapLayer();
 
-        osmLayer.addListener(loadStartListener);
-        osmLayer.addListener(loadEndListener);
+        osmLayer.addLoadStartListener(loadStartListener);
+        osmLayer.addLoadEndListener(loadEndListener);
 
         osmLayer.setUrl("http://b.tile.openstreetmap.org/${z}/${x}/${y}.png");
         osmLayer.setDisplayName("OSM");

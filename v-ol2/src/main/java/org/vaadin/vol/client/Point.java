@@ -1,10 +1,13 @@
-package org.vaadin.vol;
+package org.vaadin.vol.client;
 
 import java.io.Serializable;
 
 public class Point implements Serializable {
     private double lon;
     private double lat;
+
+    public Point() {
+    }
 
     public Point(double lon, double lat) {
         this.lon = lon;

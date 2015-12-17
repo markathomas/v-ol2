@@ -7,9 +7,9 @@ import org.vaadin.vol.AbstractAutoPopulatedVectorLayer.BeforeFeatureSelectedList
 import org.vaadin.vol.LabelVector;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.Point;
-import org.vaadin.vol.Style;
-import org.vaadin.vol.StyleMap;
+import org.vaadin.vol.client.Point;
+import org.vaadin.vol.client.Style;
+import org.vaadin.vol.client.StyleMap;
 import org.vaadin.vol.VectorLayer;
 import org.vaadin.vol.WebFeatureServiceLayer;
 
@@ -64,7 +64,7 @@ public class WebFeatureServiceLayerTest2 extends AbstractVOLTest {
         WebFeatureServiceLayer wfsCities = createWfsLayer("Cities", proxyUrl,
                 "tasmania_cities");
         setStyle(wfsCities, 1, "yellow", "red", 4, 2);
-        wfsCities.addListener(new BeforeFeatureSelectedListener() {
+        wfsCities.addBeforeFeatureSelectedListener(new BeforeFeatureSelectedListener() {
             public boolean beforeFeatureSelected(BeforeFeatureSelectedEvent event) {
                 showNotification("I'm a city");
                 return false;
@@ -74,7 +74,7 @@ public class WebFeatureServiceLayerTest2 extends AbstractVOLTest {
                 "tasmania_roads");
         setStyle(wfsRoads, 1, "gray", "gray", 0, 4);
         // don't use beforeselected and selected listener at the same time to show massages
-        wfsRoads.addListener(new BeforeFeatureSelectedListener() {
+        wfsRoads.addBeforeFeatureSelectedListener(new BeforeFeatureSelectedListener() {
             public boolean beforeFeatureSelected(BeforeFeatureSelectedEvent event) {
                 Object typeName = event.getAttributes().get("TYPE");
                 showNotification("Before feature Selected: Road type: " + typeName);
@@ -83,7 +83,7 @@ public class WebFeatureServiceLayerTest2 extends AbstractVOLTest {
         });
         WebFeatureServiceLayer wfsBoundaries = createWfsLayer("Boundaries",
                 proxyUrl, "tasmania_state_boundaries");
-        wfsBoundaries.addListener(new BeforeFeatureSelectedListener() {
+        wfsBoundaries.addBeforeFeatureSelectedListener(new BeforeFeatureSelectedListener() {
             public boolean beforeFeatureSelected(BeforeFeatureSelectedEvent event) {
                 showNotification("No idea what I am :'-(");
                 return false;
@@ -93,7 +93,7 @@ public class WebFeatureServiceLayerTest2 extends AbstractVOLTest {
         WebFeatureServiceLayer wfsWater = createWfsLayer("Water", proxyUrl,
                 "tasmania_water_bodies");
         setStyle(wfsWater, 0.5, "blue", "blue", 1, 2);
-        wfsWater.addListener(new BeforeFeatureSelectedListener() {
+        wfsWater.addBeforeFeatureSelectedListener(new BeforeFeatureSelectedListener() {
             public boolean beforeFeatureSelected(BeforeFeatureSelectedEvent event) {
                 showNotification("I am water :-D");
                 return false;

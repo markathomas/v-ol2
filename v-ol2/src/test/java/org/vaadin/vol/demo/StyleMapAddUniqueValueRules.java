@@ -1,23 +1,23 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
+
 import org.vaadin.vol.Area;
-import org.vaadin.vol.Attributes;
-import org.vaadin.vol.Bounds;
 import org.vaadin.vol.GoogleSatelliteMapLayer;
 import org.vaadin.vol.GoogleStreetMapLayer;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.Point;
 import org.vaadin.vol.PointVector;
-import org.vaadin.vol.RenderIntent;
-import org.vaadin.vol.Style;
-import org.vaadin.vol.StyleMap;
-import org.vaadin.vol.Symbolizer;
+import org.vaadin.vol.client.RenderIntent;
 import org.vaadin.vol.VectorLayer;
-
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
+import org.vaadin.vol.client.Attributes;
+import org.vaadin.vol.client.Bounds;
+import org.vaadin.vol.client.Point;
+import org.vaadin.vol.client.Style;
+import org.vaadin.vol.client.StyleMap;
+import org.vaadin.vol.client.Symbolizer;
 
 @SuppressWarnings("serial")
 public class StyleMapAddUniqueValueRules extends AbstractVOLTest {
@@ -103,10 +103,10 @@ public class StyleMapAddUniqueValueRules extends AbstractVOLTest {
 
         // Add styled PointVectors to area corners, styling with styleNames
         Style style = new Style();
-        style.setFill(true);
+        style.fill(true);
         // style.setFillColor("#0000ff"); //
         style.setFillOpacity(0.8);
-        style.setStroke(false);
+        style.stroke(false);
         // style.setPointRadius(30);
         // style.setPointRadiusByAttribute("pointRadius"); //
         stylemap.setStyle(new RenderIntent("red"), style);
@@ -148,10 +148,8 @@ public class StyleMapAddUniqueValueRules extends AbstractVOLTest {
         symbolizer_lookup.setProperty("size2", symb);
         // symbolizer_lookup.setProperty("2", symb);
 
-        stylemap.addUniqueValueRules(new RenderIntent("red"), "size",
-                symbolizer_lookup, null);
-        stylemap.addUniqueValueRules(new RenderIntent("marker"), "size",
-                symbolizer_lookup, null);
+        stylemap.addUniqueValueRules(new RenderIntent("red"), "size", symbolizer_lookup);
+        stylemap.addUniqueValueRules(new RenderIntent("marker"), "size", symbolizer_lookup);
 
         for (int i = 0; i < points.length; i++) {
             PointVector pointVector = new PointVector(points[i].getLon(),

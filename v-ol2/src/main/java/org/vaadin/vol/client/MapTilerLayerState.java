@@ -10,17 +10,17 @@ public class MapTilerLayerState extends AbstractComponentState {
     @DelegateToWidget
     public String uri = "";
     @DelegateToWidget
-    public Boolean isBaseLayer = true;
+    public Boolean baseLayer = true;
     @DelegateToWidget
     public Double opacity = 1.0;
     @DelegateToWidget
-    public Boolean transparent = true;
+    public boolean transparent = true;
     @DelegateToWidget
-    public Double[] bounds;
+    public Double[] bounds = new Double[] { -180d, -90d, 180d, 90d };
     @DelegateToWidget
     public String layers = "basic";
     @DelegateToWidget
-    public int minZoom;
+    public int minZoomLevel;
     @DelegateToWidget
-    public int maxZoom = -1;
+    public int maxZoomLevel = -1;
 }

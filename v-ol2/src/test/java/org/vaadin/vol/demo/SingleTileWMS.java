@@ -1,8 +1,8 @@
 package org.vaadin.vol.demo;
 
-import org.vaadin.vol.Bounds;
+import org.vaadin.vol.client.Bounds;
 import org.vaadin.vol.OpenLayersMap;
-import org.vaadin.vol.Point;
+import org.vaadin.vol.client.Point;
 import org.vaadin.vol.WebMapServiceLayer;
 
 import com.vaadin.ui.Component;

@@ -1,7 +1,6 @@
 package org.vaadin.vol.client;
 
 import com.google.gwt.core.client.JsArray;
-import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentConnector;
@@ -30,12 +29,9 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
     @Override
     public void onStateChanged(StateChangeEvent stateChangeEvent) {
         super.onStateChanged(stateChangeEvent);
-        this.getWidget().attachLayerToMap();
-    }
 
-    @OnStateChange("hasLoadStartHandlers")
-    void hasLoadStartHandlers() {
-        if (getState().hasLoadStartListeners && this.loadStartHandler == null) {
+        final boolean hasListeners = getState().registeredEventListeners != null;
+        if (hasListeners && getState().registeredEventListeners.contains("llstart") && this.loadStartHandler == null) {
             this.loadStartHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
@@ -44,11 +40,8 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
             };
             this.getWidget().getLayer().registerHandler("loadstart", this.loadStartHandler);
         }
-    }
 
-    @OnStateChange("hasLoadEndHandlers")
-    void hasLoadEndHandlers() {
-        if (getState().hasLoadEndListeners && this.loadEndHandler == null) {
+        if (hasListeners && getState().registeredEventListeners.contains("llend") && this.loadEndHandler == null) {
             this.loadEndHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
@@ -57,11 +50,8 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
             };
             this.getWidget().getLayer().registerHandler("loadend", this.loadEndHandler);
         }
-    }
 
-    @OnStateChange("hasVisibilityChangedHandlers")
-    void hasVisibilityChangedHandlers() {
-        if (getState().hasVisibilityChangedListeners && this.visibilityChangedHandler == null) {
+        if (hasListeners && getState().registeredEventListeners.contains("lvis") && this.visibilityChangedHandler == null) {
             this.visibilityChangedHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
@@ -70,6 +60,8 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
             };
             this.getWidget().getLayer().registerHandler("visibilitychanged", this.visibilityChangedHandler);
         }
+
+        this.getWidget().attachLayerToMap();
     }
 }
 

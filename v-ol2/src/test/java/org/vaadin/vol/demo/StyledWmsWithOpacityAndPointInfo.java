@@ -12,7 +12,7 @@ import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenLayersMap.MapClickEvent;
 import org.vaadin.vol.OpenLayersMap.MapClickListener;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.PointInformation;
+import org.vaadin.vol.client.PointInformation;
 import org.vaadin.vol.WebMapServiceLayerStyled;
 
 public class StyledWmsWithOpacityAndPointInfo extends AbstractVOLTest {

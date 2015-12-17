@@ -6,8 +6,8 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
 
     private String uri;
     private String layers;
-    private Boolean isBaseLayer;
-    private Boolean isSingleTile;
+    private Boolean baseLayer;
+    private Boolean singleTile;
     private Double opacity;
     private String format;
     private boolean transparent;
@@ -21,7 +21,7 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
     @Override
     protected WebMapServiceLayer createLayer() {
         return WebMapServiceLayer.create(getDisplayName(), uri, layers, format,
-          cqlFilter, styles, isBaseLayer, transparent, opacity, isSingleTile,
+          cqlFilter, styles, baseLayer, transparent, opacity, singleTile,
           projection, viewparams, inLayerSwitcher, visibility);
     }
 
@@ -42,26 +42,26 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
     }
 
     public Boolean isBaseLayer() {
-        return this.isBaseLayer;
+        return this.baseLayer;
     }
 
-    public void setBaseLayer(Boolean baseLayer) {
-        isBaseLayer = baseLayer;
+    public void setBaseLayer(boolean baseLayer) {
+        this.baseLayer = baseLayer;
     }
 
     public Boolean isSingleTile() {
-        return this.isSingleTile;
+        return this.singleTile;
     }
 
-    public void setSingleTile(Boolean singleTile) {
-        isSingleTile = singleTile;
+    public void setSingleTile(boolean singleTile) {
+        this.singleTile = singleTile;
     }
 
     public Double getOpacity() {
         return this.opacity;
     }
 
-    public void setOpacity(Double opacity) {
+    public void setOpacity(double opacity) {
         this.opacity = opacity;
     }
 

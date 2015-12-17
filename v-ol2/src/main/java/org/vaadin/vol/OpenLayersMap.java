@@ -1,5 +1,6 @@
 package org.vaadin.vol;
 
+import com.vaadin.annotations.JavaScript;
 import com.vaadin.shared.Connector;
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.Component;
@@ -12,13 +13,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.vaadin.vol.client.Bounds;
+import org.vaadin.vol.client.Control;
 import org.vaadin.vol.client.OpenLayersMapServerRpc;
 import org.vaadin.vol.client.OpenLayersMapState;
+import org.vaadin.vol.client.PointInformation;
 
 /**
  * Server side component for the VOpenLayersMap widget.
  */
 @SuppressWarnings("serial")
+@JavaScript({ "helpers.js" })
 public class OpenLayersMap extends AbstractComponentContainer {
 
     private Layer baseLayer;
@@ -324,6 +329,13 @@ public class OpenLayersMap extends AbstractComponentContainer {
 
     public void removeLayer(Layer layer) {
         removeComponent(layer);
+    }
+
+    public Bounds getExtent() {
+        return this.getState().bounds;
+    }
+    public void setExtent(Bounds extent) {
+        this.getState().bounds = extent;
     }
 
     public interface MapClickListener {

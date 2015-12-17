@@ -21,6 +21,6 @@ public class XYZLayerConnector extends LayerBaseConnector {
 
     @Override
     public VXYZLayer createWidget() {
-        return GWT.create(XYZLayer.class);
+        return GWT.create(VXYZLayer.class);
     }
 }

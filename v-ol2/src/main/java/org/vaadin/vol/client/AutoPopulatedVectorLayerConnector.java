@@ -37,7 +37,7 @@ public abstract class AutoPopulatedVectorLayerConnector extends AbstractComponen
     @Override
     public void onStateChanged(StateChangeEvent stateChangeEvent) {
         super.onStateChanged(stateChangeEvent);
-        //this.getWidget().attachLayerToMap();
+        this.getWidget().attachLayerToMap();
     }
 
     private Vector getVector(JsArray arguments) {
@@ -76,54 +76,52 @@ public abstract class AutoPopulatedVectorLayerConnector extends AbstractComponen
     }
 
     protected void updateSelectionControl(StateChangeEvent stateChangeEvent) {
-        if (stateChangeEvent.hasPropertyChanged("hasFeatureSelectedListeners")
-          || stateChangeEvent.hasPropertyChanged("hasFeatureUnselectedListeners")
-          || stateChangeEvent.hasPropertyChanged("hasBeforeFeatureSelectedListeners")) {
-            if (getState().hasFeatureSelectedListeners || getState().hasFeatureUnselectedListeners
-              || getState().hasBeforeFeatureSelectedListeners) {
-
-                if (!this.getWidget().hasControl()) {
-                    if (getState().hasFeatureSelectedListeners && this.selectedhandler == null) {
-                        this.selectedhandler = new GwtOlHandler() {
-                            @SuppressWarnings("rawtypes")
-                            public void onEvent(JsArray arguments) {
-                                Vector vector = getVector(arguments);
-                                featureSelectionServerRpc
-                                  .featureSelected(vector.getFeatureId(), getAttributeMap(vector), getWKT(vector));
-                            }
-                        };
-                        this.getWidget().getLayer().registerHandler("featureselected", this.selectedhandler);
-                    }
-                    if (getState().hasFeatureUnselectedListeners && this.unselectedhandler == null) {
-                        this.unselectedhandler = new GwtOlHandler() {
-                            @SuppressWarnings("rawtypes")
-                            public void onEvent(JsArray arguments) {
-                                Vector vector = getVector(arguments);
-                                featureSelectionServerRpc
-                                  .featureUnselected(vector.getFeatureId(), getAttributeMap(vector), getWKT(vector));
-                            }
-                        };
-                        this.getWidget().getLayer().registerHandler("featureunselected", this.unselectedhandler);
-                    }
-                    if (getState().hasBeforeFeatureSelectedListeners && this.beforeSelectedhandler == null) {
-                        this.beforeSelectedhandler = new GwtOlHandler() {
-                            @SuppressWarnings("rawtypes")
-                            public void onEvent(JsArray arguments) {
-                                Vector vector = getVector(arguments);
-                                featureSelectionServerRpc
-                                  .beforeFeatureSelected(vector.getFeatureId(), getAttributeMap(vector), getWKT(vector));
-                            }
-                        };
-                        this.getWidget().getLayer().registerHandler("beforefeatureselected", this.beforeSelectedhandler);
-                    }
-
-                    this.getWidget().createControl();
+        if (getState().registeredEventListeners != null &&
+          (getState().registeredEventListeners.contains("vsel")
+            || getState().registeredEventListeners.contains("vbefsel")
+            || getState().registeredEventListeners.contains("vusel"))
+          ) {
+            if (!this.getWidget().hasControl()) {
+                if (getState().registeredEventListeners.contains("vsel") && this.selectedhandler == null) {
+                    this.selectedhandler = new GwtOlHandler() {
+                        @SuppressWarnings("rawtypes")
+                        public void onEvent(JsArray arguments) {
+                            Vector vector = getVector(arguments);
+                            featureSelectionServerRpc
+                              .featureSelected(vector.getFeatureId(), getAttributeMap(vector), getWKT(vector));
+                        }
+                    };
+                    this.getWidget().getLayer().registerHandler("featureselected", this.selectedhandler);
+                }
+                if (getState().registeredEventListeners.contains("vusel") && this.unselectedhandler == null) {
+                    this.unselectedhandler = new GwtOlHandler() {
+                        @SuppressWarnings("rawtypes")
+                        public void onEvent(JsArray arguments) {
+                            Vector vector = getVector(arguments);
+                            featureSelectionServerRpc
+                              .featureUnselected(vector.getFeatureId(), getAttributeMap(vector), getWKT(vector));
+                        }
+                    };
+                    this.getWidget().getLayer().registerHandler("featureunselected", this.unselectedhandler);
+                }
+                if (getState().registeredEventListeners.contains("vbefsel") && this.beforeSelectedhandler == null) {
+                    this.beforeSelectedhandler = new GwtOlHandler() {
+                        @SuppressWarnings("rawtypes")
+                        public void onEvent(JsArray arguments) {
+                            Vector vector = getVector(arguments);
+                            featureSelectionServerRpc
+                              .beforeFeatureSelected(vector.getFeatureId(), getAttributeMap(vector), getWKT(vector));
+                        }
+                    };
+                    this.getWidget().getLayer().registerHandler("beforefeatureselected", this.beforeSelectedhandler);
                 }
 
-                this.getWidget().activateControl();
-            } else {
-                this.getWidget().destroyControl();
+                this.getWidget().createControl();
             }
+
+            this.getWidget().activateControl();
+        } else {
+            this.getWidget().destroyControl();
         }
     }
 }
