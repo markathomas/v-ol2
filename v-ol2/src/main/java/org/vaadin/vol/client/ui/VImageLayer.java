@@ -46,19 +46,19 @@ public class VImageLayer extends VAbstracMapLayer<ImageLayer> {
         this.baseLayer = baseLayer;
     }
 
-    public int getWidth() {
+    public int getImageWidth() {
         return this.width;
     }
 
-    public void setWidth(int width) {
+    public void setImageWidth(int width) {
         this.width = width;
     }
 
-    public int getHeight() {
+    public int getImageHeight() {
         return this.height;
     }
 
-    public void setHeight(int height) {
+    public void setImageHeight(int height) {
         this.height = height;
     }
 }

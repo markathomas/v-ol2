@@ -2,7 +2,6 @@ package org.vaadin.vol.client.ui;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -182,7 +181,7 @@ public class VOpenLayersMap extends FlowPanel {
 
     public void attachSpecialWidget(Widget paintable,
             com.google.gwt.dom.client.Element elementById) {
-        add(paintable, (Element) elementById.cast());
+        add(paintable, elementById);
     }
 
     VLazyExecutor resizeMap = new VLazyExecutor(300, new ScheduledCommand() {

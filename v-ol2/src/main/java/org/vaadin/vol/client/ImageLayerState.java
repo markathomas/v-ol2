@@ -18,7 +18,7 @@ public class ImageLayerState extends AbstractComponentState {
     @DelegateToWidget
     public Double[] bounds = new Double[] { -180d, -90d, 180d, 90d };
     @DelegateToWidget
-    public int height;
+    public int imageHeight;
     @DelegateToWidget
-    public int width;
+    public int imageWidth;
 }

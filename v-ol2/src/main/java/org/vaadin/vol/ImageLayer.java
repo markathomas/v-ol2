@@ -12,8 +12,8 @@ public class ImageLayer extends AbstractComponent implements Layer {
 
     public ImageLayer(String url, int width, int height) {
         setUri(url);
-        this.getState().width = width;
-        this.getState().height = height;
+        this.getState().imageWidth = width;
+        this.getState().imageHeight = height;
     }
 
     @Override
