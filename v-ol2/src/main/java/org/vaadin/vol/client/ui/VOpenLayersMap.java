@@ -6,15 +6,13 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.client.ApplicationConnection;
-import com.vaadin.client.UIDL;
-import com.vaadin.client.VConsole;
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.ui.VLazyExecutor;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.vaadin.vol.client.wrappers.Bounds;
 import org.vaadin.vol.client.wrappers.LonLat;
@@ -39,6 +37,8 @@ public class VOpenLayersMap extends FlowPanel {
     private Map map = new Map();
 
     private HashMap<String, Control> myControls = new HashMap<String, Control>();
+
+    private final Logger logger = Logger.getLogger(getClass().getName());
 
     /**
      * The constructor should first call super() to initialize the component and
@@ -75,26 +75,12 @@ public class VOpenLayersMap extends FlowPanel {
                 - getMap().getAbsoluteLeft();
     }
 
-    /**
-     * Called whenever an update is received from the server
-     */
-    public void updateFromUIDL(UIDL uidl, final ApplicationConnection client) {
-
-
-        updateZoomAndCenter(uidl);
-
-        if (uidl.hasAttribute("baseLayer")) {
-            //Server side wants to change the base layer.
-            VLayer baseLayer = (VLayer) uidl.getPaintableAttribute("baseLayer", client);
-            getMap().setBaseLayer(baseLayer.getLayer());
-        }
-    }
-
-    public void updateControls(Set<org.vaadin.vol.client.Control> controls) {
+    public void updateControls(Set<String> controls) {
+        this.logger.info("Updating widget with " + controls.size() + " controls!");
         HashSet<String> oldcontrols = new HashSet<String>(myControls.keySet());
 
-        for (org.vaadin.vol.client.Control control : controls) {
-            String name = control.name();
+        for (String name : controls) {
+            this.logger.info("Handling addition of " + name + " control");
             if (oldcontrols.contains(name)) {
                 oldcontrols.remove(name);
             } else {
@@ -103,7 +89,7 @@ public class VOpenLayersMap extends FlowPanel {
                     map.addControl(controlByName);
                     myControls.put(name, controlByName);
                 } else {
-                    VConsole.error("Control not in OL build: " + name);
+                    this.logger.severe("Control not in OL build: " + name);
                 }
             }
         }
@@ -117,42 +103,34 @@ public class VOpenLayersMap extends FlowPanel {
         }
     }
 
-    private void updateZoomAndCenter(UIDL uidl) {
+    public void zoomToExtent(Bounds bounds) {
+
+        // Skip for empty map
+        if (getMap().getProjection() != null) {
+            bounds.transform(getProjection(), getMap().getProjection());
+            getMap().zoomToExtent(bounds);
+        }
+    }
+
+    public void updateZoomAndCenter(Integer newZoom, LonLat center) {
 
         // Skip for empty map
         if (getMap().getProjection() != null) {
 
-            if (uidl.hasAttribute("ze_top")) {
-                /*
-                 * Zoom to extent
-                 */
-                double top = uidl.getDoubleAttribute("ze_top");
-                double right = uidl.getDoubleAttribute("ze_right");
-                double bottom = uidl.getDoubleAttribute("ze_bottom");
-                double left = uidl.getDoubleAttribute("ze_left");
-                Bounds bounds = Bounds.create(left, bottom, right, top);
-                bounds.transform(getProjection(), getMap().getProjection());
-                getMap().zoomToExtent(bounds);
-                return;
-            }
-
             int zoom = map.getZoom();
-            if (uidl.hasAttribute("zoom")) {
-                zoom = uidl.getIntAttribute("zoom");
-                if (!uidl.hasAttribute("clat")) {
+            if (newZoom != null) {
+                zoom = newZoom;
+                if (center == null) {
                     // just set zoom, no center position
                     map.setZoom(zoom);
                 }
             }
 
-            if (uidl.hasAttribute("clat")) {
-                double lat = uidl.getDoubleAttribute("clat");
-                double lon = uidl.getDoubleAttribute("clon");
-                LonLat lonLat = LonLat.create(lon, lat);
+            if (center != null) {
                 // expect center point to be in WSG84
                 Projection projection = map.getProjection();
-                lonLat.transform(getProjection(), projection);
-                map.setCenter(lonLat, zoom);
+                center.transform(getProjection(), projection);
+                map.setCenter(center, zoom);
             }
         }
     }

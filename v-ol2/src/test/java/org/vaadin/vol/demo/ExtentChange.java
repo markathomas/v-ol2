@@ -29,7 +29,7 @@ public class ExtentChange extends AbstractVOLTest {
             public void extentChanged(ExtentChangeEvent event) {
                 Notification.show(
                         "Current extent is: "
-                                + event.getComponent().getExtend());
+                                + event.getComponent().getExtent());
 
                 // In real world cases developer could e.g. update drawn vectors
                 // on map

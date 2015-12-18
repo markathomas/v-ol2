@@ -3,25 +3,23 @@ package org.vaadin.vol.client;
 import com.vaadin.shared.AbstractComponentState;
 import com.vaadin.shared.Connector;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class OpenLayersMapState extends AbstractComponentState {
 
     public List<Connector> layers = new LinkedList<Connector>();
-    public double centerLon;
-    public double centerLat;
+    public Point center;
     public int zoom = 3;
     public Bounds bounds = Bounds.WORLD;
 
+    public Connector baseLayer;
     public String jsMapOptions;
     public Bounds zoomToExtent;
     public Bounds restrictedExtent;
     public String projection;
 
-    public HashSet<Control> controls = new HashSet<Control>(Arrays.asList(
-      Control.ArgParser, Control.Navigation, Control.TouchNavigation,
-      Control.Attribution));
+    public Set<String> controls = new HashSet<String>();
 }

@@ -32,8 +32,16 @@
 
     <inherits name="com.vaadin.DefaultWidgetSet" />
 
+    <set-property name="vaadin.profiler" value="true" />
+    <set-property name="gwt.logging.logLevel" value="FINEST"/>
+    <set-property name="gwt.logging.enabled" value="TRUE"/>
+    <set-property name="gwt.logging.consoleHandler" value="ENABLED"/>
+    <set-property name="gwt.logging.developmentModeHandler" value="ENABLED"/>
+    <set-property name="gwt.logging.systemHandler" value="DISABLED"/>
+    <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED"/>
+    <set-property name="compiler.stackMode" value="emulated" />
 
-
+    <set-configuration-property name="devModeRedirectEnabled" value="true" />
 
     <inherits name="org.vaadin.vol.VolWidgetset" />
 </module>

@@ -155,6 +155,21 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
         if (stateChangeEvent.hasPropertyChanged("projection")) {
             getWidget().setProjection(Projection.get(getState().projection));
         }
+
+        if (stateChangeEvent.hasPropertyChanged("zoomToExtent") && getState().zoomToExtent != null) {
+            getWidget().zoomToExtent(Bounds.create(
+              getState().zoomToExtent.getLeft(),
+              getState().zoomToExtent.getBottom(),
+              getState().zoomToExtent.getRight(),
+              getState().zoomToExtent.getTop()
+            ));
+        } else if (stateChangeEvent.hasPropertyChanged("zoom") || stateChangeEvent.hasPropertyChanged("center")) {
+            LonLat center = null;
+            if (stateChangeEvent.hasPropertyChanged("center")) {
+                center = LonLat.create(getState().center.getLon(), getState().center.getLat());
+            }
+            getWidget().updateZoomAndCenter(getState().zoom, center);
+        }
     }
 
     @OnStateChange("jsMapOptions")
@@ -165,6 +180,12 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     @OnStateChange("projection")
     void projectionChanged() {
         getWidget().setProjection(Projection.get(getState().projection));
+    }
+
+    @OnStateChange("baseLayer")
+    void baseLayerChanged() {
+        VLayer layer = (VLayer)(((ComponentConnector)getState().baseLayer).getWidget());
+        getWidget().getMap().setBaseLayer(layer.getLayer());
     }
 
     @OnStateChange("restrictedExtent")

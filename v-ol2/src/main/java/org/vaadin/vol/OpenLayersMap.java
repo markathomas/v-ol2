@@ -8,6 +8,7 @@ import com.vaadin.util.ReflectTools;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +18,7 @@ import org.vaadin.vol.client.Bounds;
 import org.vaadin.vol.client.Control;
 import org.vaadin.vol.client.OpenLayersMapServerRpc;
 import org.vaadin.vol.client.OpenLayersMapState;
+import org.vaadin.vol.client.Point;
 import org.vaadin.vol.client.PointInformation;
 
 /**
@@ -26,8 +28,6 @@ import org.vaadin.vol.client.PointInformation;
 @JavaScript({ "helpers.js" })
 public class OpenLayersMap extends AbstractComponentContainer {
 
-    private Layer baseLayer;
-
     public OpenLayersMap() {
         this(false);
     }
@@ -36,6 +36,10 @@ public class OpenLayersMap extends AbstractComponentContainer {
         setWidth("500px");
         setHeight("350px");
         if (!skipControls) {
+            addControl(Control.ArgParser);
+            addControl(Control.Navigation);
+            addControl(Control.TouchNavigation);
+            addControl(Control.Attribution);
             addControl(Control.PanZoom);
             addControl(Control.LayerSwitcher);
         }
@@ -60,7 +64,7 @@ public class OpenLayersMap extends AbstractComponentContainer {
             public void baseLayerChanged(String connectorId) {
                 for (Connector c : getState().layers) {
                     if (Objects.equals(c.getConnectorId(), connectorId)) {
-                        baseLayer = (Layer)c;
+                        getState().baseLayer = c;
                         break;
                     }
                 }
@@ -76,11 +80,17 @@ public class OpenLayersMap extends AbstractComponentContainer {
     }
 
     public void addControl(Control control) {
-        this.getState().controls.add(control);
+        Set<String> tmp = new HashSet<String>(getState().controls);
+        tmp.add(control.name());
+        this.getState().controls = tmp;
+        markAsDirty();
     }
 
     public void removeControl(Control control) {
-        this.getState().controls.remove(control);
+        Set<String> tmp = new HashSet<String>(getState().controls);
+        tmp.remove(control.name());
+        this.getState().controls = tmp;
+        markAsDirty();
     }
 
     /**
@@ -89,7 +99,11 @@ public class OpenLayersMap extends AbstractComponentContainer {
      *         directly, call markAsDirty for the map to force repaint.
      */
     public Set<Control> getControls() {
-        return this.getState().controls;
+        Set<Control> controls = new HashSet<Control>(getState().controls.size());
+        for (String name : getState().controls) {
+            controls.add(Control.valueOf(name));
+        }
+        return controls;
     }
 
     /**
@@ -140,7 +154,7 @@ public class OpenLayersMap extends AbstractComponentContainer {
         // Need to add a check to make sure the newBaseLayer is in fact a base layer....API needs more work for that
         if (newBaseLayer != null && this.getState().layers.contains(newBaseLayer)) {
             //System.out.println("...not eq, setting");
-            this.baseLayer = newBaseLayer;
+            this.getState().baseLayer = newBaseLayer;
        } else {
             throw new IllegalArgumentException("Only existing map layers can become the base layer");
        }
@@ -152,12 +166,12 @@ public class OpenLayersMap extends AbstractComponentContainer {
      * @return Current base layer name.
      */
     public Layer getBaseLayer() {
-        return baseLayer;
+        return (Layer)this.getState().baseLayer;
     }
 
     public void setCenter(double lon, double lat) {
-        this.getState().centerLat = lat;
-        this.getState().centerLon = lon;
+        this.getState().center = new Point(lon, lat);
+        markAsDirty();
     }
 
     /**
@@ -165,25 +179,18 @@ public class OpenLayersMap extends AbstractComponentContainer {
      *
      */
     public void setCenter(Bounds bounds) {
-        this.getState().centerLat = (bounds.getBottom() + bounds.getTop()) / 2.0;
-        this.getState().centerLon = (bounds.getRight() + bounds.getLeft()) / 2.0;
+        double lat = (bounds.getBottom() + bounds.getTop()) / 2.0;
+        double lon = (bounds.getRight() + bounds.getLeft()) / 2.0;
+        setCenter(lon, lat);
     }
 
     public void setZoom(int zoomLevel) {
         this.getState().zoom = zoomLevel;
+        markAsDirty();
     }
 
     public int getZoom() {
         return this.getState().zoom;
-    }
-
-    /**
-     * Note, this does not work until the map is rendered.
-     *
-     * @return
-     */
-    public Bounds getExtend() {
-        return this.getState().bounds;
     }
 
     public void replaceComponent(Component oldComponent, Component newComponent) {
@@ -222,6 +229,7 @@ public class OpenLayersMap extends AbstractComponentContainer {
      */
     public void setJsMapOptions(String jsMapOptions) {
         this.getState().jsMapOptions = jsMapOptions;
+        markAsDirty();
     }
 
     public String getJsMapOptions() {
@@ -239,8 +247,11 @@ public class OpenLayersMap extends AbstractComponentContainer {
     public void zoomToExtent(Bounds bounds) {
         getState().zoomToExtent = bounds;
         // also save center point for refreshes
-        getState().centerLon = (bounds.getMinLon() + bounds.getMaxLon()) / 2;
-        getState().centerLat = (bounds.getMinLat() + bounds.getMaxLat()) / 2;
+        setCenter(bounds);
+    }
+
+    public Bounds getRestrictedExtent() {
+        return this.getState().restrictedExtent;
     }
 
     /**
@@ -259,6 +270,7 @@ public class OpenLayersMap extends AbstractComponentContainer {
      */
     public void setRestrictedExtent(Bounds bounds) {
         getState().restrictedExtent = bounds;
+        markAsDirty();
     }
 
     /**
@@ -273,6 +285,7 @@ public class OpenLayersMap extends AbstractComponentContainer {
      */
     public void setApiProjection(String projection) {
         this.getState().projection = projection;
+        markAsDirty();
     }
 
     /**
@@ -331,6 +344,11 @@ public class OpenLayersMap extends AbstractComponentContainer {
         removeComponent(layer);
     }
 
+    /**
+     * Note, this does not work until the map is rendered.
+     *
+     * @return
+     */
     public Bounds getExtent() {
         return this.getState().bounds;
     }

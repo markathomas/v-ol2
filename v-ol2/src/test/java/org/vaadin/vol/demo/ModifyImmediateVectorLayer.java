@@ -163,7 +163,7 @@ public class ModifyImmediateVectorLayer extends AbstractVOLTest implements
                     public void buttonClick(ClickEvent event) {
                         Vector vector = vectorLayer.getSelectedVector();
                         if (vector != null) {
-                            Bounds extend = map.getExtend();
+                            Bounds extend = map.getExtent();
                             double toRight = (extend.getRight() - extend
                                     .getLeft()) / 10.0;
                             Point[] points = vector.getPoints();
