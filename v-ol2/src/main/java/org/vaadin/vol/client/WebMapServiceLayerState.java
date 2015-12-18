@@ -23,9 +23,7 @@ public class WebMapServiceLayerState extends LayerBaseState {
     @DelegateToWidget
     public String format = "image/jpeg";
     @DelegateToWidget
-    public String projection;
-    @DelegateToWidget
-    public String styles;
+    public String layerStyles;
     @DelegateToWidget
     public String viewparams;
     @DelegateToWidget

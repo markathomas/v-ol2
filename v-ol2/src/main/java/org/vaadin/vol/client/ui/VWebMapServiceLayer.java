@@ -12,7 +12,6 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
     private String format;
     private boolean transparent;
     private String cqlFilter;
-    private String projection;
     private String styles;
     private String viewparams;
     private boolean inLayerSwitcher;
@@ -22,7 +21,7 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
     protected WebMapServiceLayer createLayer() {
         return WebMapServiceLayer.create(getDisplayName(), uri, layers, format,
           cqlFilter, styles, baseLayer, transparent, opacity, singleTile,
-          projection, viewparams, inLayerSwitcher, visibility);
+          getProjection(), viewparams, inLayerSwitcher, visibility);
     }
 
     public String getUri() {
@@ -87,14 +86,6 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
 
     public void setCqlFilter(String cqlFilter) {
         this.cqlFilter = cqlFilter;
-    }
-
-    public String getProjection() {
-        return this.projection;
-    }
-
-    public void setProjection(String projection) {
-        this.projection = projection;
     }
 
     public String getStyles() {

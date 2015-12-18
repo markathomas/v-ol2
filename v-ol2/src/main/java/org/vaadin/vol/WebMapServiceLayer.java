@@ -13,11 +13,11 @@ public class WebMapServiceLayer extends AbstractLayerBase implements Layer {
     }
 
     public String getStyles() {
-        return getState().styles;
+        return getState().layerStyles;
     }
 
     public void setStyles(String styles) {
-        this.getState().styles = styles;
+        this.getState().layerStyles = styles;
         markAsDirty();
     }
 

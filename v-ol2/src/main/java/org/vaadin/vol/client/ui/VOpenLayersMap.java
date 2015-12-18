@@ -6,9 +6,12 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.ui.VLazyExecutor;
+import com.vaadin.shared.Connector;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +39,9 @@ public class VOpenLayersMap extends FlowPanel {
 
     private Map map = new Map();
 
+    private HashMap<String, Widget> components = new HashMap<String, Widget>();
+    private FlowPanel fakePaintables = new FlowPanel();
+
     private HashMap<String, Control> myControls = new HashMap<String, Control>();
 
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -48,6 +54,8 @@ public class VOpenLayersMap extends FlowPanel {
         setWidth("500px");
         setHeight("500px");
         add(map);
+        add(fakePaintables);
+        fakePaintables.setVisible(false);
 
         // This method call of the Paintable interface sets the component
         // style name in DOM tree
@@ -73,6 +81,24 @@ public class VOpenLayersMap extends FlowPanel {
     private double getMapClickLeftPosition(ContextMenuEvent event) {
         return WidgetUtil.getTouchOrMouseClientX(event.getNativeEvent())
                 - getMap().getAbsoluteLeft();
+    }
+
+    public void updateLayers(Collection<Connector> layers) {
+        Set<String> orphanedComponents = new HashSet<String>(components.keySet());
+
+        for (Connector layer : layers) {
+            orphanedComponents.remove(layer.getConnectorId());
+            Widget widget = ((ComponentConnector)layer).getWidget();
+            if (!components.containsKey(layer.getConnectorId())) {
+                components.put(layer.getConnectorId(), widget);
+                fakePaintables.add(widget);
+            }
+        }
+
+        for (String id : orphanedComponents) {
+            Widget remove = components.remove(id);
+            fakePaintables.remove(remove);
+        }
     }
 
     public void updateControls(Set<String> controls) {
