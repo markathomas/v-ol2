@@ -88,11 +88,11 @@ public class VWebMapServiceLayer extends VAbstracMapLayer<WebMapServiceLayer> {
         this.cqlFilter = cqlFilter;
     }
 
-    public String getStyles() {
+    public String getLayerStyles() {
         return this.styles;
     }
 
-    public void setStyles(String styles) {
+    public void setLayerStyles(String styles) {
         this.styles = styles;
     }
 
