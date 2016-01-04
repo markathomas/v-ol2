@@ -110,6 +110,7 @@ public class VOpenLayersMap extends FlowPanel {
                 oldcontrols.remove(name);
             } else {
                 Control controlByName = Control.getControlByName(name, getMap());
+                this.logger.info("Adding control " +  name + " to map");
                 if (controlByName != null) {
                     map.addControl(controlByName);
                     myControls.put(name, controlByName);

@@ -1,6 +1,5 @@
 package org.vaadin.vol.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
@@ -20,11 +19,6 @@ public class MarkerConnector extends AbstractComponentConnector {
     @Override
     public VMarker getWidget() {
         return (VMarker)super.getWidget();
-    }
-
-    @Override
-    public VMarker createWidget() {
-        return GWT.create(VMarker.class);
     }
 
     @Override

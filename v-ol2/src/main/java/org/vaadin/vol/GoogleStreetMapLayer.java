@@ -3,8 +3,6 @@
  */
 package org.vaadin.vol;
 
-import com.vaadin.ui.AbstractComponent;
-
 import org.vaadin.vol.client.GoogleMapLayerState;
 
 /**
@@ -18,26 +16,10 @@ import org.vaadin.vol.client.GoogleMapLayerState;
  *  &lt;script src="http://maps.google.com/maps/api/js?v=3.2&amp;sensor=false"&gt;&lt;/script&gt;
  * </code>
  */
-public class GoogleStreetMapLayer extends AbstractComponent implements Layer {
+public class GoogleStreetMapLayer extends AbstractLayerBase implements Layer {
 
     @Override
     public GoogleMapLayerState getState() {
         return (GoogleMapLayerState)super.getState();
-    }
-
-    public void setDisplayName(String displayName) {
-        this.getState().displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return getState().displayName;
-    }
-
-    public void setProjection(String projection) {
-        this.getState().projection = projection;
-    }
-
-    public String getProjection() {
-        return getState().projection;
     }
 }

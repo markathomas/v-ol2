@@ -1,7 +1,5 @@
 package org.vaadin.vol;
 
-import com.vaadin.ui.AbstractComponent;
-
 import org.vaadin.vol.client.BingMapLayerState;
 
 /**
@@ -12,7 +10,7 @@ import org.vaadin.vol.client.BingMapLayerState;
  * Note that no settings can be changed after the layer has been drawn for the
  * first time.
  */
-public class BingMapLayer extends AbstractComponent implements Layer {
+public class BingMapLayer extends AbstractLayerBase implements Layer {
 
     public enum Type {
         Road, Aerial, AerialWithLabels
@@ -29,15 +27,6 @@ public class BingMapLayer extends AbstractComponent implements Layer {
     @Override
     public BingMapLayerState getState() {
         return (BingMapLayerState)super.getState();
-    }
-
-
-    public void setDisplayName(String displayName) {
-        this.getState().displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return getState().displayName;
     }
 
     public void setApikey(String apikey) {

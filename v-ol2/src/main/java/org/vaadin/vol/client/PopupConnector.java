@@ -1,6 +1,5 @@
 package org.vaadin.vol.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
@@ -35,11 +34,6 @@ public class PopupConnector extends AbstractComponentContainerConnector {
     @Override
     public VPopup getWidget() {
         return (VPopup)super.getWidget();
-    }
-
-    @Override
-    public VPopup createWidget() {
-        return GWT.create(VPopup.class);
     }
 
     @Override

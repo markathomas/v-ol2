@@ -1,6 +1,5 @@
 package org.vaadin.vol.client;
 
-import com.google.gwt.core.client.GWT;
 import com.vaadin.shared.ui.Connect;
 
 import org.vaadin.vol.XYZLayer;
@@ -17,10 +16,5 @@ public class XYZLayerConnector extends LayerBaseConnector {
     @Override
     public VXYZLayer getWidget() {
         return (VXYZLayer)super.getWidget();
-    }
-
-    @Override
-    public VXYZLayer createWidget() {
-        return GWT.create(VXYZLayer.class);
     }
 }

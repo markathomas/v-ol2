@@ -1,6 +1,5 @@
 package org.vaadin.vol.client;
 
-import com.google.gwt.core.client.GWT;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.Profiler;
@@ -16,11 +15,6 @@ public class MarkerLayerConnector extends AbstractComponentContainerConnector {
     @Override
     public VMarkerLayer getWidget() {
         return (VMarkerLayer)super.getWidget();
-    }
-
-    @Override
-    public VMarkerLayer createWidget() {
-        return GWT.create(VMarkerLayer.class);
     }
 
     @Override

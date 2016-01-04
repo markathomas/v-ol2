@@ -1,15 +1,17 @@
 package org.vaadin.vol.client.wrappers;
 
-import org.vaadin.vol.client.wrappers.control.Control;
-import org.vaadin.vol.client.wrappers.layer.Layer;
-import org.vaadin.vol.client.wrappers.popup.Popup;
-
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
+
+import java.util.logging.Logger;
+
+import org.vaadin.vol.client.wrappers.control.Control;
+import org.vaadin.vol.client.wrappers.layer.Layer;
+import org.vaadin.vol.client.wrappers.popup.Popup;
 
 /**
  * A widget that contains open layers map. Proxys all relevant OpenLayers map
@@ -28,6 +30,8 @@ public class Map extends Widget {
     @SuppressWarnings("unchecked")
     private JsArray<Control> initialControls = (JsArray<Control>) JsArray
             .createArray();
+
+    private final Logger logger = Logger.getLogger(getClass().getName());
 
     public Map() {
         setElement(Document.get().createDivElement());
@@ -48,6 +52,7 @@ public class Map extends Widget {
      */
     public void setMapInitOptions(String mapInitOptions) {
         this.mapInitOptions = mapInitOptions;
+        this.logger.info("Set initial map options to " + mapInitOptions);
     }
 
     public String getMapInitOptions() {
@@ -56,6 +61,8 @@ public class Map extends Widget {
 
     private MapOverlay getMap() {
         if (jsoverlay == null) {
+            this.logger.info("initizing map overlay to be attached to element " + mapElement.getId() + " with initial map options "
+              + "of " + mapInitOptions + " and controls " + initialControls);
             jsoverlay = MapOverlay.get(mapElement.getId(), mapInitOptions,
                     initialControls);
         }
@@ -64,21 +71,26 @@ public class Map extends Widget {
 
     public void addControl(Control control) {
         if (jsoverlay == null) {
+            this.logger.info("adding control " + control + " as initial map control");
             initialControls.push(control);
         } else {
+            this.logger.info("adding control " + control);
             getMap().addControl(control);
         }
     }
 
     public void addLayer(Layer layer) {
+        this.logger.info("adding layer " + layer + " to map");
         getMap().addLayer(layer);
     }
 
     public void removeLayer(Layer remove) {
+        this.logger.info("removing layer " + remove + " from map");
         getMap().removeLayer(remove);
     }
 
     public void setCenter(LonLat lonLat, int zoom) {
+        this.logger.info("setting center of map to " + lonLat + " at zoom level " + zoom);
         getMap().setCenter(lonLat, zoom);
 
     }
@@ -100,6 +112,7 @@ public class Map extends Widget {
     }
 
     public void removeControl(Control control) {
+        this.logger.info("removing control " + control + " from map");
         getMap().removeContol(control);
     }
 

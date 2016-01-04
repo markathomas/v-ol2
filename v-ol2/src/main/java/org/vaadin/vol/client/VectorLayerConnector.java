@@ -1,6 +1,5 @@
 package org.vaadin.vol.client;
 
-import com.google.gwt.core.client.GWT;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.Profiler;
@@ -20,11 +19,6 @@ public class VectorLayerConnector extends AbstractComponentContainerConnector {
     @Override
     public VVectorLayer getWidget() {
         return (VVectorLayer)super.getWidget();
-    }
-
-    @Override
-    public VVectorLayer createWidget() {
-        return GWT.create(VVectorLayer.class);
     }
 
     @Override

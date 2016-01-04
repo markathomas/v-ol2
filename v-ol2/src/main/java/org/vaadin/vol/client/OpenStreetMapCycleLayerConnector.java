@@ -1,6 +1,5 @@
 package org.vaadin.vol.client;
 
-import com.google.gwt.core.client.GWT;
 import com.vaadin.shared.ui.Connect;
 
 import org.vaadin.vol.OpenStreetMapCycleLayer;
@@ -12,10 +11,5 @@ public class OpenStreetMapCycleLayerConnector extends LayerBaseConnector {
     @Override
     public VOpenStreetMapCycleLayer getWidget() {
         return (VOpenStreetMapCycleLayer)super.getWidget();
-    }
-
-    @Override
-    public VOpenStreetMapCycleLayer createWidget() {
-        return GWT.create(VOpenStreetMapCycleLayer.class);
     }
 }

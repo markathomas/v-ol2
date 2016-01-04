@@ -1,6 +1,5 @@
 package org.vaadin.vol.client;
 
-import com.google.gwt.core.client.GWT;
 import com.vaadin.client.ui.AbstractComponentConnector;
 import com.vaadin.shared.ui.Connect;
 
@@ -9,11 +8,6 @@ import org.vaadin.vol.client.ui.VMapTilerLayer;
 
 @Connect(MapTilerLayer.class)
 public class MapTilerLayerConnector extends AbstractComponentConnector {
-
-    @Override
-    public VMapTilerLayer createWidget() {
-        return GWT.create(VMapTilerLayer.class);
-    }
 
     @Override
     public VMapTilerLayer getWidget() {

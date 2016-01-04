@@ -1,6 +1,5 @@
 package org.vaadin.vol.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ComponentConnector;
@@ -41,11 +40,6 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     @Override
     public VOpenLayersMap getWidget() {
         return (VOpenLayersMap)super.getWidget();
-    }
-
-    @Override
-    public VOpenLayersMap createWidget() {
-        return GWT.create(VOpenLayersMap.class);
     }
 
     @Override
@@ -165,7 +159,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             ));
         } else if (stateChangeEvent.hasPropertyChanged("zoom") || stateChangeEvent.hasPropertyChanged("center")) {
             LonLat center = null;
-            if (stateChangeEvent.hasPropertyChanged("center")) {
+            if (stateChangeEvent.hasPropertyChanged("center") && getState().center != null) {
                 center = LonLat.create(getState().center.getLon(), getState().center.getLat());
             }
             getWidget().updateZoomAndCenter(getState().zoom, center);
@@ -184,6 +178,8 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
 
     @OnStateChange("baseLayer")
     void baseLayerChanged() {
+        if (getState().baseLayer == null)
+            return;
         VLayer layer = (VLayer)(((ComponentConnector)getState().baseLayer).getWidget());
         getWidget().getMap().setBaseLayer(layer.getLayer());
     }

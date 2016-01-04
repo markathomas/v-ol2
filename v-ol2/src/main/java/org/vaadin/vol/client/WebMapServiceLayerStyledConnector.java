@@ -1,6 +1,5 @@
 package org.vaadin.vol.client;
 
-import com.google.gwt.core.client.GWT;
 import com.vaadin.shared.ui.Connect;
 
 import org.vaadin.vol.WebMapServiceLayerStyled;
@@ -17,10 +16,5 @@ public class WebMapServiceLayerStyledConnector extends WebMapServiceLayerConnect
     @Override
     public VWebMapServiceLayerStyled getWidget() {
         return (VWebMapServiceLayerStyled)super.getWidget();
-    }
-
-    @Override
-    public VWebMapServiceLayerStyled createWidget() {
-        return GWT.create(VWebMapServiceLayerStyled.class);
     }
 }
