@@ -45,13 +45,15 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     @Override
     public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent event) {
         Profiler.enter("OpenLayersMapConnector.onConnectorHierarchyChange");
-        Profiler.enter("OpenLayersMapConnector.onConnectorHierarchyChange add children");
+        Profiler.enter(
+                "OpenLayersMapConnector.onConnectorHierarchyChange add children");
 
-        getWidget().clear();
+        getWidget().getFakePaintables().clear();
         for (ComponentConnector child : getChildComponents()) {
-            getWidget().add(child.getWidget());
+            getWidget().getFakePaintables().add(child.getWidget());
         }
-        Profiler.leave("OpenLayersMapConnector.onConnectorHierarchyChange add children");
+        Profiler.leave(
+                "OpenLayersMapConnector.onConnectorHierarchyChange add children");
         Profiler.leave("OpenLayersMapConnector.onConnectorHierarchyChange");
     }
 

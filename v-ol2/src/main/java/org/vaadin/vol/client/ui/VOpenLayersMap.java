@@ -61,6 +61,9 @@ public class VOpenLayersMap extends FlowPanel {
         setStyleName(CLASSNAME);
     }
 
+    public FlowPanel getFakePaintables() {
+        return fakePaintables;
+    }
 
     private int getWindowClickTopPosition(ContextMenuEvent event) {
         return WidgetUtil.getTouchOrMouseClientY(event.getNativeEvent())
