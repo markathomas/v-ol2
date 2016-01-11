@@ -36,7 +36,7 @@ public abstract class VAbstracMapLayer<T extends Layer> extends Widget implement
     }
 
     public Map getMap() {
-        return ((VOpenLayersMap)getParent()).getMap();
+        return ((VOpenLayersMap) getParent().getParent()).getMap();
     }
 
     @Override
