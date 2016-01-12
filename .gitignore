@@ -1,0 +1,8 @@
+.idea
+*.iml
+.project
+.settings
+.classpath
+target
+styles.scss.cache
+widgetsets
