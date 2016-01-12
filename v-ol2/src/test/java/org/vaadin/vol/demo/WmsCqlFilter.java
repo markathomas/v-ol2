@@ -13,7 +13,7 @@ public class WmsCqlFilter extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         WebMapServiceLayer webMapServiceLayer = new WebMapServiceLayer();
         webMapServiceLayer.setUri("http://vmap0.tiles.osgeo.org/wms/vmap0");

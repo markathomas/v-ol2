@@ -24,7 +24,7 @@ public class WebFeatureServiceLayerTest extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         WebMapServiceLayer webMapServiceLayer = new WebMapServiceLayer();
         webMapServiceLayer.setUri("http://tilecache.osgeo.org/wms-c/Basic.py");

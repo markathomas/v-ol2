@@ -20,7 +20,7 @@ public class RotatedVectorWithImage extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         final OpenLayersMap map = new OpenLayersMap();
         OpenStreetMapLayer osm = new OpenStreetMapLayer();
         map.addLayer(osm);

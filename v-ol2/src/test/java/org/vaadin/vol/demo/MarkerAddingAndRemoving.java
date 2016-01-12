@@ -27,7 +27,7 @@ public class MarkerAddingAndRemoving extends AbstractVOLTest implements Handler 
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         map = new OpenLayersMap();
         /*
          * Open street maps layer as a base layer. Note importance of the order,

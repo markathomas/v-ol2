@@ -37,7 +37,7 @@ public class SelectMultipleVectorLayers extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
 
         map.addLayer(new  OpenStreetMapLayer());
         map.setCenter(-104.9, 38);

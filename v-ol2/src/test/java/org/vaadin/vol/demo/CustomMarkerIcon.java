@@ -19,7 +19,7 @@ public class CustomMarkerIcon extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         // create the map
         map = new OpenLayersMap();
         map.addLayer(new OpenStreetMapLayer());

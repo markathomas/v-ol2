@@ -61,7 +61,7 @@ public class WebFeatureServiceFilter extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         WebMapServiceLayer webMapServiceLayer = new WebMapServiceLayer();
         webMapServiceLayer.setUri("http://demo.opengeo.org/geoserver/wms");

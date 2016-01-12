@@ -78,7 +78,7 @@ public class EventsOSMandWFSLayer extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         OpenStreetMapLayer osmLayer = new OpenStreetMapLayer();
 

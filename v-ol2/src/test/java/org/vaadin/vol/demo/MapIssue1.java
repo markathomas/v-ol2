@@ -12,7 +12,7 @@ import org.vaadin.vol.client.VectorLayerState;
 public class MapIssue1 extends AbstractVOLTest {
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap map = new OpenLayersMap();
         // map.setImmediate(true);
 

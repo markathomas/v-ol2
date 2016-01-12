@@ -53,7 +53,7 @@ public class WebFeatureServiceLayerTest2 extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         OpenStreetMapLayer osmLayer = new OpenStreetMapLayer();
         osmLayer.setUrl("http://b.tile.openstreetmap.org/${z}/${x}/${y}.png");

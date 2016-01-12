@@ -13,7 +13,7 @@ public class BingMapTypes extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap map = new OpenLayersMap();
 
         map.setCenter(22.30, 60.452);

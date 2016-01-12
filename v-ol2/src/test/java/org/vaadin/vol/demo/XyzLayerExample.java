@@ -14,7 +14,7 @@ public class XyzLayerExample extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap map = new OpenLayersMap();
 //        map.setJsMapOptions("{maxResolution:1.40625/2}");
 

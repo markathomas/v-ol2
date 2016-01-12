@@ -14,7 +14,7 @@ public class OpenStreetMapTypes extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap map = new OpenLayersMap();
         /*
          * Open street maps layer as a base layer. Note importance of the order,

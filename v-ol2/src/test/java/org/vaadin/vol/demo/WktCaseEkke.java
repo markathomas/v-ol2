@@ -19,7 +19,7 @@ public class WktCaseEkke extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         openLayersMap.addLayer(new OpenStreetMapLayer());
 

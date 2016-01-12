@@ -23,7 +23,7 @@ public class TextOnVectorLayer extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         if (map == null) {
 
             map = new OpenLayersMap();

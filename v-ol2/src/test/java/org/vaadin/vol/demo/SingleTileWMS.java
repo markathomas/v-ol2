@@ -18,7 +18,7 @@ public class SingleTileWMS extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         WebMapServiceLayer webMapServiceLayer = new WebMapServiceLayer();
         webMapServiceLayer.setSingleTile(true);

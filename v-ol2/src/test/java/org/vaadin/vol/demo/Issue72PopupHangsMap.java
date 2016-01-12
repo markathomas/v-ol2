@@ -16,7 +16,7 @@ public class Issue72PopupHangsMap extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         final OpenLayersMap map = new OpenLayersMap();
         map.setSizeFull();
         map.addLayer(new OpenStreetMapLayer());

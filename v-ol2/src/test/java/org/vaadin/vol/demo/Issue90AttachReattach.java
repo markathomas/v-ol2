@@ -24,7 +24,7 @@ public class Issue90AttachReattach extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         VerticalLayout content = new VerticalLayout();
         final OpenLayersMap map = new OpenLayersMap();
         OpenStreetMapLayer osm = new OpenStreetMapLayer();

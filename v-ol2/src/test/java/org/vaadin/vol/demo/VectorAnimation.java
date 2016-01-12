@@ -82,7 +82,7 @@ public class VectorAnimation extends AbstractVOLTest implements ClickListener {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         if (map == null) {
             initDemoCoordinates();
 

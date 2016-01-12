@@ -22,7 +22,7 @@ public class CustomProjectionWithWms extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         // KKJ / Finland Uniform Coordinate System
         openLayersMap.setApiProjection("EPSG:2393");

@@ -1,5 +1,6 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.ui.Component;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
 import org.vaadin.vol.VectorLayer;
@@ -67,7 +68,7 @@ public class ActionHandlers extends AbstractVOLTest {
     }*/
 
     @Override
-    OpenLayersMap getMap() {
+    public Component getTestComponent() {
         OpenLayersMap openLayersMap = new OpenLayersMap();
         addBaseLayer(openLayersMap);
         return openLayersMap;

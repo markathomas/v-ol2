@@ -26,7 +26,7 @@ public class StyledWmsWithOpacityAndPointInfo extends AbstractVOLTest {
 
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         final OpenLayersMap map = new OpenLayersMap();
 
         map.setJsMapOptions("{projection: "

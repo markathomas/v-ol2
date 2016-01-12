@@ -129,6 +129,21 @@
             <version>8.1.10.v20130312</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-themes</artifactId>
+            <version>${vaadin.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.vaadin</groupId>
+            <artifactId>addon-test-helpers</artifactId>
+            <version>1.2</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -239,5 +254,35 @@
         </resources>
 
     </build>
+
+    <profiles>
+        <profile>
+            <id>test-widgetset</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.vaadin</groupId>
+                        <artifactId>vaadin-maven-plugin</artifactId>
+                        <version>${vaadin.version}</version>
+                        <configuration>
+                            <webappDirectory>${project.build.directory}/testwebapp/VAADIN/widgetsets</webappDirectory>
+                            <extraJvmArgs>-Xmx1024M -Xss512m -XX:MaxPermSize=1024m</extraJvmArgs>
+                            <hostedWebapp>${project.build.directory}/testwebapp</hostedWebapp>
+                            <noServer>true</noServer>
+                            <runTarget>http://localhost:9998/</runTarget>
+                            <draftCompile>true</draftCompile>
+                            <style>PRETTY</style>
+                            <module>org.vaadin.vol.VolWidgetset</module>
+                            <!-- If you do lots of e.g. plain css changes and don't wish to use
+                            hosted mode, you can force compile easily with uncommenting following rule -->
+                            <!-- 						<force>true</force> -->
+                            <strict>true</strict>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

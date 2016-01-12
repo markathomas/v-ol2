@@ -32,7 +32,7 @@ public class ChangeBaseLayer extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
 
         OpenStreetMapLayer osm = new OpenStreetMapLayer();
         osm.setDisplayName("OSM Streets Base");

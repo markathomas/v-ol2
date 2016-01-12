@@ -85,7 +85,7 @@ public class RemovingSelectedVector extends AbstractVOLTest implements ClickList
     }*/
 
     @Override
-    OpenLayersMap getMap() {
+    public Component getTestComponent() {
 
         ((ComponentContainer)getContent()).addComponent(removeSelected);
         ((ComponentContainer)getContent()).addComponent(removeAll);

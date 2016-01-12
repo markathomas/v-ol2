@@ -64,7 +64,7 @@ public class Demo extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         final OpenLayersMap map = new OpenLayersMap();
         map.setImmediate(true); // update extent and zoom to server as they
                                 // change

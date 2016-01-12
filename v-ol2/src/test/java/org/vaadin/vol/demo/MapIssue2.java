@@ -8,7 +8,7 @@ import com.vaadin.ui.Component;
 public class MapIssue2 extends AbstractVOLTest {
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         final OpenLayersMap map = new OpenLayersMap();
 
         // Defining a WMS layer as in OL examples

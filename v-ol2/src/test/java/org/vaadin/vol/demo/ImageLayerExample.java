@@ -22,7 +22,7 @@ public class ImageLayerExample extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap map = new OpenLayersMap();
 
         String url = "http://earthtrends.wri.org/images/maps/4_m_citylights_lg.gif";

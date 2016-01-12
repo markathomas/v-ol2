@@ -12,7 +12,7 @@ public class EmptyMap extends AbstractVOLTest {
     }
 
     @Override
-    Component getMap() {
+    public Component getTestComponent() {
         OpenLayersMap map = new OpenLayersMap();
 
         map.setSizeFull();
