@@ -3,6 +3,7 @@ package org.vaadin.vol.client.ui;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
 
+import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.wrappers.Map;
 import org.vaadin.vol.client.wrappers.layer.Layer;
 
@@ -36,7 +37,7 @@ public abstract class VAbstracMapLayer<T extends Layer> extends Widget implement
     }
 
     public Map getMap() {
-        return ((VOpenLayersMap) getParent().getParent()).getMap();
+        return MapUtil.getMap(getParent());
     }
 
     @Override

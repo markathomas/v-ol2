@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
 import org.vaadin.vol.client.PopupState;
+import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.wrappers.GwtOlHandler;
 import org.vaadin.vol.client.wrappers.LonLat;
 import org.vaadin.vol.client.wrappers.Map;
@@ -101,7 +102,7 @@ public class VPopup extends Widget {
     }
 
     private Map getMap() {
-        return ((VOpenLayersMap)getParent()).getMap();
+        return MapUtil.getMap(getParent());
     }
 
     public Popup getPopup() {

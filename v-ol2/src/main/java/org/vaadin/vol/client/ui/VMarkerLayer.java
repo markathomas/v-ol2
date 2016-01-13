@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.Profiler;
 
+import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.wrappers.Map;
 import org.vaadin.vol.client.wrappers.layer.MarkerLayer;
 
@@ -64,7 +65,7 @@ public class VMarkerLayer extends FlowPanel implements VLayer {
     }
 
     protected Map getMap() {
-        return ((VOpenLayersMap)getParent()).getMap();
+        return MapUtil.getMap(getParent());
     }
 
     public boolean hasChildComponent(Widget component) {

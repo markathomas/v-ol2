@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
 
 import org.vaadin.vol.client.MarkerState;
+import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.wrappers.Icon;
 import org.vaadin.vol.client.wrappers.LonLat;
 import org.vaadin.vol.client.wrappers.Map;
@@ -86,11 +87,11 @@ public class VMarker extends Widget implements VMarkable {
     }
 
     protected MarkerLayer getLayer() {
-        return ((VMarkerLayer) getParent()).getLayer();
+        return MapUtil.findParent(VMarkerLayer.class, getParent()).getLayer();
     }
 
     protected Map getMap() {
-        return ((VOpenLayersMap)getParent().getParent()).getMap();
+        return MapUtil.getMap(getParent());
     }
 
     public Marker getMarker() {

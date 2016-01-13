@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.vaadin.vol.client.Costants;
+import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.VectorLayerServerRpc;
 import org.vaadin.vol.client.VectorLayerState;
 import org.vaadin.vol.client.wrappers.GwtOlHandler;
@@ -258,7 +259,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
 
         int childCount = state.vectors.size();
         for (int i = 0; i < childCount; i++) {
-            VAbstractVector vector = (VAbstractVector)state.vectors.get(i);
+            VAbstractVector vector = (VAbstractVector) ((ComponentConnector) state.vectors.get(i)).getWidget();
             boolean isNew = !hasChildComponent(vector);
             if (isNew) {
                 add(vector);
@@ -493,7 +494,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
     }
 
     private VOpenLayersMap getVMap() {
-        return ((VOpenLayersMap)getParent());
+        return MapUtil.findParent(VOpenLayersMap.class, getParent());
     }
 
     protected Projection getProjection() {
