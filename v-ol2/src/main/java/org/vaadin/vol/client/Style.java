@@ -146,9 +146,8 @@ public class Style implements Serializable {
     }
 
     /** Fill opacity (0-1). */
-    public double getFillOpacity() {
-        double o = (Double) getProperty("fillOpacity");
-        return o;
+    public Double getFillOpacity() {
+        return (Double) getProperty("fillOpacity");
     }
 
     /** Pixel point radius. Default is 6. */
@@ -164,7 +163,7 @@ public class Style implements Serializable {
     }
 
     /** Pixel point radius. */
-    public double getPointRadius() {
+    public Double getPointRadius() {
         return (Double) getProperty("pointRadius");
     }
 
@@ -203,7 +202,7 @@ public class Style implements Serializable {
     }
 
     /** Pixel stroke width. */
-    public double getStrokeWidth() {
+    public Double getStrokeWidth() {
         return (Double) getProperty("strokeWidth");
     }
 
@@ -238,7 +237,7 @@ public class Style implements Serializable {
         setGraphicHeight(height);
     }
 
-    public void setGraphicWidth(int width) {
+    public void setGraphicWidth(Integer width) {
         setProperty("graphicWidth", width);
     }
 
@@ -249,7 +248,7 @@ public class Style implements Serializable {
         setPropertyByAttribute("graphicWidth", widthAttr);
     }
 
-    public void setGraphicHeight(int height) {
+    public void setGraphicHeight(Integer height) {
         setProperty("graphicHeight", height);
     }
 
@@ -261,20 +260,20 @@ public class Style implements Serializable {
     }
 
     /** Pixel width for sizing an external graphic. */
-    public int getGraphicWidth() {
+    public Integer getGraphicWidth() {
         return (Integer) getProperty("graphicWidth");
     }
 
     /** Pixel height for sizing an external graphic. */
-    public int getGraphicHeight() {
+    public Integer getGraphicHeight() {
         return (Integer) getProperty("graphicHeight");
     }
 
 
-    public int getGraphicXOffset() {
+    public Integer getGraphicXOffset() {
         return (Integer)getProperty("graphicXOffset");
     }
-    public void setGraphicXOffset(int xOffset) {
+    public void setGraphicXOffset(Integer xOffset) {
         setProperty("graphicXOffset", xOffset);
     }
 
@@ -285,10 +284,10 @@ public class Style implements Serializable {
         setPropertyByAttribute("graphicXOffset", xOffsetAttr);
     }
 
-    public int getGraphicYOffset() {
+    public Integer getGraphicYOffset() {
         return (Integer)getProperty("graphicYOffset");
     }
-    public void setGraphicYOffset(int yOffset) {
+    public void setGraphicYOffset(Integer yOffset) {
         setProperty("graphicYOffset", yOffset);
     }
 
@@ -303,12 +302,12 @@ public class Style implements Serializable {
      * The height of the background graphic. If not provided, the graphicHeight
      * will be used.
      */
-    public void setBackgroundHeight(int backgroundHeight) {
+    public void setBackgroundHeight(Integer backgroundHeight) {
         setProperty("backgroundHeight", backgroundHeight);
     }
 
     /** The height of the background graphic. */
-    public int getBackgroundHeight() {
+    public Integer getBackgroundHeight() {
         return (Integer) getProperty("backgroundHeight");
     }
 
@@ -316,12 +315,12 @@ public class Style implements Serializable {
      * The width of the background width. If not provided, the graphicWidth will
      * be used.
      */
-    public void setBackgroundWidth(int backgroundWidth) {
+    public void setBackgroundWidth(Integer backgroundWidth) {
         setProperty("backgroundWidth", backgroundWidth);
     }
 
     /** The width of the background width. */
-    public int getBackgroundWidth() {
+    public Integer getBackgroundWidth() {
         return (Integer) getProperty("backgroundWidth");
     }
 
@@ -335,27 +334,27 @@ public class Style implements Serializable {
         return (String) getProperty("backgroundGraphic");
     }
 
-    public int getBackgroundXOffset() {
+    public Integer getBackgroundXOffset() {
         return (Integer)getProperty("backgroundXOffset");
     }
-    public void setBackgroundXOffset(int backgroundXOffset) {
+    public void setBackgroundXOffset(Integer backgroundXOffset) {
         setProperty("backgroundXOffset", backgroundXOffset);
     }
 
-    public int getBackgroundYOffset() {
+    public Integer getBackgroundYOffset() {
         return (Integer)getProperty("backgroundYOffset");
     }
-    public void setBackgroundYOffset(int backgroundYOffset) {
+    public void setBackgroundYOffset(Integer backgroundYOffset) {
         setProperty("backgroundYOffset", backgroundYOffset);
     }
 
     /** The integer z-index value to use in rendering. */
-    public void setGraphicZIndex(int graphicZIndex) {
+    public void setGraphicZIndex(Integer graphicZIndex) {
         setProperty("graphicZIndex", graphicZIndex);
     }
 
     /** The integer z-index value to use in rendering. */
-    public int getGraphicZIndex() {
+    public Integer getGraphicZIndex() {
         return (Integer) getProperty("graphicZIndex");
     }
 
@@ -364,12 +363,12 @@ public class Style implements Serializable {
      * Usually is a number smaller then the GraphicZIndex, so the background can
      * be behind the feature graphic.
      */
-    public void setBackgroundGraphicZIndex(int backgroundGraphicZIndex) {
+    public void setBackgroundGraphicZIndex(Integer backgroundGraphicZIndex) {
         setProperty("backgroundGraphicZIndex", backgroundGraphicZIndex);
     }
 
     /** The integer z-index value to use in rendering the background graphic. */
-    public int getBackgroundGraphicZIndex() {
+    public Integer getBackgroundGraphicZIndex() {
         return (Integer) getProperty("backgroundGraphicZIndex");
     }
 
@@ -378,7 +377,7 @@ public class Style implements Serializable {
         setProperty("strokeOpacity", strokeOpacity);
     }
 
-    public double getStrokeOpacity() {
+    public Double getStrokeOpacity() {
         return (Double) getProperty("strokeOpacity");
     }
 
@@ -468,7 +467,7 @@ public class Style implements Serializable {
         return (String) getProperty("labelAlign");
     }
 
-    public void setLabelXOffset(int offset) {
+    public void setLabelXOffset(Integer offset) {
         setProperty("labelXOffset", offset);
     }
 
@@ -476,7 +475,7 @@ public class Style implements Serializable {
         return (Integer) getProperty("labelXOffset");
     }
 
-    public void setLabelYOffset(int offset) {
+    public void setLabelYOffset(Integer offset) {
         setProperty("labelYOffset", offset);
     }
 
@@ -492,7 +491,7 @@ public class Style implements Serializable {
         return (String) getProperty("labelOutlineColor");
     }
 
-    public void setLabelOutlineWidth(int width) {
+    public void setLabelOutlineWidth(Integer width) {
         setProperty("labelOutlineWidth", width);
     }
 
