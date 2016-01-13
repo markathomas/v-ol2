@@ -52,12 +52,6 @@ public class MarkerAddingAndRemoving extends AbstractVOLTest implements Handler 
         return map;
     }
 
-    @Override
-    public void attach() {
-        super.attach();
-        Notification.show(getDescription(), Notification.Type.WARNING_MESSAGE);
-    }
-
     private void addMarker(double lon, double lat) {
         final Marker marker = new Marker(lon, lat);
         markerLayer.addMarker(marker);
