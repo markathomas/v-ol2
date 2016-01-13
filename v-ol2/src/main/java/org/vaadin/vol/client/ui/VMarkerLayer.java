@@ -3,7 +3,6 @@ package org.vaadin.vol.client.ui;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.Profiler;
-
 import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.wrappers.Map;
 import org.vaadin.vol.client.wrappers.layer.MarkerLayer;
@@ -33,6 +32,7 @@ public class VMarkerLayer extends FlowPanel implements VLayer {
      * For internal use only. May be removed or replaced in the future.
      */
     public void addOrMove(Widget child, int index) {
+        layerAdded = true;
         Profiler.enter("VMarkerLayer.addOrMove");
         if (child.getParent() == this) {
             Profiler.enter("VMarkerLayer.addOrMove getWidgetIndex");
@@ -55,6 +55,14 @@ public class VMarkerLayer extends FlowPanel implements VLayer {
         insert(child, index);
         Profiler.leave("VMarkerLayer.addOrMove insert");
         Profiler.leave("VMarkerLayer.addOrMove");
+    }
+
+    @Override
+    protected void onAttach() {
+        super.onAttach();
+        if (layerAdded) {
+            getMap().addLayer(this.markers);
+        }
     }
 
     @Override
