@@ -38,12 +38,6 @@ public class CustomMarkerIcon extends AbstractVOLTest {
         return map;
     }
 
-    @Override
-    public void attach() {
-        super.attach();
-        Notification.show(getDescription(), Notification.Type.WARNING_MESSAGE);
-    }
-
     private void addMarker(double lon, double lat) {
         // this example adds two markers with custom icons at the exact same coordinates, but for the
         // second marker icon, an offset is specified that shifts the icon by the corresponding amount
