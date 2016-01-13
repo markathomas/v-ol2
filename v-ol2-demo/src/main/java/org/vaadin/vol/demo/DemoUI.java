@@ -34,8 +34,8 @@ public class DemoUI extends UI
 
         // Initialize our new UI component
         final OpenLayersMap map = new OpenLayersMap();
-        //map.setApiProjection("EPSG:4326");
-        //map.setExtent(new Bounds(new Point(-180d, -90d), new Point(180d, 90d)));
+        map.setApiProjection("EPSG:4326");
+        map.setExtent(new Bounds(new Point(-180d, -90d), new Point(180d, 90d)));
         map.setSizeFull();
 
         // base layers
