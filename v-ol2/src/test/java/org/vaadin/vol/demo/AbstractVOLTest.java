@@ -11,6 +11,5 @@ import org.vaadin.addonhelpers.AbstractTest;
         "http://maps.google.com/maps/api/js?v=3.2&amp;sensor=false"})
 public abstract class AbstractVOLTest extends AbstractTest {
 
-    protected VerticalLayout content;
     protected String contextPath;
 }
