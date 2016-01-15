@@ -5,11 +5,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.client.ComponentConnector;
-import com.vaadin.client.Paintable;
-import com.vaadin.client.RenderSpace;
-import com.vaadin.client.UIDL;
-import com.vaadin.client.ValueMap;
+import com.vaadin.client.*;
 import com.vaadin.shared.Connector;
 
 import java.util.HashSet;
@@ -242,8 +238,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
             lastNewDrawing = null;
         }
 
-        //TODO: fix me
-        // updateStyleMap(state);
+        updateStyleMap(state.styleMap, state.extendDefault);
         setDrawingMode(state.drawingMode.toString());
 
         // Identifier for SelectFeature control to use ... layers specifying the
@@ -380,8 +375,8 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         }
     }
 
-    private void updateStyleMap(UIDL childUIDL) {
-        StyleMap sm = getStyleMap(childUIDL);
+    private void updateStyleMap(java.util.Map<String, String> styleMap, boolean extendDefault) {
+        StyleMap sm = getStyleMap(styleMap, extendDefault);
         if (sm == null) {
             sm = StyleMap.create();
         }
@@ -389,38 +384,30 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         getLayer().setStyleMap(sm);
     }
 
-    public static StyleMap getStyleMap(UIDL childUIDL) {
-        if (!childUIDL.hasAttribute("olStyleMap")) {
+
+
+    public static StyleMap getStyleMap(java.util.Map<String, String> styleMap, boolean extendDefault) {
+        if (styleMap == null) {
             return null;
         }
-        String[] renderIntents = childUIDL
-                .getStringArrayAttribute("olStyleMap");
         StyleMap sm;
-        if (renderIntents.length == 1 && renderIntents[0].equals("default")) {
+        if (styleMap.size() == 1 && styleMap.get(0).equals("default")) {
             sm = StyleMap.create();
-            sm.setStyle(
-                    "default",
-                    Style.create(childUIDL.getMapAttribute(
-                            "olStyle_" + renderIntents[0]).cast()));
+            sm.setStyle("default", Style.create(Util.parse(styleMap.get(0))));
         } else {
             sm = StyleMap.create();
-            for (String intent : renderIntents) {
-                if (intent.startsWith("__")) {
-                    String specialAttribute = intent.replaceAll("__", "");
-                    if (specialAttribute.equals("extendDefault")) {
-                        sm.setExtendDefault(true);
-                    }
-                } else {
-                    Style style = Style.create(childUIDL
-                            .getMapAttribute("olStyle_" + intent));
-                    sm.setStyle(intent, style);
-                }
+            if (extendDefault) {
+                sm.setExtendDefault(true);
+            }
+            for (java.util.Map.Entry<String, String> entry : styleMap.entrySet()) {
+                Style style = Style.create(Util.parse(entry.getValue()));
+                sm.setStyle(entry.getKey(), style);
             }
         }
 
-        if (childUIDL.hasAttribute(Costants.STYLEMAP_UNIQUEVALUERULES)) {
-            addUniqueValueRules(sm, childUIDL);
-        }
+//        if (childUIDL.hasAttribute(Costants.STYLEMAP_UNIQUEVALUERULES)) {
+//            addUniqueValueRules(sm, childUIDL);
+//        }
         return sm;
     }
 

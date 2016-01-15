@@ -1,5 +1,6 @@
 package org.vaadin.vol;
 
+import com.google.gson.Gson;
 import com.vaadin.ui.AbstractComponent;
 
 import org.vaadin.vol.client.Attributes;
@@ -10,9 +11,20 @@ import org.vaadin.vol.client.VectorState;
 
 public abstract class Vector extends AbstractComponent {
 
+    private Style customStyle;
+    private Attributes attributes;
+
     @Override
     public VectorState getState() {
         return (VectorState)super.getState();
+    }
+
+    @Override
+    public void beforeClientResponse(boolean initial) {
+        super.beforeClientResponse(initial);
+        Gson gson = new Gson();
+        getState().styleJson = gson.toJson(customStyle);
+        getState().attributesJson = gson.toJson(attributes);
     }
 
     public void setPoints(Point... points) {
@@ -44,7 +56,7 @@ public abstract class Vector extends AbstractComponent {
      * @return the custom style declaration assosicated with this Vector
      */
     public Style getCustomStyle() {
-        return getState().style;
+        return customStyle;
     }
 
     /**
@@ -53,7 +65,7 @@ public abstract class Vector extends AbstractComponent {
      *            Vector
      */
     public void setCustomStyle(Style style) {
-        this.getState().style = style;
+        this.customStyle = style;
         markAsDirty();
     }
 
@@ -88,21 +100,22 @@ public abstract class Vector extends AbstractComponent {
      */
     public void setRenderIntent(String style) {
         setStyleName(style);
+        getState().intent = style;
     }
 
     /**
      * @return the vectAttributes
      */
     public Attributes getAttributes() {
-        return getState().vectAttributes;
+        return attributes;
     }
 
     /**
-     * @param vectAttributes
+     * @param attributes
      *            the vectAttributes to set
      */
     public void setAttributes(Attributes attributes) {
-        this.getState().vectAttributes = attributes;
+        this.attributes = attributes;
     }
 
 }

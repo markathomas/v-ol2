@@ -156,7 +156,7 @@ public class StyleMapAddUniqueValueRules extends AbstractVOLTest {
                     points[i].getLat());
             Attributes attr = new Attributes();
 
-            attr.setProperty("size", "size" + String.valueOf(i));
+            attr.setSize("size" + String.valueOf(i));
             // attr.setProperty("size", i);
             pointVector.setAttributes(attr);
 

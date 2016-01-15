@@ -33,7 +33,7 @@ public class RotatedVectorWithImage extends AbstractVOLTest {
         s.setExternalGraphic("http://dev.vaadin.com/chrome/site/vaadin-trac.png");
         s.setGraphicHeight(60);
         s.setGraphicWidth(342);
-        s.setProperty("rotation", 30);
+        s.setRotation(30);
         pointVector2.setCustomStyle(s);
 
         vectorLayer.addVector(pointVector2);

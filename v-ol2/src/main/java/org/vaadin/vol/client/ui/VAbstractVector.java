@@ -1,10 +1,10 @@
 package org.vaadin.vol.client.ui;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.communication.StateChangeEvent;
 
-import org.vaadin.vol.client.Attributes;
 import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.VectorState;
 import org.vaadin.vol.client.wrappers.Map;
@@ -15,7 +15,7 @@ import org.vaadin.vol.client.wrappers.layer.VectorLayer;
 public abstract class VAbstractVector<T extends VectorState> extends Widget {
 
     protected Vector vector;
-    protected Attributes vectAttributes;
+    protected JavaScriptObject vectAttributes;
     private Projection projection;
     private String intent;
 
@@ -23,11 +23,11 @@ public abstract class VAbstractVector<T extends VectorState> extends Widget {
         setElement(Document.get().createDivElement());
     }
 
-    protected Attributes getAttributes() {
-        return vectAttributes;
+    protected JavaScriptObject getAttributes() {
+        return vectAttributes == null ? JavaScriptObject.createObject() : vectAttributes;
     }
 
-    public void setAttributes(Attributes vectAttributes) {
+    public void setAttributes(JavaScriptObject vectAttributes) {
         this.vectAttributes = vectAttributes;
     }
 

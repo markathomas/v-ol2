@@ -9,6 +9,7 @@ import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
+import com.vaadin.client.ui.PostLayoutListener;
 import com.vaadin.shared.Connector;
 import com.vaadin.shared.ui.Connect;
 
@@ -27,7 +28,7 @@ import org.vaadin.vol.client.wrappers.Projection;
 import org.vaadin.vol.client.wrappers.layer.Layer;
 
 @Connect(OpenLayersMap.class)
-public class OpenLayersMapConnector extends AbstractComponentContainerConnector {
+public class OpenLayersMapConnector extends AbstractComponentContainerConnector implements PostLayoutListener {
 
     private final transient Logger logger = Logger.getLogger(getClass().getName());
 
@@ -36,6 +37,8 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     private GwtOlHandler extentChangeListener;
     private GwtOlHandler clickListener;
     private GwtOlHandler changeBaseLayer;
+
+    private boolean initialized = false;
 
     @Override
     public VOpenLayersMap getWidget() {
@@ -68,7 +71,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     }
 
     @Override
-    public void onStateChanged(StateChangeEvent stateChangeEvent) {
+    public void onStateChanged(final StateChangeEvent stateChangeEvent) {
         super.onStateChanged(stateChangeEvent);
 
         final boolean hasListeners = getState().registeredEventListeners != null;
@@ -204,5 +207,19 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     @OnStateChange("controls")
     void controlsChanged() {
         getWidget().updateControls(getState().controls);
+    }
+
+    @Override
+    public void postLayout() {
+        if (!initialized) {
+            // make the map visible initially. Most like not correct fix
+            // without this double clicking to map is needed to make it visible
+            LonLat center = null;
+            if (getState().center != null) {
+                center = LonLat.create(getState().center.getLon(), getState().center.getLat());
+            }
+            getWidget().updateZoomAndCenter(getState().zoom, center);
+            initialized  = true;
+        }
     }
 }

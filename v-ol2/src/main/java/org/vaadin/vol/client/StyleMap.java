@@ -12,9 +12,11 @@ import java.util.HashMap;
  */
 public class StyleMap implements Serializable {
 
-    private HashMap<String, Style> styles = new HashMap<String, Style>();
+    public HashMap<String, Style> styles = new HashMap<String, Style>();
 
-    private HashMap<String, UniqueValueRule> uniqueValueRules = new HashMap<String, UniqueValueRule>();
+    public HashMap<String, UniqueValueRule> uniqueValueRules = new HashMap<String, UniqueValueRule>();
+
+    private boolean extendDefault = false;
 
     /**
      * Creates a StyleMap setting the same style for all renderer intents.
@@ -50,8 +52,6 @@ public class StyleMap implements Serializable {
     public Style getStyle(RenderIntent renderIntent) {
         return styles.get(renderIntent.getValue());
     }
-
-    private boolean extendDefault = false;
 
     /**
      * Creates a StyleMap setting with different styles for renderer intents.

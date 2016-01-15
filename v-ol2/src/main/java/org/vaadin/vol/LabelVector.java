@@ -19,14 +19,14 @@ public class LabelVector extends PointVector {
                 customStyle = new Style();
             }
             setCustomStyle(customStyle);
-            customStyle.setProperty("label", caption);
+            customStyle.setLabel(caption);
         } else {
             Attributes attributes = getAttributes();
             if(attributes == null) {
                 attributes = new Attributes();
                 setAttributes(attributes);
             }
-            attributes.setProperty("label", caption);
+            attributes.setLabel(caption);
             setCustomStyle(null);
         }
     }

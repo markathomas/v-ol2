@@ -97,6 +97,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.5</version>
+        </dependency>
+
         <!-- This can be replaced with TestNG or some other test framework supported by the surefire plugin -->
         <dependency>
             <groupId>junit</groupId>
@@ -275,7 +281,7 @@
                             <module>org.vaadin.vol.VolWidgetset</module>
                             <!-- If you do lots of e.g. plain css changes and don't wish to use
                             hosted mode, you can force compile easily with uncommenting following rule -->
-                            <!-- 						<force>true</force> -->
+                            <force>true</force>
                             <strict>true</strict>
                         </configuration>
                     </plugin>

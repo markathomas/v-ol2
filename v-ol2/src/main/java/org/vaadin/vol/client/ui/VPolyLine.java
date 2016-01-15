@@ -2,10 +2,8 @@ package org.vaadin.vol.client.ui;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
-import com.vaadin.client.ValueMap;
 import com.vaadin.client.communication.StateChangeEvent;
 
-import org.vaadin.vol.client.Attributes;
 import org.vaadin.vol.client.VectorState;
 import org.vaadin.vol.client.wrappers.Projection;
 import org.vaadin.vol.client.wrappers.Vector;
@@ -27,19 +25,11 @@ public class VPolyLine extends VAbstractVector {
 
         LineString lr = LineString.create(points);
 
-        JavaScriptObject style = null;
-        Attributes attributes = getAttributes();  // TODO: how do i convert this to a ValueMap or a JavaScriptObject???
         if (vector == null) {
-            // TODO: FIX ME!
-            //vector = Vector.create(lr, attributes, style);
-            vector = Vector.create(lr, JavaScriptObject.createObject(), style);
+            vector = Vector.create(lr, getAttributes(), JavaScriptObject.createObject());
         } else {
             vector.setGeometry(lr);
-            vector.setStyle(style);
-            // TODO: FIX ME!!
-            //vector.setAttributes(attributes);
-            ValueMap attr = JavaScriptObject.createObject().cast();
-            vector.setAttributes(attr);
+            vector.setAttributes(getAttributes());
         }
 
     }

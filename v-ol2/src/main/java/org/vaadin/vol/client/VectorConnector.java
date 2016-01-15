@@ -1,9 +1,9 @@
 package org.vaadin.vol.client;
 
+import com.vaadin.client.Util;
 import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentConnector;
-
 import org.vaadin.vol.client.ui.VAbstractVector;
 import org.vaadin.vol.client.ui.VVectorLayer;
 import org.vaadin.vol.client.wrappers.Projection;
@@ -32,8 +32,8 @@ public abstract class VectorConnector<E extends VectorState> extends AbstractCom
             getWidget().getLayer().eraseFeature(getWidget().getVector());
         }
 
-        if (stateChangeEvent.hasPropertyChanged("vectAttributes")) {
-            getWidget().setAttributes(getState().vectAttributes);
+        if (stateChangeEvent.hasPropertyChanged("attributesJson")) {
+            getWidget().setAttributes(Util.parse(getState().attributesJson));
         }
 
         getWidget().createOrUpdateVector(stateChangeEvent, getState());
@@ -43,9 +43,8 @@ public abstract class VectorConnector<E extends VectorState> extends AbstractCom
             getWidget().getVector().setRenderIntent(getState().intent);
         }
 
-        if (stateChangeEvent.hasPropertyChanged("style")) {
-            // TODO: FIX ME!!!
-            //getWidget().getVector().setStyle(getState().style);
+        if (stateChangeEvent.hasPropertyChanged("styleJson")) {
+            getWidget().getVector().setStyle(Util.parse(getState().styleJson));
         }
 
         if (update) {

@@ -3,24 +3,21 @@
  */
 package org.vaadin.vol;
 
+import com.google.gson.Gson;
 import com.vaadin.shared.Connector;
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
-import org.vaadin.vol.client.Point;
-import org.vaadin.vol.client.StyleMap;
-import org.vaadin.vol.client.VectorLayerServerRpc;
-import org.vaadin.vol.client.VectorLayerState;
+import org.vaadin.vol.client.*;
 
 public class VectorLayer extends AbstractComponentContainer implements Layer {
+
+    private StyleMap styleMap;
 
     public VectorLayer() {
         registerRpc(new VectorLayerServerRpc() {
@@ -37,6 +34,30 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
                 unselectVector(connectorId);
             }
         });
+    }
+
+    @Override
+    public void beforeClientResponse(boolean initial) {
+        super.beforeClientResponse(initial);
+        if (styleMap != null) {
+            Map<String, String> map = new HashMap<String, String>();
+            for (Map.Entry<String, Style> e : styleMap.styles.entrySet()) {
+                map.put(e.getKey(), new Gson().toJson(e.getValue()));
+            }
+            getState().styleMap = map;
+
+            Map<String, String> uniqueMap = new HashMap<String, String>();
+            for (Map.Entry<String, UniqueValueRule> e : styleMap.uniqueValueRules.entrySet()) {
+                uniqueMap.put(e.getKey(), new Gson().toJson(e.getValue()));
+            }
+            getState().uniqueStyleMap = uniqueMap;
+
+            getState().extendDefault = styleMap.isExtendDefault();
+        } else {
+            getState().styleMap = null;
+            getState().uniqueStyleMap = null;
+        }
+
     }
 
     @Override
@@ -229,7 +250,7 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
      * @return the styleMap
      */
     public StyleMap getStyleMap() {
-        return this.getState().styleMap;
+        return styleMap;
     }
 
     /**
@@ -237,7 +258,7 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
      *            the styleMap to set
      */
     public void setStyleMap(StyleMap stylemap) {
-        this.getState().styleMap = stylemap;
+        this.styleMap = stylemap;
         markAsDirty();
     }
 

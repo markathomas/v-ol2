@@ -7,6 +7,9 @@ public class VectorState extends AbstractComponentState {
     public String projection;
     public Point[] points;
     public String intent;
-    public Style style;
-    public Attributes vectAttributes;
+
+    // Styles object as JSON
+    public String styleJson;
+    // Attributes object as JSON
+    public String attributesJson;
 }

@@ -60,8 +60,9 @@ package org.vaadin.vol.client;
 //  -- display
 //  Can be set to none to hide features from rendering.
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
-import java.util.Map;
 
 public class Style implements Serializable {
 
@@ -78,17 +79,58 @@ public class Style implements Serializable {
 
     private static long idx = 0;
     private String name;
-    private JsObject styleProperty;
+
+    private String label;
+    private String fillColor;
+    private Object fillOpacity;
+    private Object pointRadius;
+    private String strokeColor;
+    private Object strokeWidth;
+    private String externalGraphic;
+    private Integer rotation;
+    private String fontColor;
+    private Object graphicWidth;
+    private Object graphicHeight;
+    private Object graphicXOffset;
+    private Object graphicYOffset;
+    private Integer backgroundHeight; //
+    private Integer backgroundWidth; //
+    private String backgroundGraphic;
+    private Integer backgroundXOffset;
+    private Integer backgroundYOffset;
+    private Integer graphicZIndex;
+    private Integer backgroundGraphicZIndex;
+    private Double strokeOpacity;
+    private String fontSize;
+    private String fontFamily;
+    private String fontWeight;
+    private String labelAlign;
+    private Integer labelXOffset;
+    private Integer labelYOffset;
+    private String labelOutlineColor;
+    private Integer labelOutlineWidth;
+    private String strokeLinecap;
+    private String strokeDashstyle;
+    private Boolean fill;
+    private Boolean stroke;
+    private Boolean graphic;
+    private String cursor;
+    private String graphicName;
+    private String graphicTitle;
+
+
+    @SerializedName("__VOL_INHERIT")
+    private String coreStyleName;
+    @SerializedName("__VOL_CONTEXT")
+    private String contextJs;
 
     public Style() {
         name = "Style" + String.valueOf(++idx);
-        styleProperty = new JsObject();
         init();
     }
 
     public Style(String string) {
         name = string;
-        styleProperty = new JsObject();
         init();
     }
 
@@ -96,19 +138,40 @@ public class Style implements Serializable {
         return name;
     }
 
-    public void setProperty(String key, Serializable value) {
-        styleProperty.setProperty(key, value);
+    private String getString(Object value) {
+        if (value instanceof String) {
+            return (String) value;
+        }
+        return null;
     }
 
-    private Object getProperty(String key) {
-        return styleProperty.getProperty(key);
+    private Double getDouble(Object value) {
+        if (value instanceof Double) {
+            return (Double) value;
+        }
+        return null;
     }
 
-    private String getPropertyByAttribute(String key) {
-        return styleProperty.getPropertyAsString(key);
+    private Integer getInteger(Object value) {
+        if (value instanceof Integer) {
+            return (Integer) value;
+        }
+        return null;
     }
-    private void setPropertyByAttribute(String key, String value) {
-        styleProperty.setProperty(key, "${" + value + "}");
+
+    private Boolean getBoolean(Object value) {
+        if (value instanceof Boolean) {
+            return (Boolean) value;
+        }
+        return null;
+    }
+
+    private String setAttribute(String value) {
+        if (value == null) {
+            return null;
+        }
+
+        return "${" + value + "}";
     }
 
     /**
@@ -117,54 +180,54 @@ public class Style implements Serializable {
      * @param c
      *            - hexidecimal color code or a W3C standard color name
      */
-    public void setFillColor(String c) {
-        setProperty("fillColor", c);
+    public void setFillColor(String fillColor) {
+        this.fillColor = fillColor;
     }
 
     public String getFillColorByAttribute() {
-        return getPropertyByAttribute("fillColor");
+        return fillColor;
     }
     public void setFillColorByAttribute(String c) {
-        setPropertyByAttribute("fillColor", c);
+        fillColor = setAttribute(c);
     }
 
     /** Hex fill color. */
     public String getFillColor() {
-        return (String) getProperty("fillColor");
+        return fillColor;
     }
 
     /** Fill opacity (0-1). Default is 0.4 */
     public void setFillOpacity(double o) {
-        setProperty("fillOpacity", o);
+        fillOpacity = o;
     }
 
     public String getFillOpacityByAttribute() {
-        return getPropertyByAttribute("fillOpacity");
+        return getString(fillOpacity);
     }
     public void setFillOpacityByAttribute(String o) {
-        setPropertyByAttribute("fillOpacity", o);
+        fillOpacity = setAttribute(o);
     }
 
     /** Fill opacity (0-1). */
     public Double getFillOpacity() {
-        return (Double) getProperty("fillOpacity");
+        return getDouble(fillOpacity);
     }
 
     /** Pixel point radius. Default is 6. */
     public void setPointRadius(double r) {
-        setProperty("pointRadius", r);
+        pointRadius = r;
     }
 
     public String getPointRadiusByAttribute() {
-        return getPropertyByAttribute("pointRadius");
+        return getString(pointRadius);
     }
     public void setPointRadiusByAttribute(String r) {
-        setPropertyByAttribute("pointRadius", r);
+        pointRadius = setAttribute(r);
     }
 
     /** Pixel point radius. */
     public Double getPointRadius() {
-        return (Double) getProperty("pointRadius");
+        return getDouble(pointRadius);
     }
 
     /**
@@ -174,53 +237,53 @@ public class Style implements Serializable {
      *            - see setFillColor
      */
     public void setStrokeColor(String c) {
-        setProperty("strokeColor", c);
+        strokeColor = c;
     }
 
     public String getStrokeColorByAttribute() {
-        return getPropertyByAttribute("strokeColor");
+        return strokeColor;
     }
     public void setStrokeColorByAttribute(String c) {
-        setPropertyByAttribute("strokeColor", c);
+        strokeColor = setAttribute(c);
     }
 
     /** Hex stroke html color. */
     public String getStrokeColor() {
-        return (String) getProperty("strokeColor");
+        return strokeColor;
     }
 
     /** Pixel stroke width. Default is 1. */
     public void setStrokeWidth(double w) {
-        setProperty("strokeWidth", w);
+        strokeWidth = w;
     }
 
-    public String getStrokeWidthByAttribute() {
-        return getPropertyByAttribute("strokeWidth");
+    public Double getStrokeWidthByAttribute() {
+        return getDouble(strokeWidth);
     }
     public void setStrokeWidthByAttribute(String w) {
-        setPropertyByAttribute("strokeWidth", w);
+        strokeWidth = setAttribute(w);
     }
 
     /** Pixel stroke width. */
     public Double getStrokeWidth() {
-        return (Double) getProperty("strokeWidth");
+        return getDouble(strokeWidth);
     }
 
     /** Url to an external graphic that will be used for rendering points. */
     public void setExternalGraphic(String graphicURL) {
-        setProperty("externalGraphic", graphicURL);
+        externalGraphic = graphicURL;
     }
 
     public String getExternalGraphicByAttribute() {
-        return (String)getPropertyByAttribute("externalGraphic");
+        return externalGraphic;
     }
     public void setExternalGraphicByAttribute(String graphicURL) {
-        setPropertyByAttribute("externalGraphic", graphicURL);
+        externalGraphic = setAttribute(graphicURL);
     }
 
     /** Url to an external graphic that will be used for rendering points. */
     public String getExternalGraphic() {
-        return (String) getProperty("externalGraphic");
+        return externalGraphic;
     }
 
     /**
@@ -237,65 +300,81 @@ public class Style implements Serializable {
         setGraphicHeight(height);
     }
 
+    private void setProperty(String s, Object o) {
+
+    }
+
+    private Object getProperty(String p) {
+        return null;
+    }
+
+    private String getPropertyByAttribute(String graphicWidth) {
+        return null;
+    }
+
+    private void setPropertyByAttribute(String graphicXOffset, Object xOffsetAttr) {
+
+    }
+
     public void setGraphicWidth(Integer width) {
-        setProperty("graphicWidth", width);
+        graphicWidth = width;
     }
 
     public String getGraphicWidthByAttribute() {
-        return getPropertyByAttribute("graphicWidth");
+        return getString(graphicWidth);
     }
+
     public void setGraphicWidthByAttribute(String widthAttr) {
-        setPropertyByAttribute("graphicWidth", widthAttr);
+        graphicWidth = setAttribute(widthAttr);
     }
 
     public void setGraphicHeight(Integer height) {
-        setProperty("graphicHeight", height);
+        graphicHeight = height;
     }
 
     public String getGraphicHeightByAttribute() {
-        return getPropertyByAttribute("graphicHeight");
+        return getString(graphicHeight);
     }
     public void setGraphicHeightByAttribute(String heightAttr) {
-        setPropertyByAttribute("graphicHeight", heightAttr);
+        graphicHeight = setAttribute(heightAttr);
     }
 
     /** Pixel width for sizing an external graphic. */
     public Integer getGraphicWidth() {
-        return (Integer) getProperty("graphicWidth");
+        return getInteger(graphicWidth);
     }
 
     /** Pixel height for sizing an external graphic. */
     public Integer getGraphicHeight() {
-        return (Integer) getProperty("graphicHeight");
+        return getInteger(graphicHeight);
     }
-
 
     public Integer getGraphicXOffset() {
-        return (Integer)getProperty("graphicXOffset");
+        return getInteger(graphicXOffset);
     }
     public void setGraphicXOffset(Integer xOffset) {
-        setProperty("graphicXOffset", xOffset);
+        graphicXOffset = xOffset;
     }
 
     public String getGraphicXOffsetByAttribute() {
-        return getPropertyByAttribute("graphicXOffset");
+        return getString(graphicXOffset);
     }
     public void setGraphicXOffsetByAttribute(String xOffsetAttr) {
-        setPropertyByAttribute("graphicXOffset", xOffsetAttr);
+        graphicXOffset = setAttribute(xOffsetAttr);
     }
 
     public Integer getGraphicYOffset() {
-        return (Integer)getProperty("graphicYOffset");
+        return getInteger(graphicYOffset);
     }
     public void setGraphicYOffset(Integer yOffset) {
-        setProperty("graphicYOffset", yOffset);
+        graphicYOffset = yOffset;
     }
 
     public String getGraphicYOffsetByAttribute() {
-        return getPropertyByAttribute("graphicYOffset");
+        return getString(graphicYOffset);
     }
     public void setGraphicYOffsetByAttribute(String yOffsetAttr) {
-        setPropertyByAttribute("graphicYOffset", yOffsetAttr);
+        graphicYOffset = setAttribute(yOffsetAttr);
     }
 
     /**
@@ -303,12 +382,12 @@ public class Style implements Serializable {
      * will be used.
      */
     public void setBackgroundHeight(Integer backgroundHeight) {
-        setProperty("backgroundHeight", backgroundHeight);
+        this.backgroundHeight = backgroundHeight;
     }
 
     /** The height of the background graphic. */
     public Integer getBackgroundHeight() {
-        return (Integer) getProperty("backgroundHeight");
+        return backgroundHeight;
     }
 
     /**
@@ -316,46 +395,46 @@ public class Style implements Serializable {
      * be used.
      */
     public void setBackgroundWidth(Integer backgroundWidth) {
-        setProperty("backgroundWidth", backgroundWidth);
+        this.backgroundWidth = backgroundWidth;
     }
 
     /** The width of the background width. */
     public Integer getBackgroundWidth() {
-        return (Integer) getProperty("backgroundWidth");
+        return backgroundWidth;
     }
 
     /** Url to a graphic to be used as the background under an externalGraphic. */
     public void setBackgroundGraphic(String graphicURL) {
-        setProperty("backgroundGraphic", graphicURL);
+        backgroundGraphic = graphicURL;
     }
 
     /** Url to a graphic to be used as the background under an externalGraphic. */
     public String getBackgroundGraphic() {
-        return (String) getProperty("backgroundGraphic");
+        return backgroundGraphic;
     }
 
     public Integer getBackgroundXOffset() {
-        return (Integer)getProperty("backgroundXOffset");
+        return backgroundXOffset;
     }
     public void setBackgroundXOffset(Integer backgroundXOffset) {
-        setProperty("backgroundXOffset", backgroundXOffset);
+        this.backgroundXOffset = backgroundXOffset;
     }
 
     public Integer getBackgroundYOffset() {
-        return (Integer)getProperty("backgroundYOffset");
+        return backgroundYOffset;
     }
     public void setBackgroundYOffset(Integer backgroundYOffset) {
-        setProperty("backgroundYOffset", backgroundYOffset);
+        this.backgroundYOffset = backgroundYOffset;
     }
 
     /** The integer z-index value to use in rendering. */
     public void setGraphicZIndex(Integer graphicZIndex) {
-        setProperty("graphicZIndex", graphicZIndex);
+        this.graphicZIndex = graphicZIndex;
     }
 
     /** The integer z-index value to use in rendering. */
     public Integer getGraphicZIndex() {
-        return (Integer) getProperty("graphicZIndex");
+        return graphicZIndex;
     }
 
     /**
@@ -364,21 +443,21 @@ public class Style implements Serializable {
      * be behind the feature graphic.
      */
     public void setBackgroundGraphicZIndex(Integer backgroundGraphicZIndex) {
-        setProperty("backgroundGraphicZIndex", backgroundGraphicZIndex);
+        this.backgroundGraphicZIndex = backgroundGraphicZIndex;
     }
 
     /** The integer z-index value to use in rendering the background graphic. */
     public Integer getBackgroundGraphicZIndex() {
-        return (Integer) getProperty("backgroundGraphicZIndex");
+        return backgroundGraphicZIndex;
     }
 
     /** Stroke opacity (0-1). Default is 1. */
     public void setStrokeOpacity(double strokeOpacity) {
-        setProperty("strokeOpacity", strokeOpacity);
+        this.strokeOpacity = strokeOpacity;
     }
 
     public Double getStrokeOpacity() {
-        return (Double) getProperty("strokeOpacity");
+        return strokeOpacity;
     }
 
     /**
@@ -397,50 +476,50 @@ public class Style implements Serializable {
      * fillColor, fontColor, etc
      * */
     public void setLabel(String label) {
-        setProperty("label", label);
+        this.label = label;
     }
 
     public String getLabel() {
-        return (String) getProperty("label");
+        return label;
     }
 
     public String getLabelByAttribute() {
-        return getPropertyByAttribute("label");
+        return label;
     }
     public void setLabelByAttribute(String label) {
-        setPropertyByAttribute("label", label);
+        this.label = setAttribute(label);
     }
 
     public String getFontColor() {
-        return (String)getProperty("fontColor");
+        return fontColor;
     }
     /** The font color for the label, to be provided like CSS. */
     public void setFontColor(String fontColor) {
-        setProperty("fontColor", fontColor);
+        this.fontColor = fontColor;
     }
 
     public String getFontSize() {
-        return (String)getProperty("fontSize");
+        return fontSize;
     }
     /** The font size for the label, to be provided like in CSS. */
     public void setFontSize(String fontSize) {
-        setProperty("fontSize", fontSize);
+        this.fontSize = fontSize;
     }
 
     public String getFontFamily() {
-        return (String)getProperty("fontFamily");
+        return fontFamily;
     }
     /** The font family for the label, to be provided like in CSS. */
     public void setFontFamily(String fontFamily) {
-        setProperty("fontFamily", fontFamily);
+        this.fontFamily = fontFamily;
     }
 
     public String getFontWeight() {
-        return (String)getProperty("fontWeight");
+        return fontWeight;
     }
     /** The font weight for the label, to be provided like in CSS. */
     public void setFontWeight(String fontWeight) {
-        setProperty("fontWeight", fontWeight);
+        this.fontWeight = fontWeight;
     }
 
     /**
@@ -456,7 +535,7 @@ public class Style implements Serializable {
      * vertical alignment, it will always use 'b'.
      */
     public void setLabelAlign(String align) {
-        setProperty("labelAlign", align);
+        labelAlign = align;
     }
 
     /**
@@ -464,44 +543,44 @@ public class Style implements Serializable {
      * the text.
      */
     public String getLabelAlign() {
-        return (String) getProperty("labelAlign");
+        return labelAlign;
     }
 
     public void setLabelXOffset(Integer offset) {
-        setProperty("labelXOffset", offset);
+        labelXOffset = offset;
     }
 
     public Integer getLabelXOffset() {
-        return (Integer) getProperty("labelXOffset");
+        return labelXOffset;
     }
 
     public void setLabelYOffset(Integer offset) {
-        setProperty("labelYOffset", offset);
+        labelYOffset = offset;
     }
 
     public Integer getLabelYOffset() {
-        return (Integer) getProperty("labelYOffset");
+        return labelYOffset;
     }
 
     public void setLabelOutlineColor(String color) {
-        setProperty("labelOutlineColor", color);
+        labelOutlineColor = color;
     }
 
     public String getLabelOutlineColor() {
-        return (String) getProperty("labelOutlineColor");
+        return labelOutlineColor;
     }
 
     public void setLabelOutlineWidth(Integer width) {
-        setProperty("labelOutlineWidth", width);
+        labelOutlineWidth = width;
     }
 
     public Integer getLabelOutlineWidth(){
-        return (Integer) getProperty("labelOutlineWidth");
+        return labelOutlineWidth;
     }
 
     /** Stroke linecap. */
     public String getStrokeLinecap() {
-        return (String) getProperty("strokeLinecap");
+        return strokeLinecap;
     }
 
     /**
@@ -509,7 +588,7 @@ public class Style implements Serializable {
      * | square]
      */
     public void setStrokeLinecap(String strokeLinecap) {
-        setProperty("strokeLinecap", strokeLinecap);
+        this.strokeLinecap = strokeLinecap;
     }
 
     /**
@@ -517,54 +596,54 @@ public class Style implements Serializable {
      * 'solid'. [dot | dash | dashdot | longdash | longdashdot | solid]
      */
     public void setStrokeDashstyle(String strokeDashstyle) {
-        setProperty("strokeDashstyle", strokeDashstyle);
+        this.strokeDashstyle = strokeDashstyle;
     }
 
     /**
      * Stroke dash style.
      */
     public String getStrokeDashstyle() {
-        return (String) getProperty("strokeDashstyle");
+        return strokeDashstyle;
     }
 
     /** Set to false if no fill is desired. */
     public void fill(boolean fill) {
-        setProperty("fill", fill);
+        this.fill = fill;
     }
 
     /** Set to false if no fill is desired. */
-    public boolean getFill() {
-        return (Boolean) getProperty("fill");
+    public Boolean getFill() {
+        return fill;
     }
 
     /** Set to false if no stroke is desired. */
     public void stroke(boolean stroke) {
-        setProperty("stroke", stroke);
+        this.stroke = stroke;
     }
 
     /** Set to false if no stroke is desired. */
-    public boolean getStroke() {
-        return (Boolean) getProperty("stroke");
+    public Boolean getStroke() {
+        return stroke;
     }
 
     /** Set to false if no graphic is desired. */
     public void graphic(boolean graphic) {
-        setProperty("graphic", graphic);
+        this.graphic = graphic;
     }
 
     /** Set to false if no graphic is desired. */
-    public boolean getGraphic() {
-        return (Boolean) getProperty("graphic");
+    public Boolean getGraphic() {
+        return graphic;
     }
 
     /** Cursor. Default is ''. */
     public void setCursor(String cursor) {
-        setProperty("cursor", cursor);
+        this.cursor = cursor;
     }
 
     /** Cursor. */
     public String getCursor() {
-        return (String) getProperty("cursor");
+        return cursor;
     }
 
     /**
@@ -575,7 +654,7 @@ public class Style implements Serializable {
      * 'cross', 'triangle'.
      */
     public void setGraphicName(String graphicName) {
-        setProperty("graphicName", graphicName);
+        this.graphicName = graphicName;
     }
 
     /**
@@ -583,7 +662,7 @@ public class Style implements Serializable {
      * 'circle' (default), 'square', 'star', 'x', 'cross', 'triangle'.
      */
     public String getGraphicName() {
-        return (String) getProperty("graphicName");
+        return graphicName;
     }
 
     /**
@@ -591,7 +670,7 @@ public class Style implements Serializable {
      * Explorer.
      */
     public void setGraphicTitle(String graphicTitle) {
-        setProperty("graphicTitle", graphicTitle);
+        this.graphicTitle = graphicTitle;
     }
 
     /**
@@ -599,12 +678,17 @@ public class Style implements Serializable {
      * Explorer.
      */
     public String getGraphicTitle() {
-        return (String) getProperty("graphicTitle");
+        return graphicTitle;
     }
 
-    public Map<String, Serializable> getKeyValueMap() {
-        return styleProperty.getKeyValueMap();
+    public Integer getRotation() {
+        return rotation;
     }
+
+    public void setRotation(Integer rotation) {
+        this.rotation = rotation;
+    }
+
 
     /**
      * @param coreStyleName
@@ -612,7 +696,7 @@ public class Style implements Serializable {
      *            or 'selected'
      */
     public void extendCoreStyle(String coreStyleName) {
-        setProperty("__VOL_INHERIT", coreStyleName);
+        this.coreStyleName = coreStyleName;
     }
 
     private void init() {
@@ -620,10 +704,9 @@ public class Style implements Serializable {
     }
 
     public String getContextJs() {
-        return (String)getProperty("__VOL_CONTEXT");
+        return contextJs;
     }
     public void setContextJs(String js) {
-        setProperty("__VOL_CONTEXT", js);
+        contextJs = js;
     }
-
 }

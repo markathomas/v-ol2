@@ -1,19 +1,34 @@
 package org.vaadin.vol.client;
 
 import java.io.Serializable;
-import java.util.Map;
 
-/**
- * Attibutes class wraps a JavaScript Object
- *
- *
- */
-public class Attributes extends JsObject {
+public class Attributes implements Serializable {
 
-    /**
-     * return Attributes as a Map arrays
-     */
-    public Map<String, Serializable> getAttributes() {
-        return this.getKeyValueMap();
+    private String label;
+    private Integer pointRadius;
+    private String size;
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public Integer getPointRadius() {
+        return pointRadius;
+    }
+
+    public void setPointRadius(Integer pointRadius) {
+        this.pointRadius = pointRadius;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }

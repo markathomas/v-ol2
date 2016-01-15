@@ -59,7 +59,7 @@ public abstract class Vector extends AbstractOpenLayersWrapper {
         return this.attributes;
     }-*/;
 
-    public native final void setAttributes(ValueMap attrs)
+    public native final void setAttributes(JavaScriptObject attrs)
     /*-{
         this.attributes = attrs;
     }-*/;

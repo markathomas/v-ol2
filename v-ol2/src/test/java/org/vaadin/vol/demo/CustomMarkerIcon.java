@@ -43,11 +43,11 @@ public class CustomMarkerIcon extends AbstractVOLTest {
         // second marker icon, an offset is specified that shifts the icon by the corresponding amount
         // of pixels
         final Marker marker = new Marker(lon, lat);
-        marker.setIcon("http://www.openlayers.org/dev/img/marker-green.png", 21, 25);
+        marker.setIcon("https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/img/marker-green.png", 21, 25);
         markerLayer.addMarker(marker);
 
         final Marker markerWithOffset = new Marker(lon, lat);
-        markerWithOffset.setIcon("http://www.openlayers.org/dev/img/marker-gold.png", 21, 25, -10, -25);
+        markerWithOffset.setIcon("https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/img/marker-gold.png", 21, 25, -10, -25);
         markerLayer.addMarker(markerWithOffset);
     }
 }

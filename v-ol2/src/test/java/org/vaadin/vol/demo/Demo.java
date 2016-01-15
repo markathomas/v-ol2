@@ -222,7 +222,7 @@ public class Demo extends AbstractVOLTest {
             } else {
                 pointVector.setStyleName("red");
                 Attributes attr = new Attributes();
-                attr.setProperty("pointRadius", (i + 1) * 10);
+                attr.setPointRadius((i + 1) * 10);
                 pointVector.setAttributes(attr);
 
             }
