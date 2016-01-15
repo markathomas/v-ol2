@@ -1,5 +1,6 @@
 package org.vaadin.vol.client.ui;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -12,7 +13,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.vaadin.vol.client.Costants;
 import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.VectorLayerServerRpc;
 import org.vaadin.vol.client.VectorLayerState;
@@ -36,6 +36,8 @@ import org.vaadin.vol.client.wrappers.handler.PointHandler;
 import org.vaadin.vol.client.wrappers.handler.PolygonHandler;
 import org.vaadin.vol.client.wrappers.handler.RegularPolygonHandler;
 import org.vaadin.vol.client.wrappers.layer.VectorLayer;
+
+import java.util.List;
 
 public class VVectorLayer extends FlowPanel implements VLayer {
 
@@ -238,7 +240,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
             lastNewDrawing = null;
         }
 
-        updateStyleMap(state.styleMap, state.extendDefault);
+        updateStyleMap(state.styleMap, state.uniqueValueRules, state.extendDefault);
         setDrawingMode(state.drawingMode.toString());
 
         // Identifier for SelectFeature control to use ... layers specifying the
@@ -375,8 +377,8 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         }
     }
 
-    private void updateStyleMap(java.util.Map<String, String> styleMap, boolean extendDefault) {
-        StyleMap sm = getStyleMap(styleMap, extendDefault);
+    private void updateStyleMap(java.util.Map<String, String> styleMap, List<String> uniqueValueRules, boolean extendDefault) {
+        StyleMap sm = getStyleMap(styleMap, uniqueValueRules, extendDefault);
         if (sm == null) {
             sm = StyleMap.create();
         }
@@ -386,7 +388,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
 
 
 
-    public static StyleMap getStyleMap(java.util.Map<String, String> styleMap, boolean extendDefault) {
+    public static StyleMap getStyleMap(java.util.Map<String, String> styleMap, List<String> uniqueValueRules, boolean extendDefault) {
         if (styleMap == null) {
             return null;
         }
@@ -405,61 +407,27 @@ public class VVectorLayer extends FlowPanel implements VLayer {
             }
         }
 
-//        if (childUIDL.hasAttribute(Costants.STYLEMAP_UNIQUEVALUERULES)) {
-//            addUniqueValueRules(sm, childUIDL);
-//        }
+        if (uniqueValueRules != null) {
+            for (String uniqueValueRuleJson : uniqueValueRules) {
+                JavaScriptObject uniqueValueRule = Util.parse(uniqueValueRuleJson);
+                addUniqueValueRules(sm, uniqueValueRule);
+            }
+        }
         return sm;
     }
 
-    private static void addUniqueValueRules(StyleMap sm, UIDL childUIDL) {
+    private static native void addUniqueValueRules(StyleMap sm, JavaScriptObject uniqueValueRules) /*-{
+        var intent = uniqueValueRules.intent.value
+        var property = uniqueValueRules.property
+        var lookup = uniqueValueRules.lookup.map
 
-        if (childUIDL.hasAttribute(Costants.STYLEMAP_UNIQUEVALUERULES_KEYS)) {
-            String[] uvrKeysArray = childUIDL
-                    .getStringArrayAttribute(Costants.STYLEMAP_UNIQUEVALUERULES_KEYS);
-
-            for (String uvrkey : uvrKeysArray) {
-
-                String property = childUIDL
-                        .getStringAttribute(Costants.STYLEMAP_UNIQUEVALUERULES_PREFIX
-                                + uvrkey
-                                + Costants.STYLEMAP_UNIQUEVALUERULES_PROPERTY_SUFFIX);
-                String intent = childUIDL
-                        .getStringAttribute(Costants.STYLEMAP_UNIQUEVALUERULES_PREFIX
-                                + uvrkey
-                                + Costants.STYLEMAP_UNIQUEVALUERULES_INTENT_SUFFIX);
-                // Object context =
-                // childUIDL.getStringAttribute(Costants.STYLEMAP_UNIQUEVALUERULES_PREFIX+uvrkey+Costants.STYLEMAP_UNIQUEVALUERULES_CONTEXT_SUFFIX);
-
-                if (childUIDL
-                        .hasAttribute(Costants.STYLEMAP_UNIQUEVALUERULES_PREFIX
-                                + uvrkey + "_lookupkeys")) {
-                    String[] lookup_keys = childUIDL
-                            .getStringArrayAttribute(Costants.STYLEMAP_UNIQUEVALUERULES_PREFIX
-                                    + uvrkey
-                                    + Costants.STYLEMAP_UNIQUEVALUERULES_LOOKUPKEYS_SUFFIX);
-
-                    JsObject symbolizer_lookup_js = JsObject.createObject();
-
-                    for (String key : lookup_keys) {
-
-                        ValueMap symbolizer = childUIDL
-                                .getMapAttribute(Costants.STYLEMAP_UNIQUEVALUERULES_PREFIX
-                                        + uvrkey
-                                        + Costants.STYLEMAP_UNIQUEVALUERULES_LOOKUPITEM_SUFFIX
-                                        + key);
-                        symbolizer_lookup_js
-                                .setProperty(key, symbolizer.cast());
-                    }
-
-                    sm.addUniqueValueRules(intent, property,
-                            symbolizer_lookup_js.cast(), null);
-                }
-            }
-
+        // fix JSON structure a bit
+        for (l in lookup) {
+            lookup[l] = lookup[l].map
         }
 
-        return;
-    }
+        sm.addUniqueValueRules(intent, property, lookup, null)
+    }-*/;
 
     @Override
     protected void onDetach() {

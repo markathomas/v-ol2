@@ -21,7 +21,7 @@ public class VectorLayerState extends AbstractComponentState {
     }
 
     public Map<String, String> styleMap;
-    public Map<String, String> uniqueStyleMap;
+    public List<String> uniqueValueRules;
     public boolean extendDefault = false;
 
     public Connector selectedVector;

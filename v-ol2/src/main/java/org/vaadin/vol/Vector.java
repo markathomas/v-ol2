@@ -86,6 +86,7 @@ public abstract class Vector extends AbstractComponent {
     @Override
     public void setStyleName(String style) {
         super.setStyleName(style);
+        getState().intent = style;
     }
 
     /**
