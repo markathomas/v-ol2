@@ -6,24 +6,14 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.client.*;
+import com.vaadin.client.ComponentConnector;
+import com.vaadin.client.Util;
+import com.vaadin.client.ValueMap;
 import com.vaadin.shared.Connector;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.VectorLayerServerRpc;
 import org.vaadin.vol.client.VectorLayerState;
-import org.vaadin.vol.client.wrappers.GwtOlHandler;
-import org.vaadin.vol.client.wrappers.JsObject;
-import org.vaadin.vol.client.wrappers.Map;
-import org.vaadin.vol.client.wrappers.Projection;
-import org.vaadin.vol.client.wrappers.SelectFeatureFactory;
-import org.vaadin.vol.client.wrappers.Style;
-import org.vaadin.vol.client.wrappers.StyleMap;
-import org.vaadin.vol.client.wrappers.Vector;
+import org.vaadin.vol.client.wrappers.*;
 import org.vaadin.vol.client.wrappers.control.Control;
 import org.vaadin.vol.client.wrappers.control.DrawFeature;
 import org.vaadin.vol.client.wrappers.control.ModifyFeature;
@@ -37,12 +27,14 @@ import org.vaadin.vol.client.wrappers.handler.PolygonHandler;
 import org.vaadin.vol.client.wrappers.handler.RegularPolygonHandler;
 import org.vaadin.vol.client.wrappers.layer.VectorLayer;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 public class VVectorLayer extends FlowPanel implements VLayer {
 
     private VectorLayer vectors;
-    private String drawingMode = "NONE";
+    private VectorLayerState.DrawingMode drawingMode = VectorLayerState.DrawingMode.NONE;
     private Control df;
     private GwtOlHandler _fAddedListener;
     private boolean updating;
@@ -53,7 +45,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
 
     private Vector lastNewDrawing;
     private boolean added;
-    private String currentSelectionMode;
+    private VectorLayerState.SelectionMode currentSelectionMode;
     private SelectFeature selectFeature;
     private String selectionCtrlId;             // Common SelectFeature control identifier
 
@@ -134,7 +126,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
 
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
-                    if (!updating && drawingMode != "NONE") {
+                    if (!updating && drawingMode != VectorLayerState.DrawingMode.NONE) {
                         // use vaadin js object helper to get the actual feature
                         // from ol event
                         // TODO improve typing of OL events
@@ -178,7 +170,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
 
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
-                    if (!updating && drawingMode != "NONE") {
+                    if (!updating && drawingMode != VectorLayerState.DrawingMode.NONE) {
                         // use vaadin js object helper to get the actual feature
                         // from ol event
                         // TODO improve typing of OL events
@@ -186,10 +178,10 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                         Vector feature = event.getFieldByName("feature").cast();
                         Geometry geometry = feature.getGeometry();
 
-                        if (drawingMode == "AREA"
-                          || drawingMode == "LINE"
-                          || drawingMode == "RECTANGLE"
-                          || drawingMode == "CIRCLE") {
+                        if (drawingMode == VectorLayerState.DrawingMode.AREA
+                          || drawingMode == VectorLayerState.DrawingMode.LINE
+                          || drawingMode == VectorLayerState.DrawingMode.RECTANGLE
+                          || drawingMode == VectorLayerState.DrawingMode.CIRCLE) {
                             LineString ls = geometry.cast();
                             JsArray<Point> allVertices = ls.getAllVertices();
                             String[] points = new String[allVertices.length()];
@@ -198,8 +190,8 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                                 point.transform(getMap().getProjection(), getProjection());
                                 points[i] = point.toString();
                             }
-                            vectorLayerServerRpc.draw(points, VectorLayerState.DrawingMode.valueOf(drawingMode));
-                        } else if (drawingMode == "POINT") {
+                            vectorLayerServerRpc.draw(points, drawingMode);
+                        } else if (drawingMode == VectorLayerState.DrawingMode.POINT) {
                             // point
                             Point point = geometry.cast();
                             point.transform(getMap().getProjection(),
@@ -207,12 +199,12 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                             double x = point.getX();
                             double y = point.getY();
                             String[] points = new String[] { Point.create(x, y).toString() };
-                            vectorLayerServerRpc.draw(points, VectorLayerState.DrawingMode.valueOf(drawingMode));
+                            vectorLayerServerRpc.draw(points, drawingMode);
                         }
                         // VConsole.log("drawing done");
                         // communicate points to server and mark the
                         // new geometry to be removed on next update.
-                        if (drawingMode != "MODIFY") {
+                        if (drawingMode != VectorLayerState.DrawingMode.MODIFY) {
                             lastNewDrawing = feature;
                         }
                     }
@@ -241,7 +233,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         }
 
         updateStyleMap(state.styleMap, state.uniqueValueRules, state.extendDefault);
-        setDrawingMode(state.drawingMode.toString());
+        setDrawingMode(state.drawingMode);
 
         // Identifier for SelectFeature control to use ... layers specifying the
         // the same identifier can all listen for their own Select events on the map.
@@ -271,7 +263,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
     }
 
     private void setSelectionMode() {
-        String newSelectionMode = this.vectorLayerState.selectionMode.toString().intern();
+        VectorLayerState.SelectionMode newSelectionMode = this.vectorLayerState.selectionMode;
         if (currentSelectionMode != newSelectionMode) {
             if (selectFeature != null) {
                 /* remove this layer from the SelectFeature instead of removing the control
@@ -282,7 +274,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                 selectFeature = null;
             }
 
-            if (newSelectionMode != "NONE") {
+            if (newSelectionMode != VectorLayerState.SelectionMode.NONE) {
                 /* delegate responsibility for managing the SelectFeature to the factory;
                  * just let it know we want to register this vectorlayer in the SelectFeature.
                 selectFeature = SelectFeature.create(vectors);
@@ -294,7 +286,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
 
             currentSelectionMode = newSelectionMode;
         }
-        if (currentSelectionMode != "NONE" || drawingMode == "MODIFY") {
+        if (currentSelectionMode != VectorLayerState.SelectionMode.NONE || drawingMode == VectorLayerState.DrawingMode.MODIFY) {
             if (this.vectorLayerState.selectedVector != null) {
                 Scheduler.get().scheduleFinally(new ScheduledCommand() {
 
@@ -304,7 +296,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                         if (selectedVector != null) {
                             updating = true;
                             // ensure selection
-                            if (drawingMode == "MODIFY") {
+                            if (drawingMode == VectorLayerState.DrawingMode.MODIFY) {
                                 ModifyFeature mf = (ModifyFeature) df.cast();
                                 if (mf.getModifiedFeature() != null) {
                                     mf.unselect(mf.getModifiedFeature());
@@ -320,7 +312,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
                 });
             } else {
                 // remove selection
-                if (drawingMode == "MODIFY") {
+                if (drawingMode == VectorLayerState.DrawingMode.MODIFY) {
                     ModifyFeature modifyFeature = (ModifyFeature) df.cast();
                     if (modifyFeature.getModifiedFeature() != null) {
                         modifyFeature.unselect(modifyFeature
@@ -339,12 +331,11 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         }
     }
 
-    private void setDrawingMode(String newDrawingMode) {
-        newDrawingMode = newDrawingMode.intern();
+    private void setDrawingMode(VectorLayerState.DrawingMode newDrawingMode) {
         if (drawingMode != newDrawingMode) {
-            if (drawingMode != "NONE") {
+            if (drawingMode != VectorLayerState.DrawingMode.NONE) {
                 // remove old drawing feature
-                if (drawingMode == "MODIFY") {
+                if (drawingMode == VectorLayerState.DrawingMode.MODIFY) {
                     ModifyFeature mf = df.cast();
                     if (mf.getModifiedFeature() != null) {
                         mf.unselect(mf.getModifiedFeature());
@@ -356,17 +347,17 @@ public class VVectorLayer extends FlowPanel implements VLayer {
             drawingMode = newDrawingMode;
             df = null;
 
-            if (drawingMode == "AREA") {
+            if (drawingMode == VectorLayerState.DrawingMode.AREA) {
                 df = DrawFeature.create(getLayer(), PolygonHandler.get());
-            } else if (drawingMode == "LINE") {
+            } else if (drawingMode == VectorLayerState.DrawingMode.LINE) {
                 df = DrawFeature.create(getLayer(), PathHandler.get());
-            } else if (drawingMode == "MODIFY") {
+            } else if (drawingMode == VectorLayerState.DrawingMode.MODIFY) {
                 df = ModifyFeature.create(getLayer());
-            } else if (drawingMode == "POINT") {
+            } else if (drawingMode == VectorLayerState.DrawingMode.POINT) {
                 df = DrawFeature.create(getLayer(), PointHandler.get());
-            } else if (drawingMode == "RECTANGLE") {
+            } else if (drawingMode == VectorLayerState.DrawingMode.RECTANGLE) {
                 df = DrawFeature.create(getLayer(), RegularPolygonHandler.get(), RegularPolygonHandler.getRectangleOptions());
-            } else if (drawingMode == "CIRCLE") {
+            } else if (drawingMode == VectorLayerState.DrawingMode.CIRCLE) {
                 df = DrawFeature.create(getLayer(), RegularPolygonHandler.get(), RegularPolygonHandler.getCircleOptions());
             }
             if (df != null) {
@@ -456,28 +447,8 @@ public class VVectorLayer extends FlowPanel implements VLayer {
         return getVMap().getProjection();
     }
 
-    public void replaceChildComponent(Widget oldComponent, Widget newComponent) {
-        // TODO Auto-generated method stub
-
-    }
-
     public boolean hasChildComponent(Widget component) {
         return getWidgetIndex(component) != -1;
-    }
-
-    public void updateCaption(Paintable component, UIDL uidl) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public boolean requestLayout(Set<Paintable> children) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public RenderSpace getAllocatedSpace(Widget child) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     public void vectorUpdated(VAbstractVector vAbstractVector) {
