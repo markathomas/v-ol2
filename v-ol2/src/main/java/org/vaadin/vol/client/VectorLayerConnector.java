@@ -31,10 +31,15 @@ public class VectorLayerConnector extends AbstractComponentContainerConnector {
     public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent event) {
         Profiler.enter("VectorLayerConnector.onConnectorHierarchyChange");
         Profiler.enter("VectorLayerConnector.onConnectorHierarchyChange add children");
-
-        getWidget().clear();
         for (ComponentConnector child : getChildComponents()) {
-            getWidget().add(child.getWidget());
+            if (child.getParent() != this) {
+                getWidget().add(child.getWidget());
+            }
+        }
+        for (ComponentConnector child : event.getOldChildren()) {
+            if (child.getParent() != this) {
+                getWidget().remove(child.getWidget());
+            }
         }
         Profiler.leave("VectorLayerConnector.onConnectorHierarchyChange add children");
         Profiler.leave("VectorLayerConnector.onConnectorHierarchyChange");
