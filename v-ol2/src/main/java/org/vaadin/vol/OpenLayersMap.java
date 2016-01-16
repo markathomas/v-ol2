@@ -1,32 +1,27 @@
 package org.vaadin.vol;
 
 import com.vaadin.annotations.JavaScript;
+import com.vaadin.event.Action;
+import com.vaadin.server.KeyMapper;
 import com.vaadin.shared.Connector;
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-import org.vaadin.vol.client.Bounds;
-import org.vaadin.vol.client.Control;
-import org.vaadin.vol.client.OpenLayersMapServerRpc;
-import org.vaadin.vol.client.OpenLayersMapState;
-import org.vaadin.vol.client.Point;
-import org.vaadin.vol.client.PointInformation;
+import org.vaadin.vol.client.*;
 
 /**
  * Server side component for the VOpenLayersMap widget.
  */
 @SuppressWarnings("serial")
 @JavaScript({ "helpers.js" })
-public class OpenLayersMap extends AbstractComponentContainer {
+public class OpenLayersMap extends AbstractComponentContainer implements Action.Container {
+
+    private LinkedList<Action.Handler> actionHandlers = new LinkedList<Action.Handler>();
+    private KeyMapper<Action> actionMapper = new KeyMapper<Action>();
 
     public OpenLayersMap() {
         this(false);
@@ -70,6 +65,16 @@ public class OpenLayersMap extends AbstractComponentContainer {
                 }
                 BaseLayerChangeEvent baseLayerChangeEvent = new BaseLayerChangeEvent();
                 fireEvent(baseLayerChangeEvent);
+            }
+
+            @Override
+            public void contextMenuClicked(String key, Point point) {
+                final Action action = actionMapper.get(key);
+                if (action != null) {
+                    for (Action.Handler ah : actionHandlers) {
+                        ah.handleAction(action, this, point);
+                    }
+                }
             }
         });
     }
@@ -356,6 +361,22 @@ public class OpenLayersMap extends AbstractComponentContainer {
         this.getState().bounds = extent;
     }
 
+    @Override
+    public void addActionHandler(Action.Handler actionHandler) {
+        if (actionHandler != null) {
+            if (!actionHandlers.contains(actionHandler)) {
+                actionHandlers.add(actionHandler);
+            }
+        }
+    }
+
+    @Override
+    public void removeActionHandler(Action.Handler actionHandler) {
+        if (actionHandlers.contains(actionHandler)) {
+            actionHandlers.remove(actionHandler);
+        }
+    }
+
     public interface MapClickListener {
 
         Method method = ReflectTools.findMethod(
@@ -453,4 +474,29 @@ public class OpenLayersMap extends AbstractComponentContainer {
         removeListener(BaseLayerChangeEvent.class, listener);
     }
 
+    @Override
+    public void beforeClientResponse(boolean initial) {
+        super.beforeClientResponse(initial);
+        actionsToState();
+    }
+
+    private void actionsToState() {
+        getState().actions.clear();
+        for (Action.Handler ah : actionHandlers) {
+            final Action[] actions = ah.getActions(this, this);
+            if (actions != null) {
+                for (Action action : actions) {
+                    ContextMenuAction contextMenuAction = new ContextMenuAction();
+                    String key = actionMapper.key(action);
+                    contextMenuAction.key = key;
+                    contextMenuAction.caption = action.getCaption();
+                    getState().actions.add(contextMenuAction);
+                    if (action.getIcon() != null) {
+                        setResource(Constants.CONTEXT_MENU_ICON_RESOURCE_KEY + key, action.getIcon());
+                    }
+
+                }
+            }
+        }
+    }
 }

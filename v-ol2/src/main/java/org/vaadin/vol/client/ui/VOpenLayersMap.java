@@ -16,10 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.vaadin.vol.client.wrappers.Bounds;
-import org.vaadin.vol.client.wrappers.LonLat;
-import org.vaadin.vol.client.wrappers.Map;
-import org.vaadin.vol.client.wrappers.Projection;
+import org.vaadin.vol.client.wrappers.*;
 import org.vaadin.vol.client.wrappers.control.Control;
 
 /**
@@ -65,22 +62,22 @@ public class VOpenLayersMap extends FlowPanel {
         return fakePaintables;
     }
 
-    private int getWindowClickTopPosition(ContextMenuEvent event) {
+    public int getWindowClickTopPosition(ContextMenuEvent event) {
         return WidgetUtil.getTouchOrMouseClientY(event.getNativeEvent())
                 + Window.getScrollTop();
     }
 
-    private int getWindowClickLeftPosition(ContextMenuEvent event) {
+    public int getWindowClickLeftPosition(ContextMenuEvent event) {
         return WidgetUtil.getTouchOrMouseClientX(event.getNativeEvent())
                 + Window.getScrollLeft();
     }
 
-    private double getMapClickTopPosition(ContextMenuEvent event) {
+    public double getMapClickTopPosition(ContextMenuEvent event) {
         return WidgetUtil.getTouchOrMouseClientY(event.getNativeEvent())
                 - getMap().getAbsoluteTop();
     }
 
-    private double getMapClickLeftPosition(ContextMenuEvent event) {
+    public double getMapClickLeftPosition(ContextMenuEvent event) {
         return WidgetUtil.getTouchOrMouseClientX(event.getNativeEvent())
                 - getMap().getAbsoluteLeft();
     }

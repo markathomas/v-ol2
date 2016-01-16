@@ -1,7 +1,10 @@
 package org.vaadin.vol.client;
 
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.event.dom.client.ContextMenuEvent;
+import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.user.client.ui.Widget;
+import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.Profiler;
@@ -9,6 +12,8 @@ import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
+import com.vaadin.client.ui.Action;
+import com.vaadin.client.ui.ActionOwner;
 import com.vaadin.client.ui.PostLayoutListener;
 import com.vaadin.shared.Connector;
 import com.vaadin.shared.ui.Connect;
@@ -27,8 +32,9 @@ import org.vaadin.vol.client.wrappers.Pixel;
 import org.vaadin.vol.client.wrappers.Projection;
 import org.vaadin.vol.client.wrappers.layer.Layer;
 
+
 @Connect(OpenLayersMap.class)
-public class OpenLayersMapConnector extends AbstractComponentContainerConnector implements PostLayoutListener {
+public class OpenLayersMapConnector extends AbstractComponentContainerConnector implements PostLayoutListener, ActionOwner {
 
     private final transient Logger logger = Logger.getLogger(getClass().getName());
 
@@ -39,6 +45,34 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     private GwtOlHandler changeBaseLayer;
 
     private boolean initialized = false;
+    private LonLat clickedLonLat;
+
+    @Override
+    protected void init() {
+        super.init();
+        getWidget().addDomHandler(new ContextMenuHandler() {
+            public void onContextMenu(ContextMenuEvent event) {
+                handleContextMenu(event);
+            }
+        }, ContextMenuEvent.getType());
+    }
+
+    private void handleContextMenu(ContextMenuEvent event) {
+        if (!getState().actions.isEmpty()) {
+            clickedLonLat = getWidget().getMap().getLonLatFromPixel(
+                    Pixel.create(getWidget().getMapClickLeftPosition(event),
+                            getWidget().getMapClickTopPosition(event)));
+            Projection projection = getWidget().getMap().getBaseLayer().getProjection();
+            Projection apiProjection = getWidget().getProjection();
+            clickedLonLat.transform(projection, apiProjection);
+            getConnection().getContextMenu().showAt(this,
+                    getWidget().getWindowClickLeftPosition(event),
+                    getWidget().getWindowClickTopPosition(event));
+
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    }
 
     @Override
     public VOpenLayersMap getWidget() {
@@ -220,6 +254,50 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             }
             getWidget().updateZoomAndCenter(getState().zoom, center);
             initialized  = true;
+        }
+    }
+
+    @Override
+    public Action[] getActions() {
+        if (getState().actions.isEmpty()) {
+            return new Action[0];
+        } else {
+            final Action[] actions = new Action[getState().actions.size()];
+            for (int i = 0; i < getState().actions.size(); i++) {
+                OpenLayersMapAction action = new OpenLayersMapAction(this, getState().actions.get(i));
+                actions[i] = action;
+            }
+            return actions;
+        }
+    }
+
+    @Override
+    public ApplicationConnection getClient() {
+        return getConnection();
+    }
+
+    @Override
+    public String getPaintableId() {
+        return getConnectorId();
+    }
+
+    private class OpenLayersMapAction extends Action {
+
+        private final ContextMenuAction contextMenuAction;
+
+        public OpenLayersMapAction(ActionOwner owner, ContextMenuAction contextMenuAction) {
+            super(owner);
+            this.contextMenuAction = contextMenuAction;
+            setCaption(contextMenuAction.caption);
+            setIconUrl(getResourceUrl(Constants.CONTEXT_MENU_ICON_RESOURCE_KEY + contextMenuAction.key));
+        }
+
+        @Override
+        public void execute() {
+            String key = contextMenuAction.key;
+            Point point = new Point(clickedLonLat.getLon(), clickedLonLat.getLat());
+            openLayersMapServerRpc.contextMenuClicked(key, point);
+            getClient().getContextMenu().hide();
         }
     }
 }

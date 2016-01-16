@@ -1,14 +1,15 @@
 package org.vaadin.vol.demo;
 
+import com.vaadin.event.Action;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Component;
-import org.vaadin.vol.OpenLayersMap;
-import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.VectorLayer;
+import org.vaadin.vol.*;
+import org.vaadin.vol.client.Point;
 
 /**
  * Example where one can drag points or squares with context menu.
  */
-public class ActionHandlers extends AbstractVOLTest {
+public class ActionHandlers extends AbstractVOLTest implements Action.Handler {
 
     private VectorLayer vectorLayer;
     private OpenLayersMap openLayersMap;
@@ -19,6 +20,7 @@ public class ActionHandlers extends AbstractVOLTest {
         vectorLayer = new VectorLayer();
         openLayersMap.addLayer(vectorLayer);
 
+        openLayersMap.addActionHandler(this);
         openLayersMap.setImmediate(true); // to get extent eagerly, used to draw
                                           // relatively sized squares
         this.openLayersMap = openLayersMap;
@@ -30,7 +32,7 @@ public class ActionHandlers extends AbstractVOLTest {
         return "Example where one can add points or squares with context menu";
     }
 
-    /*private static final Action POINT = new Action("Add Point");
+    private static final Action POINT = new Action("Add Point", FontAwesome.PLUS);
     private static final Action RECT = new Action("Add Rectangle");
     private static final Action[] ACTIONS = new Action[] { POINT, RECT };
 
@@ -45,27 +47,27 @@ public class ActionHandlers extends AbstractVOLTest {
             pointVector.setPoints(point);
             vectorLayer.addVector(pointVector);
         } else { // RECT
-            Bounds extend = openLayersMap.getExtend();
-            double left = extend.getLeft();
-            double top = extend.getTop();
-            double right = extend.getRight();
-            double bottom = extend.getBottom();
-
-            double dx = (right - left) / 10;
-            double dy = (top - bottom) / 10;
-
-            left = point.getLon() - dx;
-            right = point.getLon() + dx;
-            bottom = point.getLat() - dy;
-            top = point.getLat() + dy;
-            PolyLine polyLine = new PolyLine();
-            polyLine.setPoints(new Point(left, top), new Point(right, top),
-                    new Point(right, bottom), new Point(left, bottom),
-                    new Point(left, top));
-            vectorLayer.addVector(polyLine);
+//            Bounds extend = openLayersMap.getExtend();
+//            double left = extend.getLeft();
+//            double top = extend.getTop();
+//            double right = extend.getRight();
+//            double bottom = extend.getBottom();
+//
+//            double dx = (right - left) / 10;
+//            double dy = (top - bottom) / 10;
+//
+//            left = point.getLon() - dx;
+//            right = point.getLon() + dx;
+//            bottom = point.getLat() - dy;
+//            top = point.getLat() + dy;
+//            PolyLine polyLine = new PolyLine();
+//            polyLine.setPoints(new Point(left, top), new Point(right, top),
+//                    new Point(right, bottom), new Point(left, bottom),
+//                    new Point(left, top));
+//            vectorLayer.addVector(polyLine);
         }
 
-    }*/
+    }
 
     @Override
     public Component getTestComponent() {

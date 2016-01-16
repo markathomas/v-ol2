@@ -3,10 +3,7 @@ package org.vaadin.vol.client;
 import com.vaadin.shared.AbstractComponentState;
 import com.vaadin.shared.Connector;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class OpenLayersMapState extends AbstractComponentState {
 
@@ -22,4 +19,6 @@ public class OpenLayersMapState extends AbstractComponentState {
     public String projection;
 
     public Set<String> controls = new HashSet<String>();
+
+    public List<ContextMenuAction> actions = new ArrayList<ContextMenuAction>();
 }
