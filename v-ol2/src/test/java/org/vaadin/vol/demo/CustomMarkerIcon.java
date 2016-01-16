@@ -1,7 +1,6 @@
 package org.vaadin.vol.demo;
 
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Notification;
 
 import org.vaadin.vol.Marker;
 import org.vaadin.vol.MarkerLayer;
@@ -22,7 +21,10 @@ public class CustomMarkerIcon extends AbstractVOLTest {
     public Component getTestComponent() {
         // create the map
         map = new OpenLayersMap();
-        map.addLayer(new OpenStreetMapLayer());
+        map.setApiProjection("EPSG:4326");
+        OpenStreetMapLayer layer = new OpenStreetMapLayer();
+        layer.setProjection("EPSG:900913");
+        map.addLayer(layer);
         map.setSizeFull();
 
         // create the marker layer
