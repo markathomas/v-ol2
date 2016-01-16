@@ -70,7 +70,7 @@ public class VMarker extends Widget implements VMarkable {
             String url = icon.getUri();
             int width = state.iconWidth > 0 ? state.iconWidth : 32;
             int height = state.iconHeight > 0 ? state.iconHeight : 32;
-            if (state.iconXOffset > 0 && state.iconYOffset > 0) {
+            if (state.iconXOffset > Integer.MIN_VALUE && state.iconYOffset > Integer.MIN_VALUE) {
                 return Icon.create(url, Size.create(width, height),
                         Pixel.create(state.iconXOffset, state.iconYOffset));
             }
