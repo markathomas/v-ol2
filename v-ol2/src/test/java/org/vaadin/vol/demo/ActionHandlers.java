@@ -2,7 +2,9 @@ package org.vaadin.vol.demo;
 
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import org.vaadin.vol.*;
 import org.vaadin.vol.client.Point;
 
@@ -13,6 +15,7 @@ public class ActionHandlers extends AbstractVOLTest implements Action.Handler {
 
     private VectorLayer vectorLayer;
     private OpenLayersMap openLayersMap;
+    private HorizontalLayout addedVectorsLayout;
 
     private void addBaseLayer(OpenLayersMap openLayersMap) {
         openLayersMap.addLayer(new OpenStreetMapLayer());
@@ -46,6 +49,7 @@ public class ActionHandlers extends AbstractVOLTest implements Action.Handler {
             PointVector pointVector = new PointVector();
             pointVector.setPoints(point);
             vectorLayer.addVector(pointVector);
+            addVectorButton(pointVector, point);
         } else { // RECT
 //            Bounds extend = openLayersMap.getExtend();
 //            double left = extend.getLeft();
@@ -69,8 +73,22 @@ public class ActionHandlers extends AbstractVOLTest implements Action.Handler {
 
     }
 
+    private void addVectorButton(final Vector vector, Point point) {
+        addedVectorsLayout.addComponent(new Button(String.format("Remove Point at %s, %s", point.getLat(), point.getLon()), new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                vectorLayer.removeComponent(vector);
+                addedVectorsLayout.removeComponent(event.getButton());
+            }
+        }));
+    }
+
     @Override
     public Component getTestComponent() {
+        addedVectorsLayout = new HorizontalLayout();
+        addedVectorsLayout.setSpacing(true);
+        content.addComponent(addedVectorsLayout);
+
         OpenLayersMap openLayersMap = new OpenLayersMap();
         addBaseLayer(openLayersMap);
         return openLayersMap;
