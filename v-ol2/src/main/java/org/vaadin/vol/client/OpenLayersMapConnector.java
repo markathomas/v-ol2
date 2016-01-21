@@ -210,11 +210,6 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
         getWidget().getMap().setMapInitOptions(getState().jsMapOptions);
     }
 
-    @OnStateChange("projection")
-    void projectionChanged() {
-        getWidget().setProjection(Projection.get(getState().projection));
-    }
-
     @OnStateChange("baseLayer")
     void baseLayerChanged() {
         if (getState().baseLayer == null)
