@@ -6,7 +6,7 @@ import com.vaadin.shared.annotations.DelegateToWidget;
 public class LayerBaseState extends AbstractComponentState {
 
     @DelegateToWidget
-    public String projection = "EPSG:4326";
+    public String projection;
     @DelegateToWidget
     public String displayName;
     @DelegateToWidget

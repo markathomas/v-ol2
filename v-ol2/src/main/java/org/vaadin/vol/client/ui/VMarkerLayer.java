@@ -26,6 +26,9 @@ public class VMarkerLayer extends FlowPanel implements VLayer {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+        if (markers != null) {
+            markers.setDisplayName(displayName);
+        }
     }
 
     /**

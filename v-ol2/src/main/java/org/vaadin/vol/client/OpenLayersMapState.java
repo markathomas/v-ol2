@@ -16,7 +16,7 @@ public class OpenLayersMapState extends AbstractComponentState {
     public String jsMapOptions;
     public Bounds zoomToExtent;
     public Bounds restrictedExtent;
-    public String projection;
+    public String projection = "EPSG:4326";
 
     public Set<String> controls = new HashSet<String>();
 
