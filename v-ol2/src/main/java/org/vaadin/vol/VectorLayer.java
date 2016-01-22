@@ -41,17 +41,19 @@ public class VectorLayer extends AbstractComponentContainer implements Layer {
         super.beforeClientResponse(initial);
         if (styleMap != null) {
             Map<String, String> map = new HashMap<String, String>();
-            for (Map.Entry<String, Style> e : styleMap.styles.entrySet()) {
-                map.put(e.getKey(), new Gson().toJson(e.getValue()));
+            List<String> uniqueValueRules = new ArrayList<String>();
+            Gson gson;
+            if (!styleMap.styles.isEmpty() || !styleMap.uniqueValueRules.isEmpty()) {
+                gson = new Gson();
+                for (Map.Entry<String, Style> e : styleMap.styles.entrySet()) {
+                    map.put(e.getKey(), gson.toJson(e.getValue()));
+                }
+                for (Map.Entry<String, UniqueValueRule> e : styleMap.uniqueValueRules.entrySet()) {
+                    uniqueValueRules.add(gson.toJson(e.getValue()));
+                }
             }
             getState().styleMap = map;
-
-            List<String> uniqueValueRules = new ArrayList<String>();
-            for (Map.Entry<String, UniqueValueRule> e : styleMap.uniqueValueRules.entrySet()) {
-                uniqueValueRules.add(new Gson().toJson(e.getValue()));
-            }
             getState().uniqueValueRules = uniqueValueRules;
-
             getState().extendDefault = styleMap.isExtendDefault();
         } else {
             getState().styleMap = null;

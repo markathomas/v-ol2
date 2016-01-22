@@ -8,7 +8,6 @@ import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.Profiler;
-import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
@@ -109,7 +108,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
         super.onStateChanged(stateChangeEvent);
 
         final boolean hasListeners = getState().registeredEventListeners != null;
-        if (hasListeners && getState().registeredEventListeners.contains("extentChange")) {
+        if (hasListeners && hasEventListener("extentChange")) {
             if (this.extentChangeListener == null) {
                 this.extentChangeListener = new GwtOlHandler() {
                     @SuppressWarnings("rawtypes")
@@ -136,7 +135,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             }
         }
 
-        if (hasListeners && getState().registeredEventListeners.contains("baseLayerChange")) {
+        if (hasListeners && hasEventListener("baseLayerChange")) {
             if (changeBaseLayer == null) {
                 changeBaseLayer = new GwtOlHandler() {
                     public void onEvent(JsArray arguments) {
@@ -157,7 +156,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             }
         }
 
-        if (hasListeners && getState().registeredEventListeners.contains("click")) {
+        if (hasListeners && hasEventListener("click")) {
             if (clickListener == null) {
                 clickListener = new GwtOlHandler() {
 
@@ -169,8 +168,8 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
                         // TODO : we better create a mechanism to define base
                         // projection in this class according to our base layer
                         // selection
-                        Projection sourceProjection = Projection.get("EPSG:900913");
-                        lonlat.transform(sourceProjection, getWidget().getProjection());
+                        //Projection sourceProjection = Projection.get("EPSG:900913");
+                        //lonlat.transform(sourceProjection, getWidget().getProjection());
                         PointInformation pi = new PointInformation();
                         pi.setX(pixel.getX());
                         pi.setY(pixel.getY());
@@ -183,6 +182,31 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
                 };
                 getWidget().getMap().registerEventHandler("click", clickListener);
             }
+        }
+
+        if (stateChangeEvent.hasPropertyChanged("jsMapOptions")) {
+            getWidget().getMap().setMapInitOptions(getState().jsMapOptions);
+        }
+
+        if (stateChangeEvent.hasPropertyChanged("controls")) {
+            getWidget().updateControls(getState().controls);
+        }
+
+        if (stateChangeEvent.hasPropertyChanged("restrictedExtent") && getState().restrictedExtent != null) {
+            Bounds bounds = Bounds.create(
+              getState().restrictedExtent.getLeft(),
+              getState().restrictedExtent.getBottom(),
+              getState().restrictedExtent.getRight(),
+              getState().restrictedExtent.getTop()
+            );
+            Map map = getWidget().getMap();
+            bounds.transform(getWidget().getProjection(), map.getProjection());
+            map.setRestrictedExtent(bounds);
+        }
+
+        if (stateChangeEvent.hasPropertyChanged("baseLayer") && getState().baseLayer != null) {
+            VLayer layer = (VLayer)(((ComponentConnector)getState().baseLayer).getWidget());
+            getWidget().getMap().setBaseLayer(layer.getLayer());
         }
 
         if (stateChangeEvent.hasPropertyChanged("projection")) {
@@ -203,39 +227,6 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             }
             getWidget().updateZoomAndCenter(getState().zoom, center);
         }
-    }
-
-    @OnStateChange("jsMapOptions")
-    void mapOptionsChanged() {
-        getWidget().getMap().setMapInitOptions(getState().jsMapOptions);
-    }
-
-    @OnStateChange("baseLayer")
-    void baseLayerChanged() {
-        if (getState().baseLayer == null)
-            return;
-        VLayer layer = (VLayer)(((ComponentConnector)getState().baseLayer).getWidget());
-        getWidget().getMap().setBaseLayer(layer.getLayer());
-    }
-
-    @OnStateChange("restrictedExtent")
-    void restrictedExtentChanged() {
-        if (getState().restrictedExtent == null)
-            return;
-        Bounds bounds = Bounds.create(
-          getState().restrictedExtent.getLeft(),
-          getState().restrictedExtent.getBottom(),
-          getState().restrictedExtent.getRight(),
-          getState().restrictedExtent.getTop()
-        );
-        Map map = getWidget().getMap();
-        bounds.transform(getWidget().getProjection(), map.getProjection());
-        map.setRestrictedExtent(bounds);
-    }
-
-    @OnStateChange("controls")
-    void controlsChanged() {
-        getWidget().updateControls(getState().controls);
     }
 
     @Override
