@@ -42,7 +42,7 @@ public class WellKnownTextLayerConnector extends AutoPopulatedVectorLayerConnect
             sourceProjection = Projection.get(projection);
         } else {
             // if not explicitly defined, use the API projection from the map
-            sourceProjection = ((VOpenLayersMap)getWidget().getParent()).getProjection();
+            sourceProjection = MapUtil.findParent(VOpenLayersMap.class, getWidget()).getProjection();
         }
         WKT wktFormatter = WKT.create(targetProjection, sourceProjection);
         JsArray<Vector> read = wktFormatter.read(getState().wkt);
