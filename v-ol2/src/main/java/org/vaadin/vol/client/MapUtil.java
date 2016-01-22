@@ -21,15 +21,24 @@ public class MapUtil {
         }
     }
 
-    public static Map getMap(Widget widget) {
+    public static VOpenLayersMap getVMap(Widget widget) {
         if (widget == null) {
             return null;
         }
 
         if (widget instanceof VOpenLayersMap) {
-            return ((VOpenLayersMap)widget).getMap();
+            return (VOpenLayersMap)widget;
         } else {
-            return getMap(widget.getParent());
+            return getVMap(widget.getParent());
         }
+    }
+
+    public static Map getMap(Widget widget) {
+        VOpenLayersMap map = getVMap(widget);
+        if (map == null) {
+            return null;
+        }
+
+        return map.getMap();
     }
 }

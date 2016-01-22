@@ -13,11 +13,9 @@ import com.vaadin.ui.UI;
 import javax.servlet.annotation.WebServlet;
 
 import org.vaadin.vol.Marker;
+import org.vaadin.vol.MarkerLayer;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
-import org.vaadin.vol.client.Bounds;
-import org.vaadin.vol.client.Point;
-import org.vaadin.vol.MarkerLayer;
 
 @Theme("demo")
 
@@ -39,7 +37,6 @@ public class DemoUI extends UI
         // Initialize our new UI component
         final OpenLayersMap map = new OpenLayersMap();
         map.setApiProjection("EPSG:4326");
-        map.setExtent(new Bounds(new Point(-180d, -90d), new Point(180d, 90d)));
         map.setSizeFull();
 
         // base layers

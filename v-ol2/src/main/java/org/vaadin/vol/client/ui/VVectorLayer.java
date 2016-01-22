@@ -10,10 +10,22 @@ import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.Util;
 import com.vaadin.client.ValueMap;
 import com.vaadin.shared.Connector;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 import org.vaadin.vol.client.MapUtil;
 import org.vaadin.vol.client.VectorLayerServerRpc;
 import org.vaadin.vol.client.VectorLayerState;
-import org.vaadin.vol.client.wrappers.*;
+import org.vaadin.vol.client.wrappers.GwtOlHandler;
+import org.vaadin.vol.client.wrappers.JsObject;
+import org.vaadin.vol.client.wrappers.Map;
+import org.vaadin.vol.client.wrappers.Projection;
+import org.vaadin.vol.client.wrappers.SelectFeatureFactory;
+import org.vaadin.vol.client.wrappers.Style;
+import org.vaadin.vol.client.wrappers.StyleMap;
+import org.vaadin.vol.client.wrappers.Vector;
 import org.vaadin.vol.client.wrappers.control.Control;
 import org.vaadin.vol.client.wrappers.control.DrawFeature;
 import org.vaadin.vol.client.wrappers.control.ModifyFeature;
@@ -26,10 +38,6 @@ import org.vaadin.vol.client.wrappers.handler.PointHandler;
 import org.vaadin.vol.client.wrappers.handler.PolygonHandler;
 import org.vaadin.vol.client.wrappers.handler.RegularPolygonHandler;
 import org.vaadin.vol.client.wrappers.layer.VectorLayer;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 public class VVectorLayer extends FlowPanel implements VLayer {
 
@@ -440,7 +448,7 @@ public class VVectorLayer extends FlowPanel implements VLayer {
     }
 
     private VOpenLayersMap getVMap() {
-        return MapUtil.findParent(VOpenLayersMap.class, getParent());
+        return MapUtil.getVMap(getParent());
     }
 
     protected Projection getProjection() {
