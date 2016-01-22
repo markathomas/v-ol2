@@ -23,4 +23,8 @@ public class MarkerLayer extends Layer {
         this.removeMarker(marker);
     }-*/;
 
+    public native final void setDisplayName(String displayName)
+    /*-{
+        this.name = displayName;
+    }-*/;
 }
