@@ -2,8 +2,10 @@ package org.vaadin.vol;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.event.Action;
+import com.vaadin.event.ContextClickEvent;
 import com.vaadin.server.KeyMapper;
 import com.vaadin.shared.Connector;
+import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
@@ -75,6 +77,11 @@ public class OpenLayersMap extends AbstractComponentContainer implements Action.
                         ah.handleAction(action, this, point);
                     }
                 }
+            }
+
+            @Override
+            public void contextClick(MouseEventDetails details, Point point) {
+                fireEvent(new OpenLayersMapContextClickEvent(OpenLayersMap.this, details, point));
             }
         });
     }
@@ -498,6 +505,24 @@ public class OpenLayersMap extends AbstractComponentContainer implements Action.
 
                 }
             }
+        }
+    }
+
+    public static class OpenLayersMapContextClickEvent extends ContextClickEvent {
+
+        private final Point point;
+
+        public OpenLayersMapContextClickEvent(OpenLayersMap source, MouseEventDetails mouseEventDetails, Point point) {
+            super(source, mouseEventDetails);
+            this.point = point;
+        }
+
+        public Point getPoint() {
+            return point;
+        }
+
+        public OpenLayersMap getOpenLayersMap() {
+            return (OpenLayersMap) getSource();
         }
     }
 }

@@ -1,13 +1,11 @@
 package org.vaadin.vol.client;
 
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.client.ApplicationConnection;
-import com.vaadin.client.ComponentConnector;
-import com.vaadin.client.ConnectorHierarchyChangeEvent;
-import com.vaadin.client.Profiler;
+import com.vaadin.client.*;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
@@ -15,6 +13,7 @@ import com.vaadin.client.ui.Action;
 import com.vaadin.client.ui.ActionOwner;
 import com.vaadin.client.ui.PostLayoutListener;
 import com.vaadin.shared.Connector;
+import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.Connect;
 
 import java.util.logging.Logger;
@@ -71,6 +70,17 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             event.stopPropagation();
             event.preventDefault();
         }
+    }
+
+    @Override
+    protected void sendContextClickEvent(MouseEventDetails details, EventTarget eventTarget) {
+        LonLat clickedLonLat = getWidget().getMap().getLonLatFromPixel(
+            Pixel.create(details.getRelativeX(), details.getRelativeY()));
+        Projection projection = getWidget().getMap().getBaseLayer().getProjection();
+        Projection apiProjection = getWidget().getProjection();
+        clickedLonLat.transform(projection, apiProjection);
+        Point point = new Point(clickedLonLat.getLon(), clickedLonLat.getLat());
+        openLayersMapServerRpc.contextClick(details, point);
     }
 
     @Override
