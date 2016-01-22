@@ -4,16 +4,20 @@ import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.event.Action;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 
 import javax.servlet.annotation.WebServlet;
 
+import org.vaadin.vol.Marker;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.OpenStreetMapLayer;
 import org.vaadin.vol.client.Bounds;
 import org.vaadin.vol.client.Point;
+import org.vaadin.vol.MarkerLayer;
 
 @Theme("demo")
 
@@ -44,6 +48,26 @@ public class DemoUI extends UI
         osmLayer.setDisplayName("OSM");
         map.addLayer(osmLayer);
         map.setBaseLayer(osmLayer);
+
+        MarkerLayer markerLayer = new MarkerLayer();
+        markerLayer.setDisplayName("Markers");
+        map.addLayer(markerLayer);
+
+        Marker marker = new Marker(146.9417, -42.0429);
+        marker.setIcon("http://10.4.1.10/VAADIN/themes/ecx/img/icons/aim.png", 48, 48);
+        marker.addActionHandler(new Action.Handler() {
+
+            public Action[] getActions(Object target, Object sender) {
+                return new Action[] {
+                  new Action("Click Me!")
+                };
+            }
+
+            public void handleAction(Action action, Object sender, Object target) {
+                Notification.show("Marker context menu clicked");
+            }
+        });
+        markerLayer.addMarker(marker);
 
         map.setCenter(146.9417, -42.0429);
         map.setZoom(7);

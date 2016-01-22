@@ -22,6 +22,14 @@ public class MapUtil {
     }
 
     public static Map getMap(Widget widget) {
-        return findParent(VOpenLayersMap.class, widget).getMap();
+        if (widget == null) {
+            return null;
+        }
+
+        if (widget instanceof VOpenLayersMap) {
+            return ((VOpenLayersMap)widget).getMap();
+        } else {
+            return getMap(widget.getParent());
+        }
     }
 }
