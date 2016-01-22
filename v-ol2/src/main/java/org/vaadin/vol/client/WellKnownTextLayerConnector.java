@@ -5,7 +5,6 @@ import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.shared.ui.Connect;
 
 import org.vaadin.vol.WellKnownTextLayer;
-import org.vaadin.vol.client.ui.VOpenLayersMap;
 import org.vaadin.vol.client.ui.VWellKnownTextLayer;
 import org.vaadin.vol.client.wrappers.Projection;
 import org.vaadin.vol.client.wrappers.Vector;
@@ -42,7 +41,7 @@ public class WellKnownTextLayerConnector extends AutoPopulatedVectorLayerConnect
             sourceProjection = Projection.get(projection);
         } else {
             // if not explicitly defined, use the API projection from the map
-            sourceProjection = MapUtil.findParent(VOpenLayersMap.class, getWidget()).getProjection();
+            sourceProjection = MapUtil.getVMap(getWidget()).getProjection();
         }
         WKT wktFormatter = WKT.create(targetProjection, sourceProjection);
         JsArray<Vector> read = wktFormatter.read(getState().wkt);
