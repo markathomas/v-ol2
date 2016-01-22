@@ -28,8 +28,8 @@ public class OpenLayersMap extends AbstractComponentContainer implements Action.
     }
 
     public OpenLayersMap(boolean skipControls) {
-        setWidth("500px");
-        setHeight("350px");
+        setWidth("100%");
+        setHeight("100%");
         if (!skipControls) {
             addControl(Control.ArgParser);
             addControl(Control.Navigation);
@@ -480,6 +480,7 @@ public class OpenLayersMap extends AbstractComponentContainer implements Action.
         actionsToState();
     }
 
+    @SuppressWarnings("Duplicates")
     private void actionsToState() {
         getState().actions.clear();
         for (Action.Handler ah : actionHandlers) {

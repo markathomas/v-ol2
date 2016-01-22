@@ -61,10 +61,9 @@ public class Map extends Widget {
 
     private MapOverlay getMap() {
         if (jsoverlay == null) {
-            this.logger.info("initizing map overlay to be attached to element " + mapElement.getId() + " with initial map options "
-              + "of " + mapInitOptions + " and controls " + initialControls);
-            jsoverlay = MapOverlay.get(mapElement.getId(), mapInitOptions,
-                    initialControls);
+            this.logger.info("initializing map overlay to be attached to element " + mapElement.getId()
+              + " with initial map options of " + mapInitOptions + " and controls " + initialControls);
+            jsoverlay = MapOverlay.get(mapElement.getId(), mapInitOptions, initialControls);
         }
         return jsoverlay;
     }

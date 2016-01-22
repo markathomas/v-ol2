@@ -2,7 +2,9 @@ package org.vaadin.vol.client.wrappers;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-public class LonLat extends JavaScriptObject {
+import java.io.Serializable;
+
+public class LonLat extends JavaScriptObject implements Serializable {
 
     protected LonLat() {
     };
