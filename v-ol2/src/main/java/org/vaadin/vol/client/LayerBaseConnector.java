@@ -30,8 +30,7 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
     public void onStateChanged(StateChangeEvent stateChangeEvent) {
         super.onStateChanged(stateChangeEvent);
 
-        final boolean hasListeners = getState().registeredEventListeners != null;
-        if (hasListeners && getState().registeredEventListeners.contains("llstart") && this.loadStartHandler == null) {
+        if (hasEventListener("llstart") && this.loadStartHandler == null) {
             this.loadStartHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
@@ -41,7 +40,7 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
             this.getWidget().getLayer().registerHandler("loadstart", this.loadStartHandler);
         }
 
-        if (hasListeners && getState().registeredEventListeners.contains("llend") && this.loadEndHandler == null) {
+        if (hasEventListener("llend") && this.loadEndHandler == null) {
             this.loadEndHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {
@@ -51,7 +50,7 @@ public abstract class LayerBaseConnector extends AbstractComponentConnector {
             this.getWidget().getLayer().registerHandler("loadend", this.loadEndHandler);
         }
 
-        if (hasListeners && getState().registeredEventListeners.contains("lvis") && this.visibilityChangedHandler == null) {
+        if (hasEventListener("lvis") && this.visibilityChangedHandler == null) {
             this.visibilityChangedHandler = new GwtOlHandler() {
                 @SuppressWarnings("rawtypes")
                 public void onEvent(JsArray arguments) {

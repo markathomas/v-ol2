@@ -47,8 +47,8 @@ public class VOpenLayersMap extends FlowPanel {
      * then handle any initialization relevant to Vaadin.
      */
     public VOpenLayersMap() {
-        setWidth("500px");
-        setHeight("500px");
+        setWidth("100%");
+        setHeight("100%");
         add(map);
         add(fakePaintables);
         fakePaintables.setVisible(false);
