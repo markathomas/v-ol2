@@ -5,7 +5,10 @@ import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.user.client.ui.Widget;
-import com.vaadin.client.*;
+import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.ComponentConnector;
+import com.vaadin.client.ConnectorHierarchyChangeEvent;
+import com.vaadin.client.Profiler;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
@@ -91,16 +94,19 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     @Override
     public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent event) {
         Profiler.enter("OpenLayersMapConnector.onConnectorHierarchyChange");
-        Profiler.enter(
-                "OpenLayersMapConnector.onConnectorHierarchyChange add children");
+        Profiler.enter("OpenLayersMapConnector.onConnectorHierarchyChange add children");
 
+        this.processChildren();
+
+        Profiler.leave("OpenLayersMapConnector.onConnectorHierarchyChange add children");
+        Profiler.leave("OpenLayersMapConnector.onConnectorHierarchyChange");
+    }
+
+    private void processChildren() {
         getWidget().getFakePaintables().clear();
         for (ComponentConnector child : getChildComponents()) {
             getWidget().getFakePaintables().add(child.getWidget());
         }
-        Profiler.leave(
-                "OpenLayersMapConnector.onConnectorHierarchyChange add children");
-        Profiler.leave("OpenLayersMapConnector.onConnectorHierarchyChange");
     }
 
     @Override
@@ -117,8 +123,19 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
     public void onStateChanged(final StateChangeEvent stateChangeEvent) {
         super.onStateChanged(stateChangeEvent);
 
-        final boolean hasListeners = getState().registeredEventListeners != null;
-        if (hasListeners && hasEventListener("extentChange")) {
+        if (stateChangeEvent.hasPropertyChanged("jsMapOptions")) {
+            getWidget().getMap().setMapInitOptions(getState().jsMapOptions);
+        }
+
+        if (stateChangeEvent.hasPropertyChanged("controls")) {
+            getWidget().updateControls(getState().controls);
+        }
+
+        if (stateChangeEvent.hasPropertyChanged("projection")) {
+            getWidget().setProjection(Projection.get(getState().projection));
+        }
+
+        if (hasEventListener("extentChange")) {
             if (this.extentChangeListener == null) {
                 this.extentChangeListener = new GwtOlHandler() {
                     @SuppressWarnings("rawtypes")
@@ -145,7 +162,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             }
         }
 
-        if (hasListeners && hasEventListener("baseLayerChange")) {
+        if (hasEventListener("baseLayerChange")) {
             if (changeBaseLayer == null) {
                 changeBaseLayer = new GwtOlHandler() {
                     public void onEvent(JsArray arguments) {
@@ -166,7 +183,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             }
         }
 
-        if (hasListeners && hasEventListener("click")) {
+        if (hasEventListener("click")) {
             if (clickListener == null) {
                 clickListener = new GwtOlHandler() {
 
@@ -194,12 +211,9 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             }
         }
 
-        if (stateChangeEvent.hasPropertyChanged("jsMapOptions")) {
-            getWidget().getMap().setMapInitOptions(getState().jsMapOptions);
-        }
-
-        if (stateChangeEvent.hasPropertyChanged("controls")) {
-            getWidget().updateControls(getState().controls);
+        if (stateChangeEvent.hasPropertyChanged("baseLayer") && getState().baseLayer != null) {
+            VLayer layer = (VLayer)(((ComponentConnector)getState().baseLayer).getWidget());
+            getWidget().getMap().setBaseLayer(layer.getLayer());
         }
 
         if (stateChangeEvent.hasPropertyChanged("restrictedExtent") && getState().restrictedExtent != null) {
@@ -212,15 +226,6 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             Map map = getWidget().getMap();
             bounds.transform(getWidget().getProjection(), map.getProjection());
             map.setRestrictedExtent(bounds);
-        }
-
-        if (stateChangeEvent.hasPropertyChanged("baseLayer") && getState().baseLayer != null) {
-            VLayer layer = (VLayer)(((ComponentConnector)getState().baseLayer).getWidget());
-            getWidget().getMap().setBaseLayer(layer.getLayer());
-        }
-
-        if (stateChangeEvent.hasPropertyChanged("projection")) {
-            getWidget().setProjection(Projection.get(getState().projection));
         }
 
         if (stateChangeEvent.hasPropertyChanged("zoomToExtent") && getState().zoomToExtent != null) {
