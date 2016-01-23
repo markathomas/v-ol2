@@ -3,6 +3,7 @@ package org.vaadin.vol.client;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.Profiler;
+import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
 import com.vaadin.shared.ui.Connect;
 
@@ -15,6 +16,12 @@ public class MarkerLayerConnector extends AbstractComponentContainerConnector {
     @Override
     public VMarkerLayer getWidget() {
         return (VMarkerLayer)super.getWidget();
+    }
+
+    @Override
+    public void onStateChanged(StateChangeEvent stateChangeEvent) {
+        super.onStateChanged(stateChangeEvent);
+        this.getWidget().attachLayerToMap();
     }
 
     @Override

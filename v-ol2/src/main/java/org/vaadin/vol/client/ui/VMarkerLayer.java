@@ -35,10 +35,6 @@ public class VMarkerLayer extends FlowPanel implements VLayer {
      * For internal use only. May be removed or replaced in the future.
      */
     public void addOrMove(Widget child, int index) {
-        if (!layerAdded) {
-            getMap().addLayer(getLayer());
-            layerAdded = true;
-        }
         Profiler.enter("VMarkerLayer.addOrMove");
         if (child.getParent() == this) {
             Profiler.enter("VMarkerLayer.addOrMove getWidgetIndex");
@@ -61,6 +57,13 @@ public class VMarkerLayer extends FlowPanel implements VLayer {
         insert(child, index);
         Profiler.leave("VMarkerLayer.addOrMove insert");
         Profiler.leave("VMarkerLayer.addOrMove");
+    }
+
+    public void attachLayerToMap() {
+        if (!layerAdded) {
+            getMap().addLayer(getLayer());
+            layerAdded = true;
+        }
     }
 
     @Override
