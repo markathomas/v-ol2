@@ -6,7 +6,7 @@
     <artifactId>v-ol2</artifactId>
     <packaging>jar</packaging>
     <version>2.0.0</version>
-    <name>Vaadin OpenLayers 2 Add-on</name>
+    <name>OpenLayers 2 Add-on</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,7 +32,7 @@
         <url>https://github.com/markathomas/v-ol2.git</url>
         <connection>scm:git:https://github.com/markathomas/v-ol2.git</connection>
         <developerConnection>scm:git:https://github.com/markathomas/v-ol2.git</developerConnection>
-        <tag>Vaadin OpenLayers 2 add-on for Vaadin</tag>
+        <tag>OpenLayers 2 add-on for Vaadin</tag>
     </scm>
 
     <issueManagement>

@@ -1,10 +1,6 @@
-# Vaadin OpenLayers 2 Add-on for Vaadin 7
+# OpenLayers 2 Add-on for Vaadin 7.6+
 
-Vaadin OpenLayers 2 is an UI component add-on for Vaadin 7.
-
-## Online demo
-
-Try the add-on demo at <url of the online demo>
+OpenLayers 2 is an UI component add-on for Vaadin 7.6+.
 
 ## Download release
 
@@ -51,15 +47,13 @@ Another way of debugging client-side is superdev mode. To enable it, uncomment d
 
 ## Release notes
 
-### Version 2.0-SNAPSHOT
-- ...
-- ...
+### Version 2.0.0
+- Initial port of Vaadin 6 OpenLayers Wrapper add-on to Vaadin 7
 
 ## Roadmap
 
 This component is developed as a hobby with no public roadmap or any guarantees of upcoming releases. That said, the following features are planned for upcoming releases:
-- ...
-- ...
+- Context menus for markers
 
 ## Issue tracking
 
@@ -79,32 +73,10 @@ Contributions are welcome, but there are no guarantees that they are accepted as
 
 Add-on is distributed under Apache License 2.0. For license terms, see LICENSE.txt.
 
-Vaadin OpenLayers 2 is written by Mark Thomas
+OpenLayers 2 is written by Mark Thomas
 
 # Developer Guide
 
 ## Getting started
 
-Here is a simple example on how to try out the add-on component:
-
-<...>
-
-For a more comprehensive example, see src/test/java/org/vaadin/template/demo/DemoUI.java
-
-## Features
-
-### Feature A
-
-<...>
-
-### Feature B
-
-<...>
-
-### Feature C
-
-<...>
-
-## API
-
-Vaadin OpenLayers 2 JavaDoc is available online at <...>
+For an example, see src/test/java/org/vaadin/template/demo/DemoUI.java
