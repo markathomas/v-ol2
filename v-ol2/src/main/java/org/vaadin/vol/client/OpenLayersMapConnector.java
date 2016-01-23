@@ -253,6 +253,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             if (getState().center != null) {
                 center = LonLat.create(getState().center.getLon(), getState().center.getLat());
             }
+            getWidget().updateZoomAndCenter(getState().zoom + 1, center);
             getWidget().updateZoomAndCenter(getState().zoom, center);
             initialized  = true;
         }
