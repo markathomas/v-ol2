@@ -78,7 +78,8 @@ public class OpenLayersMap extends AbstractComponentContainer implements Action.
                     }
                 }
             }
-
+        });
+        registerRpc(new ContextClickRpc() {
             @Override
             public void contextClick(MouseEventDetails details, Point point) {
                 fireEvent(new OpenLayersMapContextClickEvent(OpenLayersMap.this, details, point));

@@ -18,4 +18,15 @@ public class Marker extends AbstractOpenLayersWrapper {
     public final void addClickHandler(GwtOlHandler gwtOlHandler) {
         registerHandler("click", gwtOlHandler);
     }
+
+    public native final void addRightMouseButtonDownHandler(GwtOlHandler handler)
+    /*-{
+        var f = function(e) {
+            if ($wnd.OpenLayers.Event.isRightClick(e)) {
+                $entry(handler.@org.vaadin.vol.client.wrappers.GwtOlHandler::onEvent(Lcom/google/gwt/core/client/JsArray;)(arguments));
+            }
+        };
+        this.events.register("mousedown", this, f);
+
+    }-*/;
 }

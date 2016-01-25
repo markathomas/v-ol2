@@ -3,14 +3,18 @@
  */
 package org.vaadin.vol;
 
+import com.vaadin.event.ContextClickEvent;
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Resource;
+import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.ui.AbstractComponent;
 
+import org.vaadin.vol.client.ContextClickRpc;
 import org.vaadin.vol.client.MarkerServerRpc;
 import org.vaadin.vol.client.MarkerState;
+import org.vaadin.vol.client.Point;
 
 @SuppressWarnings("serial")
 public class Marker extends AbstractComponent {
@@ -19,6 +23,12 @@ public class Marker extends AbstractComponent {
         this.registerRpc(new MarkerServerRpc() {
             public void markerClicked() {
                 fireEvent(new ClickEvent(Marker.this, null));
+            }
+        });
+        registerRpc(new ContextClickRpc() {
+            @Override
+            public void contextClick(MouseEventDetails details, Point point) {
+                fireEvent(new MarkerContextClickEvent(Marker.this, details, point));
             }
         });
         this.getState().lon = lon;
@@ -75,5 +85,23 @@ public class Marker extends AbstractComponent {
 
     public void removeClickListener(ClickListener listener) {
         removeListener(ClickEvent.class, listener);
+    }
+
+    public static class MarkerContextClickEvent extends ContextClickEvent {
+
+        private final Point point;
+
+        public MarkerContextClickEvent(Marker source, MouseEventDetails mouseEventDetails, Point point) {
+            super(source, mouseEventDetails);
+            this.point = point;
+        }
+
+        public Point getPoint() {
+            return point;
+        }
+
+        public Marker getMarker() {
+            return (Marker) getSource();
+        }
     }
 }

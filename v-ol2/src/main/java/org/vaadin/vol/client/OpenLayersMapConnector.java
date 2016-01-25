@@ -83,7 +83,7 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
         Projection apiProjection = getWidget().getProjection();
         clickedLonLat.transform(projection, apiProjection);
         Point point = new Point(clickedLonLat.getLon(), clickedLonLat.getLat());
-        openLayersMapServerRpc.contextClick(details, point);
+        getRpcProxy(ContextClickRpc.class).contextClick(details, point);
     }
 
     @Override
