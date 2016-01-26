@@ -53,7 +53,7 @@ Another way of debugging client-side is superdev mode. To enable it, uncomment d
 ## Roadmap
 
 This component is developed as a hobby with no public roadmap or any guarantees of upcoming releases. That said, the following features are planned for upcoming releases:
-- Context menus for markers
+- None at this time
 
 ## Issue tracking
 
