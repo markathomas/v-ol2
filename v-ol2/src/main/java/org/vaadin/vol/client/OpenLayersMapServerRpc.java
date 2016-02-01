@@ -9,4 +9,5 @@ public interface OpenLayersMapServerRpc extends ServerRpc {
     void baseLayerChanged(String connectorId);
     // for older Action based context menu
     void contextMenuClicked(String key, Point point);
+    void zoomAndCenterForced();
 }

@@ -10,6 +10,7 @@ public class OpenLayersMapState extends AbstractComponentState {
     public List<Connector> layers = new LinkedList<Connector>();
     public Point center;
     public int zoom = 3;
+    public boolean forceZoomAndCenter;
     public Bounds bounds = Bounds.WORLD;
 
     public Connector baseLayer;

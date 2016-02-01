@@ -228,19 +228,26 @@ public class OpenLayersMapConnector extends AbstractComponentContainerConnector 
             map.setRestrictedExtent(bounds);
         }
 
-        if (stateChangeEvent.hasPropertyChanged("zoomToExtent") && getState().zoomToExtent != null) {
+        boolean force = stateChangeEvent.hasPropertyChanged("forceZoomAndCenter") && getState().forceZoomAndCenter;
+        if ((force || stateChangeEvent.hasPropertyChanged("zoomToExtent")) && getState().zoomToExtent != null) {
             getWidget().zoomToExtent(Bounds.create(
               getState().zoomToExtent.getLeft(),
               getState().zoomToExtent.getBottom(),
               getState().zoomToExtent.getRight(),
               getState().zoomToExtent.getTop()
             ));
-        } else if (stateChangeEvent.hasPropertyChanged("zoom") || stateChangeEvent.hasPropertyChanged("center")) {
+            if (force) {
+                this.openLayersMapServerRpc.zoomAndCenterForced();
+            }
+        } else if (force || stateChangeEvent.hasPropertyChanged("zoom") || stateChangeEvent.hasPropertyChanged("center")) {
             LonLat center = null;
-            if (stateChangeEvent.hasPropertyChanged("center") && getState().center != null) {
+            if ((force || stateChangeEvent.hasPropertyChanged("center")) && getState().center != null) {
                 center = LonLat.create(getState().center.getLon(), getState().center.getLat());
             }
             getWidget().updateZoomAndCenter(getState().zoom, center);
+            if (force) {
+                this.openLayersMapServerRpc.zoomAndCenterForced();
+            }
         }
     }
 

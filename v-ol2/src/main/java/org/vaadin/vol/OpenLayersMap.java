@@ -78,6 +78,10 @@ public class OpenLayersMap extends AbstractComponentContainer implements Action.
                     }
                 }
             }
+
+            public void zoomAndCenterForced() {
+                getState().forceZoomAndCenter = false;
+            }
         });
         registerRpc(new ContextClickRpc() {
             @Override
@@ -183,6 +187,9 @@ public class OpenLayersMap extends AbstractComponentContainer implements Action.
     }
 
     public void setCenter(double lon, double lat) {
+        if (this.getState().center != null && this.getState().center.getLon() == lon && this.getState().center.getLat() == lat) {
+            this.getState().forceZoomAndCenter = true;
+        }
         this.getState().center = new Point(lon, lat);
         markAsDirty();
     }
@@ -198,6 +205,9 @@ public class OpenLayersMap extends AbstractComponentContainer implements Action.
     }
 
     public void setZoom(int zoomLevel) {
+        if (this.getState().zoom == zoomLevel) {
+            this.getState().forceZoomAndCenter = true;
+        }
         this.getState().zoom = zoomLevel;
         markAsDirty();
     }
