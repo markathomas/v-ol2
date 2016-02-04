@@ -44,7 +44,7 @@ public class MarkerConnector extends AbstractComponentConnector {
 
         Icon icon = getIcon();
         getWidget().updateFromStateChange(getState(), icon);
-        if (hasEventListener("click")) {
+        if (hasEventListener(EventId.CLICK_EVENT_IDENTIFIER)) {
             getWidget().getMarker().addClickHandler(new GwtOlHandler() {
                 public void onEvent(JsArray arguments) {
                     markerServerRpc.markerClicked();
@@ -60,7 +60,7 @@ public class MarkerConnector extends AbstractComponentConnector {
                 }
             });
 
-            MapUtil.getVMap(getWidget().getParent()).addDomHandler(new ContextMenuHandler() {
+            getWidget().addDomHandler(new ContextMenuHandler() {
                 @Override
                 public void onContextMenu(ContextMenuEvent event) {
                     if (!rightMouseButtonDown) {
